@@ -41,7 +41,7 @@ watchEffect(() => {
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <Form class="flex flex-col gap-y-6 w-[35rem] ">
+    <Form class="flex flex-col gap-y-6 w-[35rem]">
 
       <!-- Customer Name -->
       <div class="flex flex-col gap-1">
@@ -98,7 +98,7 @@ watchEffect(() => {
             />
           </div>
           <div class="flex flex-col gap-1 flex-1">
-            <label class="text-sm font-medium" for="engagedPartyId">ID</label>
+            <label class="text-sm font-medium" for="engagedPartyId">Id</label>
             <InputText 
               v-model="customer.engagedParty.id" 
               size="small" 
@@ -135,7 +135,6 @@ watchEffect(() => {
         <Button type="submit" severity="secondary" label="Submit" />
         <Button label="Close" @click="visible = false" />
       </div>
-      <div class="flex flex-col gap-4 w-[35rem] p-4 border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800 bg-white hover:shadow-md"></div>
     </Form>
   </Dialog>
 </template>

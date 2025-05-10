@@ -8,11 +8,11 @@ const contactMedium = defineModel<ContactMedium>()
 const currentOption = ref<number>()
 
 const options = [
-  { name: 'Email Contact Medium', type: ContactMediumType.EmailContactMedium },
-  { name: 'Fax Contact Medium', type: ContactMediumType.FaxContactMedium },
-  { name: 'Geographic Address Contact Medium', type: ContactMediumType.GeographicAddressContactMedium },
-  { name: 'Phone Contact Medium', type: ContactMediumType.PhoneContactMedium },
-  { name: 'Social Contact Medium', type: ContactMediumType.SocialContactMedium }
+  { name: 'Email', type: ContactMediumType.EmailContactMedium },
+  { name: 'Fax', type: ContactMediumType.FaxContactMedium },
+  { name: 'Geographic Address', type: ContactMediumType.GeographicAddressContactMedium },
+  { name: 'Phone', type: ContactMediumType.PhoneContactMedium },
+  { name: 'Social', type: ContactMediumType.SocialContactMedium }
 ];
 
 const onTypeChange = (e: SelectChangeEvent) => contactMedium.value = getInitialContactMedium(e.value)
@@ -39,46 +39,119 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
 </script>
 <template>
   <div class="flex flex-col justify-between">
+    <!-- Contact Medium Type Select -->
     <Select 
       v-model="currentOption"
       :options
       option-label="name" 
       option-value="type" 
       @change="onTypeChange"
-      class="mb-2"
+      class="mb-4"
       size="small"
-      placeholder="Select a contact medium"/>
+      placeholder="Select a contact medium"
+    />
     
-      <!-- EmailContactMedium -->
-    <div v-if="currentOption==ContactMediumType.EmailContactMedium">
-      <InputText size="small" v-model="(contactMedium as EmailContactMedium).emailAddress"  type="text" placeholder="Email address"/>
+      <!-- Email -->
+    <div v-if="currentOption==ContactMediumType.EmailContactMedium" class="flex flex-col gap-2">
+      <label class="text-sm font-medium">Email address</label>
+      <InputText 
+        v-model="(contactMedium as EmailContactMedium).emailAddress"  
+        type="text" 
+        size="small" 
+        placeholder="e.g., user@example.com"
+      />
     </div>
   
-      <!-- FaxContactMedium -->
-    <div v-if="currentOption==ContactMediumType.FaxContactMedium">
-      <InputText size="small" v-model="(contactMedium as FaxContactMedium).faxNumber" type="text" placeholder="Fax number"/>
+      <!-- Fax -->
+    <div v-if="currentOption==ContactMediumType.FaxContactMedium" class="flex flex-col gap-2">
+      <label class="text-sm font-medium">Fax number</label>
+      <InputText 
+        v-model="(contactMedium as FaxContactMedium).faxNumber" 
+        type="text" 
+        size="small" 
+        placeholder="e.g., +84 123 4567"
+      />
     </div>
   
-      <!-- GeographicAddressContactMedium -->
+      <!-- Geographic Address -->
     <div 
       class="grid grid-cols-2 gap-x-2 gap-y-3"
       v-if="currentOption==ContactMediumType.GeographicAddressContactMedium">
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).city" type="text" placeholder="City"/>
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).country" type="text" placeholder="Country"/>
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).postCode" type="text" placeholder="Postcode"/>
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" type="text" placeholder="State or province"/>
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).street1" type="text" placeholder="Street 1"/>
-      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).street2" type="text" placeholder="Street 2"/>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">City</label>
+        <InputText 
+          v-model="(contactMedium as GeographicAddressContactMedium).city" 
+          type="text" 
+          size="small" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">Country</label>
+        <InputText 
+          v-model="(contactMedium as GeographicAddressContactMedium).country" 
+          type="text" 
+          size="small" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">Postcode</label>
+        <InputText 
+          v-model="(contactMedium as GeographicAddressContactMedium).postCode" 
+          type="text"
+          size="small" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">State or province</label>
+        <InputText 
+          size="small" 
+          v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" 
+          type="text" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">Street 1</label>
+        <InputText 
+          v-model="(contactMedium as GeographicAddressContactMedium).street1" 
+          type="text" 
+          size="small" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">Street 2</label>
+        <InputText 
+          size="small" 
+          v-model="(contactMedium as GeographicAddressContactMedium).street2" 
+          type="text" 
+        />
+      </div>
     </div>
   
-      <!-- PhoneContactMedium -->
-    <div v-if="currentOption==ContactMediumType.PhoneContactMedium">
-      <InputText size="small" v-model="(contactMedium as PhoneContactMedium).phoneNumber" type="text" placeholder="Phone number"/>
+      <!-- Phone -->
+    <div v-if="currentOption==ContactMediumType.PhoneContactMedium" class="flex flex-col gap-2">
+      <label class="text-sm font-medium">Phone number</label>
+      <InputText 
+        v-model="(contactMedium as PhoneContactMedium).phoneNumber" 
+        type="text" 
+        size="small" 
+        placeholder="e.g., +84 901 234 567"
+      />
     </div>
     
       <!-- SocialContactMedium -->
-    <div v-if="currentOption==ContactMediumType.SocialContactMedium">
-      <InputText size="small" v-model="(contactMedium as SocialContactMedium).socialNetworkId" type="text" placeholder="Social network id"/>
+    <div v-if="currentOption==ContactMediumType.SocialContactMedium" class="flex flex-col gap-2">
+      <label class="text-sm font-medium">Social network id</label>
+      <InputText 
+        v-model="(contactMedium as SocialContactMedium).socialNetworkId" 
+        type="text" 
+        size="small" 
+        placeholder="e.g., @username"
+      />
     </div>  
   </div>
 </template>
