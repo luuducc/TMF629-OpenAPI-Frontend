@@ -46,38 +46,39 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       option-value="type" 
       @change="onTypeChange"
       class="mb-2"
+      size="small"
       placeholder="Select a contact medium"/>
     
       <!-- EmailContactMedium -->
     <div v-if="currentOption==ContactMediumType.EmailContactMedium">
-      <InputText v-model="(contactMedium as EmailContactMedium).emailAddress"  type="text" placeholder="Email address"/>
+      <InputText size="small" v-model="(contactMedium as EmailContactMedium).emailAddress"  type="text" placeholder="Email address"/>
     </div>
   
       <!-- FaxContactMedium -->
     <div v-if="currentOption==ContactMediumType.FaxContactMedium">
-      <InputText v-model="(contactMedium as FaxContactMedium).faxNumber" type="text" placeholder="Fax number"/>
+      <InputText size="small" v-model="(contactMedium as FaxContactMedium).faxNumber" type="text" placeholder="Fax number"/>
     </div>
   
       <!-- GeographicAddressContactMedium -->
     <div 
       class="grid grid-cols-2 gap-x-2 gap-y-3"
       v-if="currentOption==ContactMediumType.GeographicAddressContactMedium">
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).city" type="text" placeholder="City"/>
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).country" type="text" placeholder="Country"/>
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).postCode" type="text" placeholder="Postcode"/>
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" type="text" placeholder="State or province"/>
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).street1" type="text" placeholder="Street 1"/>
-      <InputText v-model="(contactMedium as GeographicAddressContactMedium).street2" type="text" placeholder="Street 2"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).city" type="text" placeholder="City"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).country" type="text" placeholder="Country"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).postCode" type="text" placeholder="Postcode"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" type="text" placeholder="State or province"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).street1" type="text" placeholder="Street 1"/>
+      <InputText size="small" v-model="(contactMedium as GeographicAddressContactMedium).street2" type="text" placeholder="Street 2"/>
     </div>
   
       <!-- PhoneContactMedium -->
     <div v-if="currentOption==ContactMediumType.PhoneContactMedium">
-      <InputText v-model="(contactMedium as PhoneContactMedium).phoneNumber" type="text" placeholder="Phone number"/>
+      <InputText size="small" v-model="(contactMedium as PhoneContactMedium).phoneNumber" type="text" placeholder="Phone number"/>
     </div>
     
       <!-- SocialContactMedium -->
     <div v-if="currentOption==ContactMediumType.SocialContactMedium">
-      <InputText v-model="(contactMedium as SocialContactMedium).socialNetworkId" type="text" placeholder="Social network id"/>
+      <InputText size="small" v-model="(contactMedium as SocialContactMedium).socialNetworkId" type="text" placeholder="Social network id"/>
     </div>  
   </div>
 </template>

@@ -3,7 +3,7 @@ import { reactive, watch, toRaw, watchEffect } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
-import { Dialog, Button, InputText, Textarea } from 'primevue';
+import { Dialog, Button, InputText, Textarea, Divider  } from 'primevue';
 import { Form } from '@primevue/forms';
 import ContactMediumForm from '@/components/ContactMediumForm.vue';
 
@@ -41,43 +41,101 @@ watchEffect(() => {
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <Form class="flex flex-col gap-4 w-[35rem] ">
+    <Form class="flex flex-col gap-y-6 w-[35rem] ">
+
+      <!-- Customer Name -->
       <div class="flex flex-col gap-1">
-        <label class="text-lg font-bold">Name</label>
-        <InputText type="text" v-model="customer.name" />
-
-        <label class="text-lg font-bold">Contact medium</label>
-        <div v-for="(_, index) in contactMediums">
-          <div class="flex justify-between items-center mb-3">
-            <label class="text-sm">Medium {{ index + 1 }}</label>
-            <Button @click="deleteContactMedium(index)">Delete</Button>
-          </div>
-          <ContactMediumForm :index v-model="contactMediums[index]"/>
-        </div>
-        <Button @click="addContactMedium">Add new contact medium</Button>
-
-        <label class="text-lg font-bold">Engaged party</label>
-        <div class="flex justify-between ml-2">
-          <div class="flex flex-col">
-            <label class="text-sm">Name</label>
-            <InputText type="text" v-model="customer.engagedParty.name"/>
-          </div>
-          <div class="flex flex-col">
-            <label class="text-sm">Id</label>
-            <InputText type="text" v-model="customer.engagedParty.id"/>
-          </div>
-        </div>
-
-        <label class="text-lg font-bold">Description</label>
-        <Textarea v-model="customer.description"/>
-
-        <label class="text-lg font-bold">Role</label>
-        <InputText v-model="customer.role"/>
+        <label class="font-medium" for="customerName">Name</label>
+        <InputText 
+          v-model="customer.name"
+          size="small"
+          placeholder="Customer name"
+          id="customerName"
+        />
       </div>
-      <div class="flex justify-end">
+
+      <!-- Contact Medium Section -->
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Contact Medium</label>
+          <Button 
+            @click="addContactMedium" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in contactMediums" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Medium {{ index + 1 }}</label>
+            <Button 
+              @click="deleteContactMedium(index)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <ContactMediumForm :index="index" v-model="contactMediums[index]" />
+        </div>
+      </div>
+
+      <!-- Engaged Party -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium">Engaged Party</label>
+        <div class="flex gap-4">
+          <div class="flex flex-col gap-1 flex-1">
+            <label class="text-sm font-medium" for="engagedPartyName">Name</label>
+            <InputText 
+              v-model="customer.engagedParty.name" 
+              size="small" 
+              placeholder="Party name"
+              id="engagedPartyName" 
+            />
+          </div>
+          <div class="flex flex-col gap-1 flex-1">
+            <label class="text-sm font-medium" for="engagedPartyId">ID</label>
+            <InputText 
+              v-model="customer.engagedParty.id" 
+              size="small" 
+              placeholder="Party id"
+              id="engagedPartyId" 
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="flex flex-col gap-1">
+        <label class="font-medium" for="description">Description</label>
+        <Textarea 
+          v-model="customer.description"
+          size="small" 
+          id="description" 
+        />
+      </div>
+
+      <!-- Role -->
+      <div class="flex flex-col gap-1">
+        <label class="font-medium" for="role">Role</label>
+        <InputText 
+          v-model="customer.role" 
+          size="small" 
+          placeholder="Customer role" 
+          id="role" 
+        />
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-3">
         <Button type="submit" severity="secondary" label="Submit" />
-        <Button class="mr-3" label="Close" @click="visible = false" />
+        <Button label="Close" @click="visible = false" />
       </div>
+      <div class="flex flex-col gap-4 w-[35rem] p-4 border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800 bg-white hover:shadow-md"></div>
     </Form>
   </Dialog>
 </template>

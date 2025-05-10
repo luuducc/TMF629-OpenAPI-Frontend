@@ -52,14 +52,16 @@ const toggle = (event) => {
 }
 </script>
 <template>
-  <header class="text-5xl text-center p-4">
-    TMF 629 API
-  </header>
-  <div class="main-content p-4">
+  <div class="flex justify-between items-center px-4 pt-3">
+    <header class="text-xl">
+      TMF 629 API
+    </header>
+    <Button label="Create new customer" @click="createCustomer"/>
+  </div>
+  <div class="main-content px-8">
     <section class="flex mb-4">
-      <Button label="Create new customer" @click="createCustomer"/>
       <CustomerDialog v-model:visible="showDialog" />
-      <IconField class="ml-4">
+      <IconField>
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />
       </IconField>
