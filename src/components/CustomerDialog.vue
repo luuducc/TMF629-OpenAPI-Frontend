@@ -3,6 +3,7 @@ import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
 import { PartyType } from '@/types/party-type';
 import { AccountType } from '@/types/account-ref';
+import { AgreementType } from '@/types/agreement-ref';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
@@ -10,6 +11,7 @@ import { Form } from '@primevue/forms';
 import ContactMediumForm from '@/components/form/ContactMediumForm.vue';
 import EngagedPartyForm from './form/EngagedPartyForm.vue';
 import AccountForm from './form/AccountForm.vue';
+import AgreementForm from './form/AgreementForm.vue';
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -26,6 +28,10 @@ const customer = reactive<Customer>({
   account: {
     name: '',
     referredType: AccountType.BaseType
+  },
+  agreement: {
+    name: '',
+    referredType: AgreementType.BaseType
   }
 })
 
@@ -90,6 +96,17 @@ watchEffect(() => {
           id="account"
         />
       </div>
+
+      <!-- Agreement -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="agreement">Agreement</label>
+        <AgreementForm
+          v-model:agreement-name="customer.agreement.name"
+          v-model:agreement-type="customer.agreement.referredType"
+          id="agreement"
+        />
+      </div>
+
       <!-- Contact Medium -->
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">

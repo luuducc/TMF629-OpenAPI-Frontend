@@ -30,7 +30,7 @@ const accountType = defineModel<AccountType>("accountType")
         option-label="name"
         option-value="type"
         size="small"
-        placeholder="Select a account type"
+        placeholder="Select an account type"
         id="accountType" 
       />
     </div>

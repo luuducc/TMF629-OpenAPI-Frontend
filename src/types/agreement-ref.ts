@@ -1,5 +1,5 @@
 export enum AgreementType {
-  SupplierAgreement, ServiceAgreement
+  BaseType, SupplierAgreement, ServiceAgreement
 }
 
 export type AgreementRef = {
