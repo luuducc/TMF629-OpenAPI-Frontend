@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { PartyType } from '@/types/party-ref';
+import { PartyType } from '@/types/party-type';
 import { InputText, Select } from 'primevue';
 
-const options = [
+const options: { name: string, type: PartyType }[] = [
   { name: 'Individual', type: PartyType.Individual },
   { name: 'Organization', type: PartyType.Organization }
 ]
@@ -23,6 +23,7 @@ const partyType = defineModel<PartyType>('partyType')
         id="engagedPartyName" 
       />
     </div>
+    
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="partyType">Referred type</label>
       <Select 

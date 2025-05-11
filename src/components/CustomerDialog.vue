@@ -2,12 +2,14 @@
 import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
 import { PartyType } from '@/types/party-type';
+import { AccountType } from '@/types/account-ref';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
 import { Form } from '@primevue/forms';
-import ContactMediumForm from '@/components/ContactMediumForm.vue';
-import EngagedPartyForm from './EngagedPartyForm.vue';
+import ContactMediumForm from '@/components/form/ContactMediumForm.vue';
+import EngagedPartyForm from './form/EngagedPartyForm.vue';
+import AccountForm from './form/AccountForm.vue';
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -20,7 +22,11 @@ const customer = reactive<Customer>({
     name: '',
     referredType: PartyType.BaseType,
   },
-  contactMedium: []
+  contactMedium: [],
+  account: {
+    name: '',
+    referredType: AccountType.BaseType
+  }
 })
 
 // HANDLERS
@@ -75,6 +81,15 @@ watchEffect(() => {
         />
       </div>
 
+      <!-- Account -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="account">Account</label>
+        <AccountForm 
+          v-model:account-name="customer.account.name"
+          v-model:account-type="customer.account.referredType"
+          id="account"
+        />
+      </div>
       <!-- Contact Medium -->
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">

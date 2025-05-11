@@ -2,6 +2,6 @@ export enum AccountType {
   BaseType, BillingAccount, SettlementAccount
 }
 export type AccountRef = {
-  name?: string
+  name: string
   referredType: AccountType
 }
