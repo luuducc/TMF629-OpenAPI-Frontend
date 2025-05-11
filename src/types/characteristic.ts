@@ -1,4 +1,15 @@
+export enum RelationshipType {
+  dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
+}
+export enum ValueType {
+  string, number, boolean, date, datetime, time, duration, object, array, 
+}
 export interface CharacteristicRelationship {
-  relationshipType: string,
-  
+  relationshipType: RelationshipType,
+}
+
+export type Characteristic = {
+  characteristicRelationship: CharacteristicRelationship,
+  name: string,
+  valueType: ValueType
 }

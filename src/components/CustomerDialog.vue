@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
-import { PartyType } from '@/types/party-ref';
+import { PartyType } from '@/types/party-type';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
