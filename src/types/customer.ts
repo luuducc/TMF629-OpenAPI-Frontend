@@ -1,12 +1,10 @@
 import type { ContactMedium } from "./contact-medium";
-interface EngagedParty {
-  id: string;
-  name: string;
-}
+import type { PartyRef } from "./party-ref";
+
 export interface Customer {
   name: string;
   description: string;
   role: string;
-  engagedParty: EngagedParty;
+  engagedParty: PartyRef;
   contactMedium?: ContactMedium[]
 }

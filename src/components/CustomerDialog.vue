@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { reactive, watch, toRaw, watchEffect } from 'vue';
+import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
+import { PartyType } from '@/types/party-ref';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
-import { Dialog, Button, InputText, Textarea, Divider  } from 'primevue';
+import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
 import { Form } from '@primevue/forms';
 import ContactMediumForm from '@/components/ContactMediumForm.vue';
+import EngagedPartyForm from './EngagedPartyForm.vue';
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -15,8 +17,8 @@ const customer = reactive<Customer>({
   description: '',
   role: '',
   engagedParty: {
-    id: '',
-    name: ''
+    name: '',
+    referredType: PartyType.BaseType,
   },
   contactMedium: []
 })
@@ -54,7 +56,26 @@ watchEffect(() => {
         />
       </div>
 
-      <!-- Contact Medium Section -->
+      <!-- Engaged Party -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium">Engaged Party</label>
+        <EngagedPartyForm 
+          v-model:party-name="customer.engagedParty.name" 
+          v-model:party-type="customer.engagedParty.referredType"/>
+      </div>
+
+      <!-- Role -->
+      <div class="flex flex-col gap-1">
+        <label class="font-medium" for="role">Role</label>
+        <InputText 
+          v-model="customer.role" 
+          size="small" 
+          placeholder="Role played by Engaged party" 
+          id="role" 
+        />
+      </div>
+
+      <!-- Contact Medium -->
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
           <label class="font-medium">Contact Medium</label>
@@ -84,31 +105,6 @@ watchEffect(() => {
         </div>
       </div>
 
-      <!-- Engaged Party -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium">Engaged Party</label>
-        <div class="flex gap-4">
-          <div class="flex flex-col gap-1 flex-1">
-            <label class="text-sm font-medium" for="engagedPartyName">Name</label>
-            <InputText 
-              v-model="customer.engagedParty.name" 
-              size="small" 
-              placeholder="Party name"
-              id="engagedPartyName" 
-            />
-          </div>
-          <div class="flex flex-col gap-1 flex-1">
-            <label class="text-sm font-medium" for="engagedPartyId">Id</label>
-            <InputText 
-              v-model="customer.engagedParty.id" 
-              size="small" 
-              placeholder="Party id"
-              id="engagedPartyId" 
-            />
-          </div>
-        </div>
-      </div>
-
       <!-- Description -->
       <div class="flex flex-col gap-1">
         <label class="font-medium" for="description">Description</label>
@@ -119,21 +115,23 @@ watchEffect(() => {
         />
       </div>
 
-      <!-- Role -->
-      <div class="flex flex-col gap-1">
-        <label class="font-medium" for="role">Role</label>
-        <InputText 
-          v-model="customer.role" 
-          size="small" 
-          placeholder="Customer role" 
-          id="role" 
-        />
-      </div>
-
       <!-- Buttons -->
       <div class="flex justify-end gap-3">
-        <Button type="submit" severity="secondary" label="Submit" />
-        <Button label="Close" @click="visible = false" />
+        <Button 
+          type="submit" 
+          icon="pi pi-check" 
+          size="small" 
+          label="Submit" 
+          severity="primary" 
+        />
+        <Button 
+          label="Close" 
+          icon="pi pi-times" 
+          size="small" 
+          severity="secondary" 
+          @click="visible = false" 
+          outlined
+        />
       </div>
     </Form>
   </Dialog>
