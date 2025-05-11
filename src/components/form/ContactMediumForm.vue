@@ -75,7 +75,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
   
       <!-- Geographic Address -->
     <div 
-      class="grid grid-cols-2 gap-x-2 gap-y-3"
+      class="grid grid-cols-2 gap-x-4 gap-y-3"
       v-if="currentOption==ContactMediumType.GeographicAddressContactMedium">
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">City</label>

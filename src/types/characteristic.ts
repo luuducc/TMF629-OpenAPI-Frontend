@@ -2,7 +2,7 @@ export enum RelationshipType {
   dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
 }
 export enum ValueType {
-  string, number, boolean, date, datetime, time, duration, object, array, 
+  string, number, boolean, date, object, array, 
 }
 export interface CharacteristicRelationship {
   relationshipType: RelationshipType,

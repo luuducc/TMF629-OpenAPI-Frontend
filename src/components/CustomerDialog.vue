@@ -8,10 +8,12 @@ import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
 import { Form } from '@primevue/forms';
-import ContactMediumForm from '@/components/form/ContactMediumForm.vue';
+import ContactMediumForm from './form/ContactMediumForm.vue';
 import EngagedPartyForm from './form/EngagedPartyForm.vue';
 import AccountForm from './form/AccountForm.vue';
 import AgreementForm from './form/AgreementForm.vue';
+import CharacteristicForm from './form/CharacteristicForm.vue';
+import CreditProfileForm from './form/CreditProfileForm.vue';
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -105,6 +107,18 @@ watchEffect(() => {
           v-model:agreement-type="customer.agreement.referredType"
           id="agreement"
         />
+      </div>
+
+      <!-- Characteristic -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="characteristic">Characteristic</label>
+        <CharacteristicForm/>
+      </div>
+
+      <!-- Credit Profile -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="creditProfile">Credit profile</label>
+        <CreditProfileForm/>
       </div>
 
       <!-- Contact Medium -->
