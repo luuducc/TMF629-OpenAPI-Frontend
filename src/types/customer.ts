@@ -1,7 +1,7 @@
-import type { ContactMedium } from "./contact-medium";
-import type { PartyRef } from "./party-ref";
-import type { AccountRef } from "./account-ref";
-import type { AgreementRef } from "./agreement-ref";
+import type { 
+  ContactMedium, PartyRef, AccountRef, AgreementRef, Characteristic 
+} from "@/types";
+
 
 export interface Customer {
   name: string;
@@ -9,6 +9,7 @@ export interface Customer {
   role: string;
   engagedParty: PartyRef;
   contactMedium?: ContactMedium[],
-  account: AccountRef,
-  agreement: AgreementRef
+  account: AccountRef[],
+  agreement: AgreementRef[],
+  characteristic: Characteristic[]
 }

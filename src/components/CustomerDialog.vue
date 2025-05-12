@@ -3,9 +3,10 @@ import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
 import { ContactMediumType } from '@/types/contact-medium';
 import { PartyType } from '@/types/party-type';
 import { AccountType } from '@/types/account-ref';
-import { AgreementType } from '@/types/agreement-ref';
+import { type AgreementRef, AgreementType } from '@/types/agreement-ref';
 import type { Customer } from '@/types/customer';
 import type { ContactMedium } from '@/types/contact-medium';
+import type { AccountRef } from '@/types/account-ref';
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
 import { Form } from '@primevue/forms';
 import ContactMediumForm from './form/ContactMediumForm.vue';
@@ -21,6 +22,9 @@ import RelatedPartyOrPartyRoleForm from './form/RelatedPartyOrPartyRoleForm.vue'
 // states
 const visible = defineModel<boolean>('visible');
 const contactMediums = reactive<ContactMedium[]>([])
+const accounts = reactive<AccountRef[]>([])
+const agreements = reactive<AgreementRef[]>([])
+
 const customer = reactive<Customer>({
   name: '',
   description: '',
@@ -30,14 +34,8 @@ const customer = reactive<Customer>({
     referredType: PartyType.BaseType,
   },
   contactMedium: [],
-  account: {
-    name: '',
-    referredType: AccountType.BaseType
-  },
-  agreement: {
-    name: '',
-    referredType: AgreementType.BaseType
-  }
+  account: [],
+  agreement: []
 })
 
 // HANDLERS
@@ -54,8 +52,20 @@ const deleteContactMedium = (index: number): void => {
   contactMediums.splice(index, 1)
 }
 
+const addAccount = (): void => {
+  accounts.push({
+    name: '', referredType: AccountType.BaseType
+  })
+}
+const addAgreement = (): void => {
+  agreements.push({
+    name: '', referredType: AgreementType.BaseType
+  })
+}
 watchEffect(() => {
   customer.contactMedium = contactMediums
+  customer.account = accounts
+  customer.agreement = agreements
 })
 </script>
 <template>
@@ -94,22 +104,68 @@ watchEffect(() => {
 
       <!-- Account -->
       <div class="flex flex-col gap-2">
-        <label class="font-medium" for="account">Account</label>
-        <AccountForm 
-          v-model:account-name="customer.account.name"
-          v-model:account-type="customer.account.referredType"
-          id="account"
-        />
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Account</label>
+          <Button 
+            @click="addAccount" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in accounts" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Account {{ index + 1 }}</label>
+            <Button 
+              @click="accounts.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <AccountForm 
+            v-model:account-name="customer.account[index].name"
+            v-model:account-type="customer.account[index].referredType"  
+          />
+        </div>
       </div>
 
       <!-- Agreement -->
       <div class="flex flex-col gap-2">
-        <label class="font-medium" for="agreement">Agreement</label>
-        <AgreementForm
-          v-model:agreement-name="customer.agreement.name"
-          v-model:agreement-type="customer.agreement.referredType"
-          id="agreement"
-        />
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Agreement</label>
+          <Button 
+            @click="addAgreement" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in agreements" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Agreement {{ index + 1 }}</label>
+            <Button 
+              @click="agreements.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <AgreementForm 
+            v-model:agreement-name="customer.agreement[index].name"
+            v-model:agreement-type="customer.agreement[index].referredType"
+          />
+        </div>
       </div>
 
       <!-- Characteristic -->

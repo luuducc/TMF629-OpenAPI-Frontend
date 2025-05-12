@@ -3,6 +3,6 @@ export enum AgreementType {
 }
 
 export type AgreementRef = {
-  name?: string,
+  name: string,
   referredType: AgreementType
 }
