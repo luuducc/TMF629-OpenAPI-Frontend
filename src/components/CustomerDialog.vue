@@ -377,6 +377,8 @@ watchEffect(() => {
         </div>
       </div>
 
+    </Form>
+    <template #footer>
       <!-- Buttons -->
       <div class="flex justify-end gap-3">
         <Button 
@@ -395,6 +397,6 @@ watchEffect(() => {
           outlined
         />
       </div>
-    </Form>
+    </template>
   </Dialog>
 </template>
