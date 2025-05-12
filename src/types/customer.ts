@@ -1,5 +1,5 @@
 import type { 
-  ContactMedium, PartyRef, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef
+  ContactMedium, PartyRef, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef, RelatedPartyOrPartyRoleRef
 } from "@/types";
 
 
@@ -13,5 +13,6 @@ export interface Customer {
   characteristic: Characteristic[],
   contactMedium: ContactMedium[],
   creditProfile: CreditProfile[],
-  paymentMethod: PaymentMethodRef[]
+  paymentMethod: PaymentMethodRef[],
+  relatedParty: RelatedPartyOrPartyRoleRef[]
 }

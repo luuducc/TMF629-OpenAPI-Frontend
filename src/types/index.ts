@@ -7,6 +7,7 @@ export type { Customer } from "./customer";
 export type { CreditProfile } from "./credit-profile"
 export type { PartyRoleSpecificationRef } from "./party-role-specification-ref"
 export type { PaymentMethodRef } from "./payment-method-ref"
+export type { RelatedPartyOrPartyRoleRef } from "./related-party-or-party-role-ref"
 
 export { ContactMediumType } from './contact-medium';
 export { PartyType } from './party-type';

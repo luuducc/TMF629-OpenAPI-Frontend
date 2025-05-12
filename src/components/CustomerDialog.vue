@@ -4,9 +4,9 @@ import {
   ContactMediumType, PartyType, AccountType, AgreementType, ValueType, RelationshipType, PaymentMethodType
 } from "@/types"
 import type {
-  Customer, ContactMedium, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef
+  Customer, ContactMedium, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef, RelatedPartyOrPartyRoleRef
 } from "@/types"
-import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
+import { Dialog, Button, InputText, Textarea, Divider } from 'primevue';
 import { Form } from '@primevue/forms';
 import ContactMediumForm from './form/ContactMediumForm.vue';
 import EngagedPartyForm from './form/EngagedPartyForm.vue';
@@ -26,6 +26,7 @@ const characteristics = reactive<Characteristic[]>([])
 const contactMediums = reactive<ContactMedium[]>([])
 const creditProfiles = reactive<CreditProfile[]>([])
 const paymentMethods = reactive<PaymentMethodRef[]>([])
+const relatedParties = reactive<RelatedPartyOrPartyRoleRef[]>([])
 
 const customer = reactive<Customer>({
   name: '',
@@ -40,7 +41,8 @@ const customer = reactive<Customer>({
   agreement: [],
   characteristic: [],
   creditProfile: [],
-  paymentMethod: []
+  paymentMethod: [],
+  relatedParty: []
 })
 
 // HANDLERS
@@ -89,6 +91,15 @@ const addPaymentMethod = (): void => {
     name: '', referredType: PaymentMethodType.BaseType
   })
 }
+const addRelatedParty = (): void => {
+  relatedParties.push({
+    partyOrPartyRole: {
+      name: '',
+      referredType: PartyType.BaseType
+    },
+    role: ''
+  })
+}
 watchEffect(() => {
   customer.account = accounts
   customer.agreement = agreements
@@ -96,6 +107,7 @@ watchEffect(() => {
   customer.contactMedium = contactMediums
   customer.creditProfile = creditProfiles
   customer.paymentMethod = paymentMethods
+  customer.relatedParty = relatedParties
 })
 </script>
 <template>
@@ -132,6 +144,23 @@ watchEffect(() => {
         />
       </div>
 
+      <!-- Description -->
+      <div class="flex flex-col gap-1">
+        <label class="font-medium" for="description">Description</label>
+        <Textarea 
+          v-model="customer.description"
+          placeholder="Write something about customer..."
+          size="small" 
+          id="description" 
+        />
+      </div>
+
+      <!-- Party Role Specification -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
+        <PartyRoleSpecificationForm/>
+      </div>
+
       <!-- Account -->
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
@@ -156,7 +185,8 @@ watchEffect(() => {
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
-              size="small" />
+              size="small" 
+            />
           </div>
           <AccountForm v-model="accounts[index]"/>
         </div>
@@ -216,7 +246,8 @@ watchEffect(() => {
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
-              size="small" />
+              size="small" 
+            />
           </div>
           <CharacteristicForm v-model="characteristics[index]"/>
         </div>
@@ -246,7 +277,8 @@ watchEffect(() => {
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
-              size="small" />
+              size="small" 
+            />
           </div>
           <ContactMediumForm v-model="contactMediums[index]" />
         </div>
@@ -276,26 +308,11 @@ watchEffect(() => {
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
-              size="small" />
+              size="small" 
+            />
           </div>
           <CreditProfileForm v-model="creditProfiles[index]"/>
         </div>
-      </div>
-
-      <!-- Description -->
-      <div class="flex flex-col gap-1">
-        <label class="font-medium" for="description">Description</label>
-        <Textarea 
-          v-model="customer.description"
-          size="small" 
-          id="description" 
-        />
-      </div>
-
-      <!-- Party Role Specification -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm/>
       </div>
 
       <!-- Payment Method -->
@@ -322,7 +339,8 @@ watchEffect(() => {
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
-              size="small" />
+              size="small" 
+            />
           </div>
           <PaymentMethodForm v-model="paymentMethods[index]"/>
         </div>
@@ -330,8 +348,33 @@ watchEffect(() => {
 
       <!-- Related Party Or Party Role -->
       <div class="flex flex-col gap-2">
-        <label class="font-medium" for="relatedParty">Related party or party role</label>
-        <RelatedPartyOrPartyRoleForm/>
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Related party</label>
+          <Button 
+            @click="addRelatedParty" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in relatedParties" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Party {{ index + 1 }}</label>
+            <Button 
+              @click="relatedParties.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" 
+            />
+          </div>
+          <RelatedPartyOrPartyRoleForm v-model="relatedParties[index]"/>
+        </div>
       </div>
 
       <!-- Buttons -->
