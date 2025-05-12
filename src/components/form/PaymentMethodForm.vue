@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Select, InputText } from 'primevue';
-import { PaymentMethodType } from '@/types/payment-method-ref';
+import { PaymentMethodType, type PaymentMethodRef } from '@/types'
+
+const paymentMethod = defineModel<PaymentMethodRef>({ required: true})
 
 const options: { name: string, type: PaymentMethodType }[] = [
   { name: 'Bank account transfer', type: PaymentMethodType.BankAccountTransfer},
@@ -10,8 +12,8 @@ const options: { name: string, type: PaymentMethodType }[] = [
   { name: 'Voucher', type: PaymentMethodType.Voucher},
 ]
 
-const methodName = defineModel<string>("methodName")
-const methodType = defineModel<PaymentMethodType>("methodType")
+// const methodName = defineModel<string>("methodName")
+// const methodType = defineModel<PaymentMethodType>("methodType")
 </script>
 
 <template>
@@ -19,7 +21,7 @@ const methodType = defineModel<PaymentMethodType>("methodType")
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="methodName">Name</label>
       <InputText 
-        v-model="methodName" 
+        v-model="paymentMethod.name" 
         size="small" 
         placeholder="Enter method name"
         id="methodName" 
@@ -28,7 +30,7 @@ const methodType = defineModel<PaymentMethodType>("methodType")
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="methodType">Referred type</label>
       <Select 
-        v-model="methodType"
+        v-model="paymentMethod.referredType"
         :options
         option-label="name"
         option-value="type"

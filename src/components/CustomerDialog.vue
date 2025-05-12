@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { reactive, watch, toRaw, watchEffect, ref } from 'vue';
-import { ContactMediumType } from '@/types/contact-medium';
-import { PartyType } from '@/types/party-type';
-import { AccountType } from '@/types/account-ref';
-import { type AgreementRef, AgreementType } from '@/types/agreement-ref';
-import type { Customer } from '@/types/customer';
-import type { ContactMedium } from '@/types/contact-medium';
-import type { AccountRef } from '@/types/account-ref';
+import {
+  ContactMediumType, PartyType, AccountType, AgreementType, ValueType, RelationshipType, PaymentMethodType
+} from "@/types"
+import type {
+  Customer, ContactMedium, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef
+} from "@/types"
 import { Dialog, Button, InputText, Textarea, Select  } from 'primevue';
 import { Form } from '@primevue/forms';
 import ContactMediumForm from './form/ContactMediumForm.vue';
@@ -21,9 +20,12 @@ import RelatedPartyOrPartyRoleForm from './form/RelatedPartyOrPartyRoleForm.vue'
 
 // states
 const visible = defineModel<boolean>('visible');
-const contactMediums = reactive<ContactMedium[]>([])
 const accounts = reactive<AccountRef[]>([])
 const agreements = reactive<AgreementRef[]>([])
+const characteristics = reactive<Characteristic[]>([])
+const contactMediums = reactive<ContactMedium[]>([])
+const creditProfiles = reactive<CreditProfile[]>([])
+const paymentMethods = reactive<PaymentMethodRef[]>([])
 
 const customer = reactive<Customer>({
   name: '',
@@ -35,7 +37,10 @@ const customer = reactive<Customer>({
   },
   contactMedium: [],
   account: [],
-  agreement: []
+  agreement: [],
+  characteristic: [],
+  creditProfile: [],
+  paymentMethod: []
 })
 
 // HANDLERS
@@ -43,14 +48,6 @@ watch(customer, newVal => {
   console.log(toRaw(newVal))
 })
 
-const addContactMedium = (): void => {
-  contactMediums.push({
-    type: ContactMediumType.BaseType, contactType: ''
-  })
-}
-const deleteContactMedium = (index: number): void => {
-  contactMediums.splice(index, 1)
-}
 
 const addAccount = (): void => {
   accounts.push({
@@ -62,10 +59,43 @@ const addAgreement = (): void => {
     name: '', referredType: AgreementType.BaseType
   })
 }
+const addCharacteristic = (): void => {
+  characteristics.push({
+    characteristicRelationship: {
+      relationshipType: RelationshipType.basetype
+    },
+    name: '', 
+    valueType: ValueType.basetype
+  })
+}
+const addContactMedium = (): void => {
+  contactMediums.push({
+    type: ContactMediumType.BaseType, contactType: ''
+  })
+}
+const addCreditProfile = (): void => {
+  creditProfiles.push({
+    creditProfileDate: new Date(),
+    creditRiskRating: 0,
+    creditScore: 0,
+    validFor: {
+      startDateTime: new Date(),
+      endDateTime: new Date()
+    }
+  })
+}
+const addPaymentMethod = (): void => {
+  paymentMethods.push({
+    name: '', referredType: PaymentMethodType.BaseType
+  })
+}
 watchEffect(() => {
-  customer.contactMedium = contactMediums
   customer.account = accounts
   customer.agreement = agreements
+  customer.characteristic = characteristics
+  customer.contactMedium = contactMediums
+  customer.creditProfile = creditProfiles
+  customer.paymentMethod = paymentMethods
 })
 </script>
 <template>
@@ -128,10 +158,7 @@ watchEffect(() => {
               severity="danger" 
               size="small" />
           </div>
-          <AccountForm 
-            v-model:account-name="customer.account[index].name"
-            v-model:account-type="customer.account[index].referredType"  
-          />
+          <AccountForm v-model="accounts[index]"/>
         </div>
       </div>
 
@@ -161,41 +188,38 @@ watchEffect(() => {
               severity="danger" 
               size="small" />
           </div>
-          <AgreementForm 
-            v-model:agreement-name="customer.agreement[index].name"
-            v-model:agreement-type="customer.agreement[index].referredType"
-          />
+          <AgreementForm v-model="agreements[index]"/>
         </div>
       </div>
 
       <!-- Characteristic -->
       <div class="flex flex-col gap-2">
-        <label class="font-medium" for="characteristic">Characteristic</label>
-        <CharacteristicForm/>
-      </div>
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Characteristic</label>
+          <Button 
+            @click="addCharacteristic" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
 
-      <!-- Credit Profile -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="creditProfile">Credit profile</label>
-        <CreditProfileForm/>
-      </div>
-
-      <!-- Party Role Specification -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm/>
-      </div>
-
-      <!-- Payment Method -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="paymentMethod">Payment method</label>
-        <PaymentMethodForm/>
-      </div>
-
-      <!-- Related Party Or Party Role -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="relatedParty">Related party or party role</label>
-        <RelatedPartyOrPartyRoleForm/>
+        <div 
+          v-for="(_, index) in characteristics" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Characteristic {{ index + 1 }}</label>
+            <Button 
+              @click="characteristics.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <CharacteristicForm v-model="characteristics[index]"/>
+        </div>
       </div>
 
       <!-- Contact Medium -->
@@ -218,13 +242,43 @@ watchEffect(() => {
           <div class="flex justify-between items-center mb-2">
             <label class="text-sm font-medium">Medium {{ index + 1 }}</label>
             <Button 
-              @click="deleteContactMedium(index)" 
+              @click="contactMediums.splice(index, 1)" 
               label="Delete" 
               icon="pi pi-trash"
               severity="danger" 
               size="small" />
           </div>
-          <ContactMediumForm :index="index" v-model="contactMediums[index]" />
+          <ContactMediumForm v-model="contactMediums[index]" />
+        </div>
+      </div>
+
+      <!-- Credit Profile -->
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Credit Profile</label>
+          <Button 
+            @click="addCreditProfile" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in creditProfiles" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Profile {{ index + 1 }}</label>
+            <Button 
+              @click="creditProfiles.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <CreditProfileForm v-model="creditProfiles[index]"/>
         </div>
       </div>
 
@@ -236,6 +290,54 @@ watchEffect(() => {
           size="small" 
           id="description" 
         />
+      </div>
+
+      <!-- Party Role Specification -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
+        <PartyRoleSpecificationForm/>
+      </div>
+
+      <!-- New Payment -->
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <label class="font-medium">Payment method</label>
+          <Button 
+            @click="addPaymentMethod" 
+            label="New" 
+            icon="pi pi-plus"
+            size="small"
+            outlined
+          />
+        </div>
+
+        <div 
+          v-for="(_, index) in paymentMethods" 
+          :key="index" 
+          class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2">
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-medium">Method {{ index + 1 }}</label>
+            <Button 
+              @click="paymentMethods.splice(index, 1)" 
+              label="Delete" 
+              icon="pi pi-trash"
+              severity="danger" 
+              size="small" />
+          </div>
+          <PaymentMethodForm v-model="paymentMethods[index]"/>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="paymentMethod">Payment method</label>
+        <PaymentMethodForm/>
+      </div>
+
+      <!-- Related Party Or Party Role -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="relatedParty">Related party or party role</label>
+        <RelatedPartyOrPartyRoleForm/>
       </div>
 
       <!-- Buttons -->

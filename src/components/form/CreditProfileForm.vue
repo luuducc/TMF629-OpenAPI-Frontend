@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { InputText, DatePicker } from 'primevue';
+import { InputText, DatePicker, InputNumber } from 'primevue';
+import type { CreditProfile } from '@/types'
+
+const creditProfile = defineModel<CreditProfile>({ required: true});
 </script>
 
 <template>
@@ -7,6 +10,7 @@ import { InputText, DatePicker } from 'primevue';
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="profileDate">Profile date</label>
       <DatePicker
+        v-model="creditProfile.creditProfileDate"
         size="small"
         id="profileDate"
       />
@@ -15,7 +19,8 @@ import { InputText, DatePicker } from 'primevue';
 
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="riskRating">Risk rating</label>
-      <InputText
+      <InputNumber
+        v-model="creditProfile.creditRiskRating"
         size="small"
         id="riskRating"
       />
@@ -23,7 +28,8 @@ import { InputText, DatePicker } from 'primevue';
 
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="creditScore">Credit score</label>
-      <InputText
+      <InputNumber
+        v-model="creditProfile.creditScore"
         size="small"
         id="creditScore"
       />
@@ -32,6 +38,7 @@ import { InputText, DatePicker } from 'primevue';
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="startDate">Start date</label>
       <DatePicker
+        v-model="creditProfile.validFor.startDateTime"
         size="small"
         id="startDate"
       />
@@ -40,6 +47,7 @@ import { InputText, DatePicker } from 'primevue';
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="endDate">End date</label>
       <DatePicker
+        v-model="creditProfile.validFor.endDateTime"
         size="small"
         id="endDate"
       />

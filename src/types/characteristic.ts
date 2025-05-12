@@ -1,8 +1,8 @@
 export enum RelationshipType {
-  dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
+  basetype, dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
 }
 export enum ValueType {
-  string, number, boolean, date, object, array, 
+  basetype, string, number, boolean, date, object, array, 
 }
 export interface CharacteristicRelationship {
   relationshipType: RelationshipType,

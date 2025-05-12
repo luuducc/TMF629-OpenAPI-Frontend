@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { Select, InputText } from 'primevue';
 import { AccountType } from '@/types/account-ref';
+import type { AccountRef } from '@/types';
 
 const options: { name: string, type: AccountType }[] = [
   { name: 'Billing', type: AccountType.BillingAccount},
   { name: 'Settlement', type: AccountType.SettlementAccount},
 ]
 
-const accountName = defineModel<string>("accountName")
-const accountType = defineModel<AccountType>("accountType")
+const account = defineModel<AccountRef>({ required: true })
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const accountType = defineModel<AccountType>("accountType")
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="accountName">Name</label>
       <InputText 
-        v-model="accountName" 
+        v-model="account.name" 
         size="small" 
         placeholder="Account name"
         id="accountName" 
@@ -25,7 +25,7 @@ const accountType = defineModel<AccountType>("accountType")
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="accountType">Referred type</label>
       <Select 
-        v-model="accountType"
+        v-model="account.referredType"
         :options
         option-label="name"
         option-value="type"

@@ -1,4 +1,5 @@
 export enum PaymentMethodType {
+  BaseType,
   BankCard,
   BankAccountTransfer, // Chuyển khoản ngân hàng 
   Check, // Séc
