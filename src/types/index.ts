@@ -8,6 +8,7 @@ export type { CreditProfile } from "./credit-profile"
 export type { PartyRoleSpecificationRef } from "./party-role-specification-ref"
 export type { PaymentMethodRef } from "./payment-method-ref"
 export type { RelatedPartyOrPartyRoleRef } from "./related-party-or-party-role-ref"
+export type { TimePeriod } from "./time-period"
 
 export { ContactMediumType } from './contact-medium';
 export { PartyType } from './party-type';
@@ -15,3 +16,4 @@ export { AccountType } from './account-ref';
 export { AgreementType } from './agreement-ref';
 export { ValueType, RelationshipType } from './characteristic';
 export { PaymentMethodType } from "./payment-method-ref"
+export { StatusType } from './status-type'

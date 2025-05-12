@@ -1,18 +1,37 @@
 import type { 
-  ContactMedium, PartyRef, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef, RelatedPartyOrPartyRoleRef
+  AccountRef, 
+  AgreementRef, 
+  Characteristic, 
+  ContactMedium, 
+  CreditProfile, 
+  PartyRef, 
+  PaymentMethodRef, 
+  RelatedPartyOrPartyRoleRef, 
+  TimePeriod 
 } from "@/types";
+import { StatusType } from "@/types";
 
-
-export interface Customer {
+export type Customer = {
+  // Identity & status
+  id: string;
   name: string;
-  description: string;
   role: string;
+  status: StatusType;
+  statusReason: string;
+  description: string;
+
+  // Time-bound validity
+  validFor: TimePeriod;
+
+  // Party reference
   engagedParty: PartyRef;
-  account: AccountRef[],
-  agreement: AgreementRef[],
-  characteristic: Characteristic[],
-  contactMedium: ContactMedium[],
-  creditProfile: CreditProfile[],
-  paymentMethod: PaymentMethodRef[],
-  relatedParty: RelatedPartyOrPartyRoleRef[]
+
+  // Associated resources
+  account: AccountRef[];
+  agreement: AgreementRef[];
+  characteristic: Characteristic[];
+  contactMedium: ContactMedium[];
+  creditProfile: CreditProfile[];
+  paymentMethod: PaymentMethodRef[];
+  relatedParty: RelatedPartyOrPartyRoleRef[];
 }

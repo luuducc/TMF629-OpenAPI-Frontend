@@ -7,6 +7,7 @@ import {
   PartyType,
   PaymentMethodType,
   RelationshipType,
+  StatusType,
   ValueType
 } from '@/types';
 import type {
@@ -19,7 +20,7 @@ import type {
   PaymentMethodRef,
   RelatedPartyOrPartyRoleRef
 } from '@/types';
-import { Button, Dialog, InputText, Textarea } from 'primevue';
+import { Button, DatePicker, Dialog, InputText, Textarea, Select } from 'primevue';
 import { Form } from '@primevue/forms';
 import {
   AccountForm,
@@ -46,22 +47,42 @@ const paymentMethods = reactive<PaymentMethodRef[]>([])
 const relatedParties = reactive<RelatedPartyOrPartyRoleRef[]>([])
 
 const customer = reactive<Customer>({
+  // Basic info
+  id: '',
   name: '',
-  description: '',
   role: '',
+  description: '',
+  status: StatusType.BaseType,
+  statusReason: '',
+
+  // Validity period
+  validFor: {
+    startDateTime: new Date(),
+    endDateTime: new Date()
+  },
+
+  // Engaged party
   engagedParty: {
     name: '',
-    referredType: PartyType.BaseType,
+    referredType: PartyType.BaseType
   },
-  contactMedium: [],
+
+  // Associated entities
   account: [],
   agreement: [],
   characteristic: [],
+  contactMedium: [],
   creditProfile: [],
   paymentMethod: [],
   relatedParty: []
 })
 
+// variables
+const statusOptions: { name: string, type: StatusType }[] = [
+  { name: 'Active', type: StatusType.Active },
+  { name: 'Inactive', type: StatusType.Inactive },
+  { name: 'Created', type: StatusType.Created },
+]
 // HANDLERS
 watch(customer, newVal => {
   console.log(toRaw(newVal))
@@ -131,15 +152,74 @@ watchEffect(() => {
   <Dialog v-model:visible="visible" header="Create new customer">
     <Form class="flex flex-col gap-y-6 w-[35rem]">
 
-      <!-- Customer Name -->
-      <div class="flex flex-col gap-1">
-        <label class="font-medium" for="customerName">Name</label>
-        <InputText 
-          v-model="customer.name"
-          size="small"
-          placeholder="Customer name"
-          id="customerName"
-        />
+      <!-- Customer Name and Id -->
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <label class="font-medium" for="customerName">Name</label>
+          <InputText 
+            v-model="customer.name"
+            size="small"
+            placeholder="Customer name"
+            id="customerName"
+          />
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <label class="font-medium" for="customerId">Id</label>
+          <InputText 
+            v-model="customer.id"
+            size="small"
+            placeholder="Customer Id"
+            id="customerId"
+          />
+        </div>
+      </div>
+
+      <!-- Status and Status Reason -->
+      <div class="flex gap-4">
+        <div class="flex flex-col flex-1 gap-1">
+          <label class="font-medium" for="customerStatus">Status</label>
+          <Select 
+            v-model="customer.status"
+            :options="statusOptions"
+            option-label="name"
+            option-value="type"
+            size="small"
+            placeholder="Customer status"
+            id="customerStatus"
+          />
+        </div>
+        <div class="flex flex-col flex-1 gap-1">
+          <label class="font-medium" for="customerStatusReason">Status reason</label>
+          <InputText 
+            v-model="customer.statusReason"
+            size="small"
+            placeholder="Reason for status"
+            id="customerStatusReason"
+          />
+        </div>
+      </div>
+
+      <!-- Valid For -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium">Valid for</label>
+        <div class="flex gap-4">
+          <div class="flex flex-col flex-1 gap-1">
+            <label class="text-sm font-medium" for="startDate">Start date</label>
+            <DatePicker 
+              v-model="customer.validFor.startDateTime"
+              size="small"
+              id="startDate"
+            />
+          </div>
+          <div class="flex flex-col flex-1 gap-1">
+            <label class="text-sm font-medium" for="endDate">End date</label>
+            <DatePicker 
+              v-model="customer.validFor.endDateTime"
+              size="small"
+              id="endDate"
+            />
+          </div>
+        </div>
       </div>
 
       <!-- Engaged Party -->
