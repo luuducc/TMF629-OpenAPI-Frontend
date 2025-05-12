@@ -1,28 +1,42 @@
 <script setup lang="ts">
-import { reactive, watch, toRaw, watchEffect } from 'vue';
+import { reactive, toRaw, watch, watchEffect } from 'vue';
 import {
-  ContactMediumType, PartyType, AccountType, AgreementType, ValueType, RelationshipType, PaymentMethodType
-} from "@/types"
+  AccountType,
+  AgreementType,
+  ContactMediumType,
+  PartyType,
+  PaymentMethodType,
+  RelationshipType,
+  ValueType
+} from '@/types';
 import type {
-  Customer, ContactMedium, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef, RelatedPartyOrPartyRoleRef
-} from "@/types"
-import { Dialog, Button, InputText, Textarea } from 'primevue';
+  AccountRef,
+  AgreementRef,
+  Characteristic,
+  ContactMedium,
+  CreditProfile,
+  Customer,
+  PaymentMethodRef,
+  RelatedPartyOrPartyRoleRef
+} from '@/types';
+import { Button, Dialog, InputText, Textarea } from 'primevue';
 import { Form } from '@primevue/forms';
 import {
-  ContactMediumForm,
-  EngagedPartyForm,
   AccountForm,
   AgreementForm,
   CharacteristicForm,
+  ContactMediumForm,
   CreditProfileForm,
+  EngagedPartyForm,
+  FormListGenerator,
   PartyRoleSpecificationForm,
   PaymentMethodForm,
-  RelatedPartyOrPartyRoleForm,
-  FormListGenerator
+  RelatedPartyOrPartyRoleForm
 } from '@/components/form';
 
 // states
 const visible = defineModel<boolean>('visible');
+
 const accounts = reactive<AccountRef[]>([])
 const agreements = reactive<AgreementRef[]>([])
 const characteristics = reactive<Characteristic[]>([])
@@ -177,7 +191,7 @@ watchEffect(() => {
         main-label="Agreement"
         :list="agreements"
         :on-add="addAgreement"
-        :form-component="AccountForm"
+        :form-component="AgreementForm"
       />
 
       <!-- Characteristic -->
@@ -225,7 +239,6 @@ watchEffect(() => {
       />
 
     </Form>
-    
     <template #footer>
       <div class="flex justify-end gap-3">
         <Button 
