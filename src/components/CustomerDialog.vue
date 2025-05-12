@@ -14,6 +14,9 @@ import AccountForm from './form/AccountForm.vue';
 import AgreementForm from './form/AgreementForm.vue';
 import CharacteristicForm from './form/CharacteristicForm.vue';
 import CreditProfileForm from './form/CreditProfileForm.vue';
+import PartyRoleSpecificationForm from './form/PartyRoleSpecificationForm.vue';
+import PaymentMethodForm from './form/PaymentMethodForm.vue';
+import RelatedPartyOrPartyRoleForm from './form/RelatedPartyOrPartyRoleForm.vue';
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -119,6 +122,24 @@ watchEffect(() => {
       <div class="flex flex-col gap-2">
         <label class="font-medium" for="creditProfile">Credit profile</label>
         <CreditProfileForm/>
+      </div>
+
+      <!-- Party Role Specification -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
+        <PartyRoleSpecificationForm/>
+      </div>
+
+      <!-- Payment Method -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="paymentMethod">Payment method</label>
+        <PaymentMethodForm/>
+      </div>
+
+      <!-- Related Party Or Party Role -->
+      <div class="flex flex-col gap-2">
+        <label class="font-medium" for="relatedParty">Related party or party role</label>
+        <RelatedPartyOrPartyRoleForm/>
       </div>
 
       <!-- Contact Medium -->
