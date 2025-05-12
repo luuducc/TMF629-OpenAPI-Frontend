@@ -8,7 +8,7 @@ import Column from 'primevue/column'
 import Divider from 'primevue/divider'
 import { ref } from "vue"
 import products from './mockdata/data.js'
-import CustomerDialog from './components/CustomerDialog.vue'
+import CustomerFormDialog from './components/CustomerFormDialog.vue'
 
 const showDialog = ref(false)
 const createCustomer = () => {
@@ -33,7 +33,7 @@ const handleDelete = () => {
   </div>
   <div class="main-content px-8">
     <section class="flex mb-4">
-      <CustomerDialog v-model:visible="showDialog" />
+      <CustomerFormDialog v-model:visible="showDialog" />
       <IconField>
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />

@@ -88,7 +88,6 @@ watch(customer, newVal => {
   console.log(toRaw(newVal))
 })
 
-
 const addAccount = (): void => {
   accounts.push({
     name: '', referredType: AccountType.BaseType
