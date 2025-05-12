@@ -298,7 +298,7 @@ watchEffect(() => {
         <PartyRoleSpecificationForm/>
       </div>
 
-      <!-- New Payment -->
+      <!-- Payment Method -->
       <div class="flex flex-col gap-2">
         <div class="flex justify-between items-center">
           <label class="font-medium">Payment method</label>
@@ -326,12 +326,6 @@ watchEffect(() => {
           </div>
           <PaymentMethodForm v-model="paymentMethods[index]"/>
         </div>
-      </div>
-
-      <!-- Payment Method -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="paymentMethod">Payment method</label>
-        <PaymentMethodForm/>
       </div>
 
       <!-- Related Party Or Party Role -->
