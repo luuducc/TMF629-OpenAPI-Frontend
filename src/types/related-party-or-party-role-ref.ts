@@ -1,7 +1,7 @@
 import { PartyType } from "./party-type"
 export interface PartyRef {
   name: string,
-  referredType: PartyType
+  referredType: PartyType | undefined
 }
 export type RelatedPartyOrPartyRoleRef = {
   partyOrPartyRole: PartyRef,

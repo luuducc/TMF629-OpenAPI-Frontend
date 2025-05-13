@@ -1,15 +1,15 @@
 export enum RelationshipType {
-  basetype, dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
+  dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
 }
 export enum ValueType {
-  basetype, string, number, boolean, date, object, array, 
+  string, number, boolean, date, object, array, 
 }
 export interface CharacteristicRelationship {
-  relationshipType: RelationshipType,
+  relationshipType: RelationshipType | undefined,
 }
 
 export type Characteristic = {
   characteristicRelationship: CharacteristicRelationship,
   name: string,
-  valueType: ValueType
+  valueType: ValueType | undefined
 }

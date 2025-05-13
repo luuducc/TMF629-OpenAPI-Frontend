@@ -1,7 +1,7 @@
 export enum AccountType {
-  BaseType, BillingAccount, SettlementAccount
+  BillingAccount, SettlementAccount
 }
 export type AccountRef = {
   name: string
-  referredType: AccountType
+  referredType: AccountType | undefined
 }

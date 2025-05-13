@@ -1,5 +1,4 @@
 export enum ContactMediumType {
-  BaseType,
   EmailContactMedium, 
   FaxContactMedium, 
   GeographicAddressContactMedium, 
@@ -8,7 +7,7 @@ export enum ContactMediumType {
 }
 export interface BaseContactMedium {
   contactType: string;
-  type: ContactMediumType;
+  type: ContactMediumType | undefined;
 }
 
 export interface EmailContactMedium extends BaseContactMedium {

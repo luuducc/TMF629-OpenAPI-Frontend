@@ -71,7 +71,7 @@ const customer = reactive<Customer>({
   // Engaged party
   engagedParty: {
     name: '',
-    referredType: PartyType.BaseType
+    referredType: undefined
   },
   partyRoleSpecification: {
     name: '',
@@ -101,26 +101,26 @@ watch(customer, newVal => {
 
 const addAccount = (): void => {
   accounts.push({
-    name: '', referredType: AccountType.BaseType
+    name: '', referredType: undefined
   })
 }
 const addAgreement = (): void => {
   agreements.push({
-    name: '', referredType: AgreementType.BaseType
+    name: '', referredType: undefined
   })
 }
 const addCharacteristic = (): void => {
   characteristics.push({
     characteristicRelationship: {
-      relationshipType: RelationshipType.basetype
+      relationshipType: undefined
     },
     name: '', 
-    valueType: ValueType.basetype
+    valueType: undefined
   })
 }
 const addContactMedium = (): void => {
   contactMediums.push({
-    type: ContactMediumType.BaseType, contactType: ''
+    type: undefined, contactType: ''
   })
 }
 const addCreditProfile = (): void => {
@@ -136,14 +136,14 @@ const addCreditProfile = (): void => {
 }
 const addPaymentMethod = (): void => {
   paymentMethods.push({
-    name: '', referredType: PaymentMethodType.BaseType
+    name: '', referredType: undefined
   })
 }
 const addRelatedParty = (): void => {
   relatedParties.push({
     partyOrPartyRole: {
       name: '',
-      referredType: PartyType.BaseType
+      referredType: undefined
     },
     role: ''
   })
