@@ -10,11 +10,10 @@ import {
   Tag
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode, StatusType } from '@/types'
+import { CustomerFormMode, StatusType, statusMap } from '@/types'
+import type { PrimeVueSeverity } from '@/types'
 import { ref } from 'vue'
 import products from '@/mockdata/data.js'
-
-type PrimeVueSeverity = 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast'
 
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
@@ -84,11 +83,11 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
             {{ index + 1 }}
           </template>
         </Column>
-        <Column header="Id" field="code"></Column>
+        <Column header="Id" field="id"></Column>
         <Column header="Name" field="name"></Column>
         <Column header="Status" field="status" >
           <template #body="{ data }">
-              <Tag :value="data.status" :severity="getSeverity(data.status)" />
+              <Tag :value="statusMap[data.status as StatusType]" :severity="getSeverity(data.status)" />
           </template>
         </Column>
         <Column header="Description" field="description"></Column>

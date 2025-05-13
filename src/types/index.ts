@@ -8,6 +8,7 @@ export type { Customer } from './customer';
 export type { PartyRef } from './party-ref';
 export type { PartyRoleSpecificationRef } from './party-role-specification-ref';
 export type { PaymentMethodRef } from './payment-method-ref';
+export type { PrimeVueSeverity } from './prime-vue-severity'
 export type { RelatedPartyOrPartyRoleRef } from './related-party-or-party-role-ref';
 export type { TimePeriod } from './time-period';
 
@@ -19,4 +20,4 @@ export { CustomerFormMode } from './customer-form-mode';
 export { PartyType } from './party-type';
 export { PaymentMethodType } from './payment-method-ref';
 export { RelationshipType, ValueType } from './characteristic';
-export { StatusType } from './status-type';
+export { StatusType, statusMap } from './status-type';

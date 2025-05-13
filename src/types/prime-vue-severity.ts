@@ -1,0 +1,1 @@
+export type PrimeVueSeverity = 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast'

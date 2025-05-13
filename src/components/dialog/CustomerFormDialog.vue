@@ -9,6 +9,7 @@ import {
   PaymentMethodType,
   RelationshipType,
   StatusType,
+  statusMap,
   ValueType
 } from '@/types';
 import type {
@@ -58,7 +59,7 @@ const customer = reactive<Customer>({
   name: '',
   role: '',
   description: '',
-  status: StatusType.BaseType,
+  status: undefined,
   statusReason: '',
 
   // Validity period
@@ -84,11 +85,11 @@ const customer = reactive<Customer>({
 })
 
 // variables
-const statusOptions: { name: string, type: StatusType }[] = [
-  { name: 'Active', type: StatusType.Active },
-  { name: 'Inactive', type: StatusType.Inactive },
-  { name: 'Created', type: StatusType.Created },
-]
+const statusOptions: { name: string, type: StatusType }[] = 
+  Object.entries(statusMap).map(([key, value]) => ({
+    name: value,
+    type: Number(key) as StatusType
+  }))
 // HANDLERS
 watch(customer, newVal => {
   console.log(toRaw(newVal))

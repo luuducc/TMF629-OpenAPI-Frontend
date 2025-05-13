@@ -16,7 +16,7 @@ export type Customer = {
   id: string;
   name: string;
   role: string;
-  status: StatusType;
+  status: StatusType | undefined;
   statusReason: string;
   description: string;
 
