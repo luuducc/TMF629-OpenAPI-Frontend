@@ -4,6 +4,7 @@ import { PartyType } from '@/types/party-type';
 import type { RelatedPartyOrPartyRoleRef } from '@/types';
 
 const relatedParty = defineModel<RelatedPartyOrPartyRoleRef>({ required: true });
+defineProps<{ disabled: boolean }>()
 
 const options: { name: string, type: PartyType}[] = [
   { name: 'Individual', type: PartyType.Individual },
@@ -18,6 +19,7 @@ const options: { name: string, type: PartyType}[] = [
       <label class="text-sm font-medium" for="relatedName">Name</label>
       <InputText
         v-model="relatedParty.partyOrPartyRole.name"
+        :disabled
         size="small"
         placeholder="Related name"
         id="relatedName"
@@ -28,6 +30,7 @@ const options: { name: string, type: PartyType}[] = [
       <label class="text-sm font-medium" for="relatedType">Referred type</label>
       <Select
         v-model="relatedParty.partyOrPartyRole.referredType"
+        :disabled
         :options
         option-label="name"
         option-value="type"
@@ -41,6 +44,7 @@ const options: { name: string, type: PartyType}[] = [
       <label class="text-sm font-medium" for="relatedRole">Role</label>
       <InputText
         v-model="relatedParty.role"
+        :disabled
         size="small"
         placeholder="Related role"
         id="relatedRole"

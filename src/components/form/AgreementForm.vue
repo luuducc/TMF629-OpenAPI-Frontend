@@ -8,6 +8,8 @@ const options: { name: string, type: AgreementType }[] = [
   { name: 'Supplier', type: AgreementType.SupplierAgreement},
 ]
 
+defineProps<{ disabled: boolean }>()
+
 const agreement = defineModel<AgreementRef>({ required: true })
 </script>
 
@@ -17,6 +19,7 @@ const agreement = defineModel<AgreementRef>({ required: true })
       <label class="text-sm font-medium" for="agreementName">Name</label>
       <InputText 
         v-model="agreement.name" 
+        :disabled
         size="small" 
         placeholder="Agreement name"
         id="agreementName" 
@@ -26,6 +29,7 @@ const agreement = defineModel<AgreementRef>({ required: true })
       <label class="text-sm font-medium" for="agreementType">Referred type</label>
       <Select 
         v-model="agreement.referredType"
+        :disabled
         :options
         option-label="name"
         option-value="type"

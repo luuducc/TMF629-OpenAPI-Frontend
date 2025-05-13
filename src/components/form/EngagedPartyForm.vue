@@ -8,6 +8,8 @@ const options: { name: string, type: PartyType }[] = [
   { name: 'Organization', type: PartyType.Organization }
 ]
 
+defineProps<{ disabled: boolean }>()
+
 const partyName = defineModel<string>('partyName')
 const partyType = defineModel<PartyType>('partyType')
 </script>
@@ -18,6 +20,7 @@ const partyType = defineModel<PartyType>('partyType')
       <label class="text-sm font-medium" for="engagedPartyName">Name</label>
       <InputText 
         v-model="partyName" 
+        :disabled
         size="small" 
         placeholder="Party name"
         id="engagedPartyName" 
@@ -28,6 +31,7 @@ const partyType = defineModel<PartyType>('partyType')
       <label class="text-sm font-medium" for="partyType">Referred type</label>
       <Select 
         v-model="partyType"
+        :disabled
         :options
         option-label="name"
         option-value="type"

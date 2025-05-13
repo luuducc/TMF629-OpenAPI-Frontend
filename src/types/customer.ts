@@ -8,8 +8,8 @@ import type {
   PaymentMethodRef, 
   RelatedPartyOrPartyRoleRef, 
   TimePeriod 
-} from "@/types";
-import { StatusType } from "@/types";
+} from "./";
+import { StatusType } from "./";
 
 export type Customer = {
   // Identity & status

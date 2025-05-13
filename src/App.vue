@@ -9,15 +9,22 @@ import Divider from 'primevue/divider'
 import { ref } from "vue"
 import products from './mockdata/data.js'
 import CustomerFormDialog from './components/CustomerFormDialog.vue'
+import { CustomerFormMode } from '@/types'
 
-const showDialog = ref(false)
+const showDialog = ref<boolean>(false)
+const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
 const createCustomer = () => {
+  mode.value = CustomerFormMode.Create
   showDialog.value = true
 }
 const handleDetails = () => {
+  mode.value = CustomerFormMode.View
+  showDialog.value = true
   console.log('detail')
 }
 const handleUpdate = () => {
+  mode.value = CustomerFormMode.Update
+  showDialog.value = true
   console.log('update')
 }
 const handleDelete = () => {
@@ -33,7 +40,7 @@ const handleDelete = () => {
   </div>
   <div class="main-content px-8">
     <section class="flex mb-4">
-      <CustomerFormDialog v-model:visible="showDialog" />
+      <CustomerFormDialog :mode v-model:visible="showDialog" />
       <IconField>
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />

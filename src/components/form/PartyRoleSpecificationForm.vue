@@ -8,6 +8,7 @@ const options: { name: string, type: PartyRoleSpecificationType }[] = [
   { name: 'Partner', type: PartyRoleSpecificationType.PartnerRoleSpecification}
 ]
 
+defineProps<{ disabled: boolean }>()
 const roleName = defineModel<string>("roleName")
 const specificationType = defineModel<PartyRoleSpecificationType>("specificationType")
 </script>
@@ -18,6 +19,7 @@ const specificationType = defineModel<PartyRoleSpecificationType>("specification
       <label class="text-sm font-medium" for="roleName">Name</label>
       <InputText 
         v-model="roleName" 
+        :disabled
         size="small" 
         placeholder="Enter role name"
         id="roleName" 
@@ -27,6 +29,7 @@ const specificationType = defineModel<PartyRoleSpecificationType>("specification
       <label class="text-sm font-medium" for="specificationType">Referred type</label>
       <Select 
         v-model="specificationType"
+        :disabled
         :options
         option-label="name"
         option-value="type"

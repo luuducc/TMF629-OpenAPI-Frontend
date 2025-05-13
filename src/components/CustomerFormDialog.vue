@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { reactive, toRaw, watch, watchEffect } from 'vue';
+import { computed, reactive, toRaw, watch, watchEffect } from 'vue';
 import {
   AccountType,
   AgreementType,
   ContactMediumType,
+  CustomerFormMode,
   PartyType,
   PaymentMethodType,
   RelationshipType,
@@ -34,6 +35,11 @@ import {
   PaymentMethodForm,
   RelatedPartyOrPartyRoleForm
 } from '@/components/form';
+
+// props
+const props = defineProps<{ mode: CustomerFormMode }>()
+
+const disabled = computed(() => props.mode === CustomerFormMode.View)
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -157,15 +163,17 @@ watchEffect(() => {
           <label class="font-medium" for="customerName">Name</label>
           <InputText 
             v-model="customer.name"
+            :disabled
             size="small"
             placeholder="Customer name"
             id="customerName"
           />
         </div>
-        <div class="flex flex-col flex-1 gap-1">
+        <div v-if="mode !== CustomerFormMode.Create" class="flex flex-col flex-1 gap-1">
           <label class="font-medium" for="customerId">Id</label>
           <InputText 
             v-model="customer.id"
+            :disabled
             size="small"
             placeholder="Customer Id"
             id="customerId"
@@ -174,11 +182,12 @@ watchEffect(() => {
       </div>
 
       <!-- Status and Status Reason -->
-      <div class="flex gap-4">
+      <div v-if="mode !== CustomerFormMode.Create" class="flex gap-4">
         <div class="flex flex-col flex-1 gap-1">
           <label class="font-medium" for="customerStatus">Status</label>
           <Select 
             v-model="customer.status"
+            :disabled
             :options="statusOptions"
             option-label="name"
             option-value="type"
@@ -191,6 +200,7 @@ watchEffect(() => {
           <label class="font-medium" for="customerStatusReason">Status reason</label>
           <InputText 
             v-model="customer.statusReason"
+            :disabled
             size="small"
             placeholder="Reason for status"
             id="customerStatusReason"
@@ -206,6 +216,7 @@ watchEffect(() => {
             <label class="text-sm font-medium" for="startDate">Start date</label>
             <DatePicker 
               v-model="customer.validFor.startDateTime"
+              :disabled
               size="small"
               id="startDate"
             />
@@ -214,6 +225,7 @@ watchEffect(() => {
             <label class="text-sm font-medium" for="endDate">End date</label>
             <DatePicker 
               v-model="customer.validFor.endDateTime"
+              :disabled
               size="small"
               id="endDate"
             />
@@ -224,7 +236,8 @@ watchEffect(() => {
       <!-- Engaged Party -->
       <div class="flex flex-col gap-2">
         <label class="font-medium">Engaged Party</label>
-        <EngagedPartyForm 
+        <EngagedPartyForm
+          :disabled
           v-model:party-name="customer.engagedParty.name" 
           v-model:party-type="customer.engagedParty.referredType"/>
       </div>
@@ -234,6 +247,7 @@ watchEffect(() => {
         <label class="font-medium" for="role">Role</label>
         <InputText 
           v-model="customer.role" 
+          :disabled
           size="small" 
           placeholder="Role played by Engaged party" 
           id="role" 
@@ -245,6 +259,7 @@ watchEffect(() => {
         <label class="font-medium" for="description">Description</label>
         <Textarea 
           v-model="customer.description"
+          :disabled
           placeholder="Write something about customer..."
           size="small" 
           id="description" 
@@ -254,13 +269,14 @@ watchEffect(() => {
       <!-- Party Role Specification -->
       <div class="flex flex-col gap-2">
         <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm/>
+        <PartyRoleSpecificationForm :disabled/>
       </div>
 
       <!-- Account -->
       <FormListGenerator
         main-label="Account"
         :list="accounts"
+        :disabled
         :on-add="addAccount"
         :form-component="AccountForm"
       />
@@ -269,6 +285,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Agreement"
         :list="agreements"
+        :disabled
         :on-add="addAgreement"
         :form-component="AgreementForm"
       />
@@ -277,6 +294,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Characteristic"
         :list="characteristics"
+        :disabled
         :on-add="addCharacteristic"
         :form-component="CharacteristicForm"
       />
@@ -286,6 +304,7 @@ watchEffect(() => {
         main-label="Contact medium"
         sub-label="Medium"
         :list="contactMediums"
+        :disabled
         :on-add="addContactMedium"
         :form-component="ContactMediumForm"
       />
@@ -295,6 +314,7 @@ watchEffect(() => {
         main-label="Credit profile"
         sub-label="Profile"
         :list="creditProfiles"
+        :disabled
         :on-add="addCreditProfile"
         :form-component="CreditProfileForm"
       />
@@ -304,6 +324,7 @@ watchEffect(() => {
         main-label="Payment method"
         sub-label="Method"
         :list="paymentMethods"
+        :disabled
         :on-add="addPaymentMethod"
         :form-component="PaymentMethodForm"
       />
@@ -313,6 +334,7 @@ watchEffect(() => {
         main-label="Related party"
         sub-label="Party"
         :list="relatedParties"
+        :disabled
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
       />

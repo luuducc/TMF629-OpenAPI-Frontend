@@ -5,6 +5,7 @@ import { InputText, Select, type SelectChangeEvent } from 'primevue';
 import { ref } from 'vue';
 
 const contactMedium = defineModel<ContactMedium>()
+defineProps<{ disabled: boolean }>()
 const currentOption = ref<number>()
 
 const options = [
@@ -42,6 +43,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
     <!-- Contact Medium Type Select -->
     <Select 
       v-model="currentOption"
+      :disabled
       :options
       option-label="name" 
       option-value="type" 
@@ -56,6 +58,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Email address</label>
       <InputText 
         v-model="(contactMedium as EmailContactMedium).emailAddress"  
+        :disabled
         type="text" 
         size="small" 
         placeholder="e.g., user@example.com"
@@ -67,6 +70,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Fax number</label>
       <InputText 
         v-model="(contactMedium as FaxContactMedium).faxNumber" 
+        :disabled
         type="text" 
         size="small" 
         placeholder="e.g., +84 123 4567"
@@ -81,6 +85,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">City</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).city" 
+          :disabled
           type="text" 
           size="small" 
         />
@@ -90,6 +95,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Country</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).country" 
+          :disabled
           type="text" 
           size="small" 
         />
@@ -99,6 +105,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Postcode</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).postCode" 
+          :disabled
           type="text"
           size="small" 
         />
@@ -107,8 +114,9 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">State or province</label>
         <InputText 
-          size="small" 
           v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" 
+          :disabled
+          size="small" 
           type="text" 
         />
       </div>
@@ -117,6 +125,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Street 1</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).street1" 
+          :disabled
           type="text" 
           size="small" 
         />
@@ -125,8 +134,9 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">Street 2</label>
         <InputText 
-          size="small" 
           v-model="(contactMedium as GeographicAddressContactMedium).street2" 
+          :disabled
+          size="small" 
           type="text" 
         />
       </div>
@@ -137,6 +147,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Phone number</label>
       <InputText 
         v-model="(contactMedium as PhoneContactMedium).phoneNumber" 
+        :disabled
         type="text" 
         size="small" 
         placeholder="e.g., +84 901 234 567"
@@ -148,6 +159,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Social network id</label>
       <InputText 
         v-model="(contactMedium as SocialContactMedium).socialNetworkId" 
+        :disabled
         type="text" 
         size="small" 
         placeholder="e.g., @username"

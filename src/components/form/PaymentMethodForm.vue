@@ -3,6 +3,7 @@ import { Select, InputText } from 'primevue';
 import { PaymentMethodType, type PaymentMethodRef } from '@/types'
 
 const paymentMethod = defineModel<PaymentMethodRef>({ required: true})
+defineProps<{ disabled: boolean }>()
 
 const options: { name: string, type: PaymentMethodType }[] = [
   { name: 'Bank account transfer', type: PaymentMethodType.BankAccountTransfer},
@@ -12,8 +13,6 @@ const options: { name: string, type: PaymentMethodType }[] = [
   { name: 'Voucher', type: PaymentMethodType.Voucher},
 ]
 
-// const methodName = defineModel<string>("methodName")
-// const methodType = defineModel<PaymentMethodType>("methodType")
 </script>
 
 <template>
@@ -22,6 +21,7 @@ const options: { name: string, type: PaymentMethodType }[] = [
       <label class="text-sm font-medium" for="methodName">Name</label>
       <InputText 
         v-model="paymentMethod.name" 
+        :disabled
         size="small" 
         placeholder="Enter method name"
         id="methodName" 
@@ -31,6 +31,7 @@ const options: { name: string, type: PaymentMethodType }[] = [
       <label class="text-sm font-medium" for="methodType">Referred type</label>
       <Select 
         v-model="paymentMethod.referredType"
+        :disabled
         :options
         option-label="name"
         option-value="type"
