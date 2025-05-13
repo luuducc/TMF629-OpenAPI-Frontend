@@ -7,7 +7,11 @@ import {
   IconField,
   InputIcon,
   InputText,
-  Tag
+  Tag, 
+  Toast,
+  ConfirmDialog,
+  useToast,
+  useConfirm
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType, statusMap } from '@/types'
@@ -15,6 +19,8 @@ import type { PrimeVueSeverity } from '@/types'
 import { ref } from 'vue'
 import products from '@/mockdata/data.js'
 
+const toast = useToast()
+const confirm = useConfirm()
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
 
@@ -29,6 +35,27 @@ const handleUpdate = () => {
   console.log('update')
 }
 const handleDelete = () => {
+  confirm.require({
+    message: 'Do you want to delete this record?',
+    header: 'Danger Zone',
+    icon: 'pi pi-info-circle',
+    rejectLabel: 'Cancel',
+    rejectProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+    },
+    acceptProps: {
+        label: 'Delete',
+        severity: 'danger'
+    },
+    accept: () => {
+        toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+    },
+    reject: () => {
+        toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+  })
   console.log('delete')
 }
 const getSeverity = (status: StatusType): PrimeVueSeverity => {
@@ -58,9 +85,12 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
       return 'secondary'; // fallback
   }
 }
+
 </script>
 
 <template>
+  <Toast/>
+  <ConfirmDialog/>
   <section class="flex mb-4">
       <CustomerFormDialog :mode v-model:visible="showDialog" />
       <IconField>
@@ -85,9 +115,8 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
             {{ index + 1 }}
           </template>
         </Column>
-        <Column header="Id" field="_id" style="width: 10%"></Column>
-        <Column header="Name" field="name" style="width: 20%"></Column>
-        <Column header="Status" field="status" sortable style="width: 20%">
+        <Column header="Name" field="name" sortable style="width: 15%"></Column>
+        <Column header="Status" field="status" sortable style="width: 10%">
           <template #body="{ data }">
               <Tag :value="statusMap[data.status as StatusType]" :severity="getSeverity(data.status)" />
           </template>
