@@ -51,9 +51,9 @@ const handleDelete = () => {
         <Column field="name" header="Name"></Column>
         <Column field="category" header="Status"></Column>
         <Column field="quantity" header="Description"></Column>
-        <Column header="Actions">
+        <Column header="Actions" class="w-70">
           <template #body>
-            <div class="flex gap-2">
+            <div class="flex justify-between">
               <!-- View Details Button -->
               <Button 
                 icon="pi pi-eye"
