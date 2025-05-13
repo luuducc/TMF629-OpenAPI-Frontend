@@ -77,20 +77,22 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
         stripedRows
         paginator 
         :rows="5" 
-        :rowsPerPageOptions="[5, 10, 15, 20]">
-        <Column header="#">
+        :rowsPerPageOptions="[5, 10, 15, 20]"
+        removableSort 
+      >
+        <Column header="#" style="width: 10%">
           <template #body="{ index }">
             {{ index + 1 }}
           </template>
         </Column>
-        <Column header="Id" field="id"></Column>
-        <Column header="Name" field="name"></Column>
-        <Column header="Status" field="status" >
+        <Column header="Id" field="_id" style="width: 10%"></Column>
+        <Column header="Name" field="name" style="width: 20%"></Column>
+        <Column header="Status" field="status" sortable style="width: 20%">
           <template #body="{ data }">
               <Tag :value="statusMap[data.status as StatusType]" :severity="getSeverity(data.status)" />
           </template>
         </Column>
-        <Column header="Description" field="description"></Column>
+        <Column header="Description" field="description" style="width: 40%"></Column>
         <Column header="Actions" class="w-70">
           <template #body>
             <div class="flex justify-between">
