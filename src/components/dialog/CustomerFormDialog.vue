@@ -343,10 +343,11 @@ watchEffect(() => {
     <template #footer>
       <div class="flex justify-end gap-3">
         <Button 
+          v-if="!disabled"
           type="submit" 
           icon="pi pi-check" 
           size="small" 
-          label="Submit" 
+          label="Save" 
           severity="primary" 
         />
         <Button 

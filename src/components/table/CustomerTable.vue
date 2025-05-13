@@ -6,13 +6,15 @@ import {
   Divider,
   IconField,
   InputIcon,
-  InputText
+  InputText,
+  Tag
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode } from '@/types'
+import { CustomerFormMode, StatusType } from '@/types'
 import { ref } from 'vue'
 import products from '@/mockdata/data.js'
 
+type PrimeVueSeverity = 'secondary' | 'success' | 'info' | 'warn' | 'danger' | 'contrast'
 
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
@@ -29,6 +31,33 @@ const handleUpdate = () => {
 }
 const handleDelete = () => {
   console.log('delete')
+}
+const getSeverity = (status: StatusType): PrimeVueSeverity => {
+  switch (status) {
+    case StatusType.Draft:
+    case StatusType.Inactive:
+    case StatusType.Archived:
+      return 'secondary';
+
+    case StatusType.Created:
+    case StatusType.Pending:
+      return 'info';
+
+    case StatusType.Verified:
+    case StatusType.Active:
+      return 'success';
+
+    case StatusType.Suspended:
+      return 'warn';
+
+    case StatusType.Blacklisted:
+    case StatusType.Rejected:
+    case StatusType.Deleted:
+      return 'danger';
+
+    default:
+      return 'secondary'; // fallback
+  }
 }
 </script>
 
@@ -55,10 +84,14 @@ const handleDelete = () => {
             {{ index + 1 }}
           </template>
         </Column>
-        <Column field="code" header="Id"></Column>
-        <Column field="name" header="Name"></Column>
-        <Column field="category" header="Status"></Column>
-        <Column field="quantity" header="Description"></Column>
+        <Column header="Id" field="code"></Column>
+        <Column header="Name" field="name"></Column>
+        <Column header="Status" field="status" >
+          <template #body="{ data }">
+              <Tag :value="data.status" :severity="getSeverity(data.status)" />
+          </template>
+        </Column>
+        <Column header="Description" field="description"></Column>
         <Column header="Actions" class="w-70">
           <template #body>
             <div class="flex justify-between">
