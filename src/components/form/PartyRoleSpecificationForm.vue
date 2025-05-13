@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Select, InputText } from 'primevue';
-import { PartyRoleSpecificationType } from '@/types/party-role-specification-ref';
+import { PartyRoleSpecificationType, type PartyRoleSpecificationRef } from '@/types/party-role-specification-ref';
 
 const options: { name: string, type: PartyRoleSpecificationType }[] = [
   { name: 'Customer', type: PartyRoleSpecificationType.CustomerRoleSpecification},
@@ -9,8 +9,7 @@ const options: { name: string, type: PartyRoleSpecificationType }[] = [
 ]
 
 defineProps<{ disabled: boolean }>()
-const roleName = defineModel<string>("roleName")
-const specificationType = defineModel<PartyRoleSpecificationType>("specificationType")
+const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required: true })
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const specificationType = defineModel<PartyRoleSpecificationType>("specification
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="roleName">Name</label>
       <InputText 
-        v-model="roleName" 
+        v-model="partyRoleSpecification.name" 
         :disabled
         size="small" 
         placeholder="Enter role name"
@@ -28,7 +27,7 @@ const specificationType = defineModel<PartyRoleSpecificationType>("specification
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="specificationType">Referred type</label>
       <Select 
-        v-model="specificationType"
+        v-model="partyRoleSpecification.referredType"
         :disabled
         :options
         option-label="name"

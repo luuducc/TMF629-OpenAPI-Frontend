@@ -3,5 +3,5 @@ export enum PartyRoleSpecificationType {
 }
 export type PartyRoleSpecificationRef = {
   name: string,
-  referredType: PartyRoleSpecificationType
+  referredType: PartyRoleSpecificationType | undefined
 }

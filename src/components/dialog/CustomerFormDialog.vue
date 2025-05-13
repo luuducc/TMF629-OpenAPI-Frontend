@@ -73,6 +73,10 @@ const customer = reactive<Customer>({
     name: '',
     referredType: PartyType.BaseType
   },
+  partyRoleSpecification: {
+    name: '',
+    referredType: undefined
+  },
 
   // Associated entities
   account: [],
@@ -270,7 +274,7 @@ watchEffect(() => {
       <!-- Party Role Specification -->
       <div class="flex flex-col gap-2">
         <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm :disabled/>
+        <PartyRoleSpecificationForm v-model="customer.partyRoleSpecification" :disabled/>
       </div>
 
       <!-- Account -->

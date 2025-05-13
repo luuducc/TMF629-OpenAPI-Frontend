@@ -5,7 +5,8 @@ import type {
   ContactMedium, 
   CreditProfile, 
   PartyRef, 
-  PaymentMethodRef, 
+  PaymentMethodRef,
+  PartyRoleSpecificationRef, 
   RelatedPartyOrPartyRoleRef, 
   TimePeriod 
 } from "./";
@@ -25,6 +26,7 @@ export type Customer = {
 
   // Party reference
   engagedParty: PartyRef;
+  partyRoleSpecification: PartyRoleSpecificationRef,
 
   // Associated resources
   account: AccountRef[];
