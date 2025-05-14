@@ -15,14 +15,23 @@ import {
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType, statusMap } from '@/types'
-import type { PrimeVueSeverity } from '@/types'
-import { ref } from 'vue'
+import type { Customer, PrimeVueSeverity } from '@/types'
+import { ref, onMounted } from 'vue'
 import products from '@/mockdata/data.js'
+import { CustomerService } from '@/service/customerService'
 
 const toast = useToast()
 const confirm = useConfirm()
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
+const customers = ref<Customer[]>()
+
+onMounted(async () => {
+  const data = await CustomerService.getCustomers()
+  customers.value = data
+  console.log('data', data)
+  console.log('customers', customers.value)
+})
 
 const handleDetails = () => {
   mode.value = CustomerFormMode.View
@@ -101,7 +110,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
     <Divider />
     <section>
       <DataTable 
-        :value="products" 
+        :value="customers" 
         tableStyle="min-width: 50rem" 
         showGridlines 
         stripedRows
