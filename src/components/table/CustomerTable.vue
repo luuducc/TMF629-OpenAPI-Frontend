@@ -108,7 +108,8 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
         paginator 
         :rows="5" 
         :rowsPerPageOptions="[5, 10, 15, 20]"
-        removableSort 
+        removableSort
+        sortMode="multiple"
       >
         <Column header="#" style="width: 10%">
           <template #body="{ index }">
