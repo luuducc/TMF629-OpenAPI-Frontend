@@ -1,27 +1,11 @@
 <script setup lang="ts">
-import { computed, reactive, toRaw, watch, watchEffect } from 'vue';
+import { computed, toRaw, watch, ref } from 'vue';
 import {
-  AccountType,
-  AgreementType,
-  ContactMediumType,
   CustomerFormMode,
-  PartyType,
-  PaymentMethodType,
-  RelationshipType,
   StatusType,
-  statusMap,
-  ValueType
-} from '@/types';
+  statusMap} from '@/types';
 import type {
-  AccountRef,
-  AgreementRef,
-  Characteristic,
-  ContactMedium,
-  CreditProfile,
-  Customer,
-  PaymentMethodRef,
-  RelatedPartyOrPartyRoleRef
-} from '@/types';
+  Customer} from '@/types';
 import { Button, DatePicker, Dialog, InputText, Textarea, Select } from 'primevue';
 import { Form } from '@primevue/forms';
 import {
@@ -45,15 +29,8 @@ const disabled = computed(() => props.mode === CustomerFormMode.View)
 // states
 const visible = defineModel<boolean>('visible');
 
-const accounts = reactive<AccountRef[]>([])
-const agreements = reactive<AgreementRef[]>([])
-const characteristics = reactive<Characteristic[]>([])
-const contactMediums = reactive<ContactMedium[]>([])
-const creditProfiles = reactive<CreditProfile[]>([])
-const paymentMethods = reactive<PaymentMethodRef[]>([])
-const relatedParties = reactive<RelatedPartyOrPartyRoleRef[]>([])
 
-const customer = reactive<Customer>({
+const customer = ref<Customer>({
   // Basic info
   id: '',
   name: '',
@@ -95,22 +72,22 @@ const statusOptions: { name: string, type: StatusType }[] =
     type: Number(key) as StatusType
   }))
 // HANDLERS
-watch(customer, newVal => {
+watch(customer.value, newVal => {
   console.log(toRaw(newVal))
 })
 
 const addAccount = (): void => {
-  accounts.push({
+  customer.value.account.push({
     name: '', referredType: undefined
   })
 }
 const addAgreement = (): void => {
-  agreements.push({
+  customer.value.agreement.push({
     name: '', referredType: undefined
   })
 }
 const addCharacteristic = (): void => {
-  characteristics.push({
+  customer.value.characteristic.push({
     characteristicRelationship: {
       relationshipType: undefined
     },
@@ -119,12 +96,12 @@ const addCharacteristic = (): void => {
   })
 }
 const addContactMedium = (): void => {
-  contactMediums.push({
+  customer.value.contactMedium.push({
     type: undefined, contactType: ''
   })
 }
 const addCreditProfile = (): void => {
-  creditProfiles.push({
+  customer.value.creditProfile.push({
     creditProfileDate: new Date(),
     creditRiskRating: 0,
     creditScore: 0,
@@ -135,12 +112,12 @@ const addCreditProfile = (): void => {
   })
 }
 const addPaymentMethod = (): void => {
-  paymentMethods.push({
+  customer.value.paymentMethod.push({
     name: '', referredType: undefined
   })
 }
 const addRelatedParty = (): void => {
-  relatedParties.push({
+  customer.value.relatedParty.push({
     partyOrPartyRole: {
       name: '',
       referredType: undefined
@@ -148,18 +125,10 @@ const addRelatedParty = (): void => {
     role: ''
   })
 }
-watchEffect(() => {
-  customer.account = accounts
-  customer.agreement = agreements
-  customer.characteristic = characteristics
-  customer.contactMedium = contactMediums
-  customer.creditProfile = creditProfiles
-  customer.paymentMethod = paymentMethods
-  customer.relatedParty = relatedParties
-})
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
+    <h1> haha{{ customer.name }}</h1>
     <Form class="flex flex-col gap-y-6 w-[35rem]">
 
       <!-- Customer Name and Id -->
@@ -280,7 +249,7 @@ watchEffect(() => {
       <!-- Account -->
       <FormListGenerator
         main-label="Account"
-        :list="accounts"
+        :list="customer.account"
         :disabled
         :on-add="addAccount"
         :form-component="AccountForm"
@@ -289,7 +258,7 @@ watchEffect(() => {
       <!-- Agreement -->
       <FormListGenerator
         main-label="Agreement"
-        :list="agreements"
+        :list="customer.agreement"
         :disabled
         :on-add="addAgreement"
         :form-component="AgreementForm"
@@ -298,7 +267,7 @@ watchEffect(() => {
       <!-- Characteristic -->
       <FormListGenerator
         main-label="Characteristic"
-        :list="characteristics"
+        :list="customer.characteristic"
         :disabled
         :on-add="addCharacteristic"
         :form-component="CharacteristicForm"
@@ -308,7 +277,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Contact medium"
         sub-label="Medium"
-        :list="contactMediums"
+        :list="customer.contactMedium"
         :disabled
         :on-add="addContactMedium"
         :form-component="ContactMediumForm"
@@ -318,7 +287,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Credit profile"
         sub-label="Profile"
-        :list="creditProfiles"
+        :list="customer.creditProfile"
         :disabled
         :on-add="addCreditProfile"
         :form-component="CreditProfileForm"
@@ -328,7 +297,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Payment method"
         sub-label="Method"
-        :list="paymentMethods"
+        :list="customer.paymentMethod"
         :disabled
         :on-add="addPaymentMethod"
         :form-component="PaymentMethodForm"
@@ -338,7 +307,7 @@ watchEffect(() => {
       <FormListGenerator
         main-label="Related party"
         sub-label="Party"
-        :list="relatedParties"
+        :list="customer.relatedParty"
         :disabled
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
