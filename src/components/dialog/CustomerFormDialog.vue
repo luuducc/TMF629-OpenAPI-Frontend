@@ -96,7 +96,7 @@ const addCharacteristic = (): void => {
 }
 const addContactMedium = (): void => {
   customer.value.contactMedium.push({
-    type: undefined, contactType: ''
+    '@type': undefined, contactType: ''
   })
 }
 const addCreditProfile = (): void => {

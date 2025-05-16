@@ -1,13 +1,13 @@
 export enum ContactMediumType {
-  EmailContactMedium, 
-  FaxContactMedium, 
-  GeographicAddressContactMedium, 
-  PhoneContactMedium, 
-  SocialContactMedium
+  EmailContactMedium = 'EmailContactMedium', 
+  FaxContactMedium = 'FaxContactMedium', 
+  GeographicAddressContactMedium = 'GeographicAddressContactMedium', 
+  PhoneContactMedium = 'PhoneContactMedium', 
+  SocialContactMedium = 'SocialContactMedium'
 }
 export interface BaseContactMedium {
   contactType: string;
-  type: ContactMediumType | undefined;
+  '@type': ContactMediumType | undefined;
 }
 
 export interface EmailContactMedium extends BaseContactMedium {

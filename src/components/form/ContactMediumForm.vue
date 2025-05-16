@@ -2,11 +2,14 @@
 import type { ContactMedium, EmailContactMedium, FaxContactMedium, GeographicAddressContactMedium, PhoneContactMedium, SocialContactMedium } from '@/types/contact-medium';
 import { ContactMediumType } from '@/types/contact-medium';
 import { InputText, Select, type SelectChangeEvent } from 'primevue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-const contactMedium = defineModel<ContactMedium>()
+const contactMedium = defineModel<ContactMedium>({ required: true })
 defineProps<{ disabled: boolean }>()
-const currentOption = ref<number>()
+const currentOption = computed({
+  get: () => contactMedium.value['@type'],
+  set: val => { contactMedium.value['@type'] = val }
+})
 
 const options = [
   { name: 'Email', type: ContactMediumType.EmailContactMedium },
@@ -20,21 +23,21 @@ const onTypeChange = (e: SelectChangeEvent) => contactMedium.value = getInitialC
 const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
   switch (type) {
     case ContactMediumType.EmailContactMedium:
-      return { type, contactType: '', emailAddress: '' };
+      return { '@type': type, contactType: '', emailAddress: '' };
     case ContactMediumType.FaxContactMedium:
-      return { type, contactType: '', faxNumber: '' };
+      return { '@type': type, contactType: '', faxNumber: '' };
     case ContactMediumType.GeographicAddressContactMedium:
       return {
-        type, contactType: '',
+        '@type': type, contactType: '',
         city: '', country: '', postCode: '',
         stateOrProvince: '', street1: '', street2: ''
       };
     case ContactMediumType.PhoneContactMedium:
-      return { type, contactType: '', phoneNumber: '' };
+      return { '@type': type, contactType: '', phoneNumber: '' };
     case ContactMediumType.SocialContactMedium:
-      return { type, contactType: '', socialNetworkId: '' };
+      return { '@type': type, contactType: '', socialNetworkId: '' };
     default:
-      return { type, contactType: '' };
+      return { '@type': type, contactType: '' };
   }
 }
 </script>
