@@ -20,4 +20,4 @@ export { CustomerFormMode } from './customer-form-mode';
 export { PartyType } from './party-type';
 export { PaymentMethodType } from './payment-method-ref';
 export { RelationshipType, ValueType } from './characteristic';
-export { StatusType, statusMap } from './status-type';
+export { StatusType } from './status-type';

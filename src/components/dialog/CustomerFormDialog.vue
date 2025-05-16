@@ -2,8 +2,7 @@
 import { computed, toRaw, watch, ref } from 'vue';
 import {
   CustomerFormMode,
-  StatusType,
-  statusMap} from '@/types';
+  StatusType} from '@/types';
 import type {
   Customer} from '@/types';
 import { Button, DatePicker, Dialog, InputText, Textarea, Select } from 'primevue';
@@ -68,11 +67,10 @@ const customer = defineModel<Customer>('customer', {
 })
 
 // variables
-const statusOptions: { name: string, type: StatusType }[] = 
-  Object.entries(statusMap).map(([key, value]) => ({
-    name: value,
-    type: Number(key) as StatusType
-  }))
+const statusOptions = Object.values(StatusType).map(status => ({
+  name: status,
+  type: status
+}))
 // HANDLERS
 watch(customer, newVal => {
   console.log('new in child', newVal)
@@ -213,7 +211,7 @@ const addRelatedParty = (): void => {
         <EngagedPartyForm
           :disabled
           v-model:party-name="customer.engagedParty.name" 
-          v-model:party-type="customer.engagedParty.referredType"/>
+          v-model:party-type="customer.engagedParty['@referredType']"/>
       </div>
 
       <!-- Role -->

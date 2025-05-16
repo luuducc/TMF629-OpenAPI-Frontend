@@ -14,7 +14,7 @@ import {
   useConfirm
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode, StatusType, statusMap } from '@/types'
+import { CustomerFormMode, StatusType } from '@/types'
 import type { Customer, PrimeVueSeverity } from '@/types'
 import { ref, onMounted } from 'vue'
 import products from '@/mockdata/data.js'
@@ -165,7 +165,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
         <Column header="Name" field="name" sortable style="width: 15%"></Column>
         <Column header="Status" field="status" sortable style="width: 10%">
           <template #body="{ data }">
-              <Tag :value="statusMap[data.status as StatusType]" :severity="getSeverity(data.status)" />
+              <Tag :value="data.status" :severity="getSeverity(data.status)" />
           </template>
         </Column>
         <Column header="Description" field="description" style="width: 40%"></Column>
