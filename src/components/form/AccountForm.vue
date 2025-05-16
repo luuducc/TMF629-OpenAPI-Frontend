@@ -3,10 +3,10 @@ import { Select, InputText } from 'primevue';
 import { AccountType } from '@/types/account-ref';
 import type { AccountRef } from '@/types';
 
-const options: { name: string, type: AccountType }[] = [
-  { name: 'Billing', type: AccountType.BillingAccount},
-  { name: 'Settlement', type: AccountType.SettlementAccount},
-]
+const options: { name: string, type: AccountType }[] =
+  Object.values(AccountType).map(value => ({
+    name: value, type: value
+  }))
 
 defineProps<{ readonly: boolean }>()
 

@@ -6,10 +6,10 @@ import type { RelatedPartyOrPartyRoleRef } from '@/types';
 const relatedParty = defineModel<RelatedPartyOrPartyRoleRef>({ required: true });
 defineProps<{ readonly: boolean }>()
 
-const options: { name: string, type: PartyType}[] = [
-  { name: 'Individual', type: PartyType.Individual },
-  { name: 'Organization', type: PartyType.Organization }
-]
+const options: { name: string, type: PartyType}[] = 
+  Object.values(PartyType).map(value => ({
+    name:value, type: value
+  }))
 </script>
 
 

@@ -3,11 +3,10 @@ import { Select, InputText } from 'primevue';
 import { AgreementType } from '@/types/agreement-ref';
 import type { AgreementRef } from '@/types/agreement-ref';
 
-const options: { name: string, type: AgreementType }[] = [
-  { name: 'Service', type: AgreementType.ServiceAgreement},
-  { name: 'Supplier', type: AgreementType.SupplierAgreement},
-]
-
+const options: { name: string, type: AgreementType }[] = 
+  Object.values(AgreementType).map(value => ({
+    name: value, type: value
+  }))
 defineProps<{ readonly: boolean }>()
 
 const agreement = defineModel<AgreementRef>({ required: true })
