@@ -23,7 +23,7 @@ import {
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
 
-const disabled = computed(() => props.mode === CustomerFormMode.View)
+const readonly = computed(() => props.mode === CustomerFormMode.View)
 
 // states
 const visible = defineModel<boolean>('visible');
@@ -135,7 +135,7 @@ const addRelatedParty = (): void => {
           <label class="font-medium" for="customerName">Name</label>
           <InputText 
             v-model="customer.name"
-            :disabled
+            :readonly
             size="small"
             placeholder="Customer name"
             id="customerName"
@@ -145,7 +145,7 @@ const addRelatedParty = (): void => {
           <label class="font-medium" for="customerId">Id</label>
           <InputText 
             v-model="customer.id"
-            :disabled
+            :readonly
             size="small"
             placeholder="Customer Id"
             id="customerId"
@@ -159,7 +159,7 @@ const addRelatedParty = (): void => {
           <label class="font-medium" for="customerStatus">Status</label>
           <Select 
             v-model="customer.status"
-            :disabled
+            :readonly
             :options="statusOptions"
             option-label="name"
             option-value="type"
@@ -172,7 +172,7 @@ const addRelatedParty = (): void => {
           <label class="font-medium" for="customerStatusReason">Status reason</label>
           <InputText 
             v-model="customer.statusReason"
-            :disabled
+            :readonly
             size="small"
             placeholder="Reason for status"
             id="customerStatusReason"
@@ -188,7 +188,7 @@ const addRelatedParty = (): void => {
             <label class="text-sm font-medium" for="startDate">Start date</label>
             <DatePicker 
               v-model="customer.validFor.startDateTime"
-              :disabled
+              :readonly
               size="small"
               id="startDate"
             />
@@ -197,7 +197,7 @@ const addRelatedParty = (): void => {
             <label class="text-sm font-medium" for="endDate">End date</label>
             <DatePicker 
               v-model="customer.validFor.endDateTime"
-              :disabled
+              :readonly
               size="small"
               id="endDate"
             />
@@ -208,7 +208,7 @@ const addRelatedParty = (): void => {
       <!-- Engaged Party -->
       <div class="flex flex-col gap-2">
         <label class="font-medium">Engaged Party</label>
-        <EngagedPartyForm v-model="customer.engagedParty" :disabled/>
+        <EngagedPartyForm v-model="customer.engagedParty" :readonly/>
       </div>
 
       <!-- Role -->
@@ -216,7 +216,7 @@ const addRelatedParty = (): void => {
         <label class="font-medium" for="role">Role</label>
         <InputText 
           v-model="customer.role" 
-          :disabled
+          :readonly
           size="small" 
           placeholder="Role played by Engaged party" 
           id="role" 
@@ -228,7 +228,7 @@ const addRelatedParty = (): void => {
         <label class="font-medium" for="description">Description</label>
         <Textarea 
           v-model="customer.description"
-          :disabled
+          :readonly
           placeholder="Write something about customer..."
           size="small" 
           id="description" 
@@ -238,14 +238,14 @@ const addRelatedParty = (): void => {
       <!-- Party Role Specification -->
       <div class="flex flex-col gap-2">
         <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm v-model="customer.partyRoleSpecification" :disabled/>
+        <PartyRoleSpecificationForm v-model="customer.partyRoleSpecification" :readonly/>
       </div>
 
       <!-- Account -->
       <FormListGenerator
         main-label="Account"
         :list="customer.account"
-        :disabled
+        :readonly
         :on-add="addAccount"
         :form-component="AccountForm"
       />
@@ -254,7 +254,7 @@ const addRelatedParty = (): void => {
       <FormListGenerator
         main-label="Agreement"
         :list="customer.agreement"
-        :disabled
+        :readonly
         :on-add="addAgreement"
         :form-component="AgreementForm"
       />
@@ -263,7 +263,7 @@ const addRelatedParty = (): void => {
       <FormListGenerator
         main-label="Characteristic"
         :list="customer.characteristic"
-        :disabled
+        :readonly
         :on-add="addCharacteristic"
         :form-component="CharacteristicForm"
       />
@@ -273,7 +273,7 @@ const addRelatedParty = (): void => {
         main-label="Contact medium"
         sub-label="Medium"
         :list="customer.contactMedium"
-        :disabled
+        :readonly
         :on-add="addContactMedium"
         :form-component="ContactMediumForm"
       />
@@ -283,7 +283,7 @@ const addRelatedParty = (): void => {
         main-label="Credit profile"
         sub-label="Profile"
         :list="customer.creditProfile"
-        :disabled
+        :readonly
         :on-add="addCreditProfile"
         :form-component="CreditProfileForm"
       />
@@ -293,7 +293,7 @@ const addRelatedParty = (): void => {
         main-label="Payment method"
         sub-label="Method"
         :list="customer.paymentMethod"
-        :disabled
+        :readonly
         :on-add="addPaymentMethod"
         :form-component="PaymentMethodForm"
       />
@@ -303,7 +303,7 @@ const addRelatedParty = (): void => {
         main-label="Related party"
         sub-label="Party"
         :list="customer.relatedParty"
-        :disabled
+        :readonly
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
       />
@@ -312,7 +312,7 @@ const addRelatedParty = (): void => {
     <template #footer>
       <div class="flex justify-end gap-3">
         <Button 
-          v-if="!disabled"
+          v-if="!readonly"
           type="submit" 
           icon="pi pi-check" 
           size="small" 

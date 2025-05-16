@@ -10,7 +10,7 @@ type AvailableItem = ContactMedium | AccountRef | AgreementRef | Characteristic 
 const props = defineProps<{
   mainLabel: string
   subLabel?: string
-  disabled: boolean,
+  readonly: boolean,
   list: AvailableItem[]
   onAdd: () => void
   formComponent: Component
@@ -26,7 +26,7 @@ const computedSubLabel = computed(() => {
     <div class="flex justify-between items-center">
       <label class="font-medium">{{ mainLabel }}</label>
       <Button 
-        v-if="!disabled" 
+        v-if="!readonly" 
         @click="onAdd" 
         label="New" 
         icon="pi pi-plus" 
@@ -43,7 +43,7 @@ const computedSubLabel = computed(() => {
       <div class="flex justify-between items-center mb-2">
         <label class="text-sm font-medium">{{ computedSubLabel }} {{ index + 1 }}</label>
         <Button
-          v-if="!disabled" 
+          v-if="!readonly" 
           @click="list.splice(index, 1)"
           label="Delete"
           icon="pi pi-trash"
@@ -51,7 +51,7 @@ const computedSubLabel = computed(() => {
           size="small"
         />
       </div>
-      <component :is="formComponent" :disabled v-model="list[index]" />
+      <component :is="formComponent" :readonly v-model="list[index]" />
     </div>
   </div>
 </template>

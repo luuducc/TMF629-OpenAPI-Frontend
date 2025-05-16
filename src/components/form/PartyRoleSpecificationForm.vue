@@ -8,7 +8,7 @@ const options: { name: string, type: PartyRoleSpecificationType }[] = [
   { name: 'Partner', type: PartyRoleSpecificationType.PartnerRoleSpecification}
 ]
 
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required: true })
 </script>
 
@@ -18,7 +18,7 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
       <label class="text-sm font-medium" for="roleName">Name</label>
       <InputText 
         v-model="partyRoleSpecification.name" 
-        :disabled
+        :readonly
         size="small" 
         placeholder="Enter role name"
         id="roleName" 
@@ -28,7 +28,7 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
       <label class="text-sm font-medium" for="specificationType">Referred type</label>
       <Select 
         v-model="partyRoleSpecification.referredType"
-        :disabled
+        :readonly
         :options
         option-label="name"
         option-value="type"

@@ -8,7 +8,7 @@ const options: { name: string, type: AccountType }[] = [
   { name: 'Settlement', type: AccountType.SettlementAccount},
 ]
 
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 
 const account = defineModel<AccountRef>({ required: true })
 </script>
@@ -19,7 +19,7 @@ const account = defineModel<AccountRef>({ required: true })
       <label class="text-sm font-medium" for="accountName">Name</label>
       <InputText 
         v-model="account.name" 
-        :disabled
+        :readonly
         size="small" 
         placeholder="Account name"
         id="accountName" 
@@ -29,7 +29,7 @@ const account = defineModel<AccountRef>({ required: true })
       <label class="text-sm font-medium" for="accountType">Referred type</label>
       <Select 
         v-model="account.referredType"
-        :disabled
+        :readonly
         :options
         option-label="name"
         option-value="type"

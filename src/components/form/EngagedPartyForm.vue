@@ -9,7 +9,7 @@ const options: { name: string, type: PartyType }[] =
     name: party, type: party
   }))
 
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 
 const engagedParty = defineModel<PartyRef>({ required: true})
 </script>
@@ -20,7 +20,7 @@ const engagedParty = defineModel<PartyRef>({ required: true})
       <label class="text-sm font-medium" for="engagedPartyName">Name</label>
       <InputText 
         v-model="engagedParty.name" 
-        :disabled
+        :readonly
         size="small" 
         placeholder="Party name"
         id="engagedPartyName" 
@@ -31,7 +31,7 @@ const engagedParty = defineModel<PartyRef>({ required: true})
       <label class="text-sm font-medium" for="partyType">Referred type</label>
       <Select 
         v-model="engagedParty['@referredType']"
-        :disabled
+        :readonly
         :options
         option-label="name"
         option-value="type"

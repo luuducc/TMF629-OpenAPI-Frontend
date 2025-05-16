@@ -5,7 +5,7 @@ import type { Characteristic } from '@/types';
 
 const characteristic = defineModel<Characteristic>({ required: true })
 
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 
 const relationOptions: { name: string, type: RelationshipType }[] = [
   { name: 'dependency', type: RelationshipType.dependency },
@@ -32,7 +32,7 @@ const typeOptions: { name: string, type: ValueType }[] = [
       <label class="text-sm font-medium" for="characteristicName">Name</label>
       <InputText
         v-model="characteristic.name"
-        :disabled
+        :readonly
         size="small"
         placeholder="Name"
         id="characteristicName"
@@ -43,7 +43,7 @@ const typeOptions: { name: string, type: ValueType }[] = [
       <label class="text-sm font-medium" for="characteristicType">Value type</label>
       <Select
         v-model="characteristic.valueType"
-        :disabled
+        :readonly
         :options="typeOptions"
         option-label="name"
         option-value="type"
@@ -59,7 +59,7 @@ const typeOptions: { name: string, type: ValueType }[] = [
       </label>
       <Select
         v-model="characteristic.characteristicRelationship.relationshipType"
-        :disabled
+        :readonly
         :options="relationOptions"
         option-label="name"
         option-value="type"

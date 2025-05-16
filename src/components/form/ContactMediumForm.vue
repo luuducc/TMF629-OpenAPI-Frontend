@@ -5,7 +5,7 @@ import { InputText, Select, type SelectChangeEvent } from 'primevue';
 import { ref, computed } from 'vue';
 
 const contactMedium = defineModel<ContactMedium>({ required: true })
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 const currentOption = computed({
   get: () => contactMedium.value['@type'],
   set: val => { contactMedium.value['@type'] = val }
@@ -46,7 +46,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
     <!-- Contact Medium Type Select -->
     <Select 
       v-model="currentOption"
-      :disabled
+      :readonly
       :options
       option-label="name" 
       option-value="type" 
@@ -61,7 +61,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Email address</label>
       <InputText 
         v-model="(contactMedium as EmailContactMedium).emailAddress"  
-        :disabled
+        :readonly
         type="text" 
         size="small" 
         placeholder="e.g., user@example.com"
@@ -73,7 +73,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Fax number</label>
       <InputText 
         v-model="(contactMedium as FaxContactMedium).faxNumber" 
-        :disabled
+        :readonly
         type="text" 
         size="small" 
         placeholder="e.g., +84 123 4567"
@@ -88,7 +88,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">City</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).city" 
-          :disabled
+          :readonly
           type="text" 
           size="small" 
         />
@@ -98,7 +98,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Country</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).country" 
-          :disabled
+          :readonly
           type="text" 
           size="small" 
         />
@@ -108,7 +108,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Postcode</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).postCode" 
-          :disabled
+          :readonly
           type="text"
           size="small" 
         />
@@ -118,7 +118,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">State or province</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" 
-          :disabled
+          :readonly
           size="small" 
           type="text" 
         />
@@ -128,7 +128,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Street 1</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).street1" 
-          :disabled
+          :readonly
           type="text" 
           size="small" 
         />
@@ -138,7 +138,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         <label class="text-sm font-medium">Street 2</label>
         <InputText 
           v-model="(contactMedium as GeographicAddressContactMedium).street2" 
-          :disabled
+          :readonly
           size="small" 
           type="text" 
         />
@@ -150,7 +150,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Phone number</label>
       <InputText 
         v-model="(contactMedium as PhoneContactMedium).phoneNumber" 
-        :disabled
+        :readonly
         type="text" 
         size="small" 
         placeholder="e.g., +84 901 234 567"
@@ -162,7 +162,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <label class="text-sm font-medium">Social network id</label>
       <InputText 
         v-model="(contactMedium as SocialContactMedium).socialNetworkId" 
-        :disabled
+        :readonly
         type="text" 
         size="small" 
         placeholder="e.g., @username"

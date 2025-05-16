@@ -3,7 +3,7 @@ import { InputText, DatePicker, InputNumber } from 'primevue';
 import type { CreditProfile } from '@/types'
 
 const creditProfile = defineModel<CreditProfile>({ required: true});
-defineProps<{ disabled: boolean }>()
+defineProps<{ readonly: boolean }>()
 
 </script>
 
@@ -13,7 +13,7 @@ defineProps<{ disabled: boolean }>()
       <label class="text-sm font-medium" for="profileDate">Profile date</label>
       <DatePicker
         v-model="creditProfile.creditProfileDate"
-        :disabled
+        :readonly
         size="small"
         id="profileDate"
       />
@@ -24,7 +24,7 @@ defineProps<{ disabled: boolean }>()
       <label class="text-sm font-medium" for="riskRating">Risk rating</label>
       <InputNumber
         v-model="creditProfile.creditRiskRating"
-        :disabled
+        :readonly
         size="small"
         id="riskRating"
       />
@@ -34,7 +34,7 @@ defineProps<{ disabled: boolean }>()
       <label class="text-sm font-medium" for="creditScore">Credit score</label>
       <InputNumber
         v-model="creditProfile.creditScore"
-        :disabled
+        :readonly
         size="small"
         id="creditScore"
       />
@@ -44,7 +44,7 @@ defineProps<{ disabled: boolean }>()
       <label class="text-sm font-medium" for="startDate">Start date</label>
       <DatePicker
         v-model="creditProfile.validFor.startDateTime"
-        :disabled
+        :readonly
         size="small"
         id="startDate"
       />
@@ -54,7 +54,7 @@ defineProps<{ disabled: boolean }>()
       <label class="text-sm font-medium" for="endDate">End date</label>
       <DatePicker
         v-model="creditProfile.validFor.endDateTime"
-        :disabled
+        :readonly
         size="small"
         id="endDate"
       />
