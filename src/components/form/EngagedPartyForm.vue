@@ -2,16 +2,16 @@
 import { ref, watch } from 'vue';
 import { PartyType } from '@/types/party-type';
 import { InputText, Select } from 'primevue';
+import type { PartyRef } from '@/types';
 
-const options: { name: string, type: PartyType }[] = [
-  { name: 'Individual', type: PartyType.Individual },
-  { name: 'Organization', type: PartyType.Organization }
-]
+const options: { name: string, type: PartyType }[] = 
+  Object.values(PartyType).map((party) => ({
+    name: party, type: party
+  }))
 
 defineProps<{ disabled: boolean }>()
 
-const partyName = defineModel<string>('partyName')
-const partyType = defineModel<PartyType>('partyType')
+const engagedParty = defineModel<PartyRef>({ required: true})
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const partyType = defineModel<PartyType>('partyType')
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="engagedPartyName">Name</label>
       <InputText 
-        v-model="partyName" 
+        v-model="engagedParty.name" 
         :disabled
         size="small" 
         placeholder="Party name"
@@ -30,7 +30,7 @@ const partyType = defineModel<PartyType>('partyType')
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="partyType">Referred type</label>
       <Select 
-        v-model="partyType"
+        v-model="engagedParty['@referredType']"
         :disabled
         :options
         option-label="name"

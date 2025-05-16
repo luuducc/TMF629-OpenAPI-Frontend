@@ -67,10 +67,10 @@ const customer = defineModel<Customer>('customer', {
 })
 
 // variables
-const statusOptions = Object.values(StatusType).map(status => ({
-  name: status,
-  type: status
-}))
+const statusOptions: { name: string, type: StatusType }[] = 
+  Object.values(StatusType).map(status => ({
+    name: status, type: status
+  }))
 // HANDLERS
 watch(customer, newVal => {
   console.log('new in child', newVal)
@@ -208,10 +208,7 @@ const addRelatedParty = (): void => {
       <!-- Engaged Party -->
       <div class="flex flex-col gap-2">
         <label class="font-medium">Engaged Party</label>
-        <EngagedPartyForm
-          :disabled
-          v-model:party-name="customer.engagedParty.name" 
-          v-model:party-type="customer.engagedParty['@referredType']"/>
+        <EngagedPartyForm v-model="customer.engagedParty" :disabled/>
       </div>
 
       <!-- Role -->
