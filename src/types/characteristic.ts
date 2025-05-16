@@ -1,8 +1,19 @@
 export enum RelationshipType {
-  dependency, exclusion, inclusion, substitute, aggregation, association, derivedFrom
+  dependency = 'dependency', 
+  exclusion = 'exclusion', 
+  inclusion = 'inclusion', 
+  substitute = 'substitute', 
+  aggregation = 'aggregation', 
+  association = 'association', 
+  derivedFrom = 'derivedFrom'
 }
 export enum ValueType {
-  string, number, boolean, date, object, array, 
+  string = 'string', 
+  number = 'number', 
+  boolean = 'boolean', 
+  date = 'date', 
+  object = 'object', 
+  array = 'array', 
 }
 export interface CharacteristicRelationship {
   relationshipType: RelationshipType | undefined,

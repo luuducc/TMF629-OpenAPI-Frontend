@@ -28,14 +28,20 @@ const account = defineModel<AccountRef>({ required: true })
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="accountType">Referred type</label>
       <Select 
-        v-model="account.referredType"
-        :readonly
+        v-if="!readonly"
+        v-model="account['@referredType']"
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select an account type"
         id="accountType" 
+      />
+      <InputText
+        v-else
+        v-model="account['@referredType']"
+        readonly
+        size="small"
       />
     </div>
   </div>

@@ -27,14 +27,20 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="specificationType">Referred type</label>
       <Select 
-        v-model="partyRoleSpecification.referredType"
-        :readonly
+        v-if="!readonly"
+        v-model="partyRoleSpecification['@referredType']"
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a specification type"
         id="specificationType" 
+      />
+      <InputText
+        v-else
+        v-model="partyRoleSpecification['@referredType']"
+        readonly
+        size="small"
       />
     </div>
   </div>

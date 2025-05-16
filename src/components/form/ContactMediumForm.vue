@@ -45,8 +45,8 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
   <div class="flex flex-col justify-between">
     <!-- Contact Medium Type Select -->
     <Select 
+      v-if="!readonly"
       v-model="currentOption"
-      :readonly
       :options
       option-label="name" 
       option-value="type" 
@@ -54,6 +54,13 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       class="mb-4"
       size="small"
       placeholder="Select a contact medium"
+    />
+    <InputText
+      v-else
+      v-model="currentOption"
+      readonly
+      class="mb-4"
+      size="small"
     />
     
       <!-- Email -->

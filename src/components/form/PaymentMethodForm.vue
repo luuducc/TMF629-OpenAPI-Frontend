@@ -30,14 +30,20 @@ const options: { name: string, type: PaymentMethodType }[] = [
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="methodType">Referred type</label>
       <Select 
-        v-model="paymentMethod.referredType"
-        :readonly
+        v-if="!readonly"
+        v-model="paymentMethod['@referredType']"
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a method type"
         id="methodType" 
+      />
+      <InputText
+        v-else
+        v-model="paymentMethod['@referredType']"
+        readonly
+        size="small"
       />
     </div>
   </div>

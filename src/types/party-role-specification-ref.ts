@@ -1,7 +1,9 @@
 export enum PartyRoleSpecificationType {
-  CustomerRoleSpecification, SupplierRoleSpecification, PartnerRoleSpecification
+  CustomerRoleSpecification = 'CustomerRoleSpecification', 
+  SupplierRoleSpecification ='SupplierRoleSpecification', 
+  PartnerRoleSpecification = 'PartnerRoleSpecification'
 }
 export type PartyRoleSpecificationRef = {
   name: string,
-  referredType: PartyRoleSpecificationType | undefined
+  '@referredType': PartyRoleSpecificationType | undefined
 }

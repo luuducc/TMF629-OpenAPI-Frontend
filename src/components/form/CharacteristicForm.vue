@@ -42,14 +42,20 @@ const typeOptions: { name: string, type: ValueType }[] = [
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="characteristicType">Value type</label>
       <Select
+        v-if="!readonly"
         v-model="characteristic.valueType"
-        :readonly
         :options="typeOptions"
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a type"
         id="characteristicType"
+      />
+      <InputText
+        v-else
+        v-model="characteristic.valueType"
+        readonly
+        size="small"
       />
     </div>
 
@@ -58,14 +64,20 @@ const typeOptions: { name: string, type: ValueType }[] = [
         Characteristic relationship
       </label>
       <Select
+        v-if="!readonly"
         v-model="characteristic.characteristicRelationship.relationshipType"
-        :readonly
         :options="relationOptions"
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a relationship"
         id="characteristicRelationship"
+      />
+      <InputText
+        v-else
+        v-model="characteristic.characteristicRelationship.relationshipType"
+        readonly
+        size="small"
       />
     </div>
   </div>

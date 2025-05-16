@@ -28,14 +28,20 @@ const agreement = defineModel<AgreementRef>({ required: true })
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="agreementType">Referred type</label>
       <Select 
-        v-model="agreement.referredType"
-        :readonly
+        v-if="!readonly"
+        v-model="agreement['@referredType']"
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select an agreement type"
         id="agreementType" 
+      />
+      <InputText
+        v-else
+        v-model="agreement['@referredType']"
+        readonly
+        size="small"
       />
     </div>
   </div>

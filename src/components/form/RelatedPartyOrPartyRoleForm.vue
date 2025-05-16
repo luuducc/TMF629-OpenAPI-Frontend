@@ -29,14 +29,20 @@ const options: { name: string, type: PartyType}[] = [
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="relatedType">Referred type</label>
       <Select
-        v-model="relatedParty.partyOrPartyRole.referredType"
-        :readonly
+        v-if="!readonly"
+        v-model="relatedParty.partyOrPartyRole['@referredType']"
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a related type"
         id="relatedType"
+      />
+      <InputText
+        v-else
+        v-model="relatedParty.partyOrPartyRole['@referredType']"
+        readonly
+        size="small"
       />
     </div>
 

@@ -1,8 +1,9 @@
 export enum AgreementType {
-  SupplierAgreement, ServiceAgreement
+  SupplierAgreement = 'SupplierAgreement', 
+  ServiceAgreement = 'ServiceAgreement'
 }
 
 export type AgreementRef = {
   name: string,
-  referredType: AgreementType | undefined
+  '@referredType': AgreementType | undefined
 }

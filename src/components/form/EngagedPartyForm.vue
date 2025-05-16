@@ -30,14 +30,20 @@ const engagedParty = defineModel<PartyRef>({ required: true})
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="partyType">Referred type</label>
       <Select 
+        v-if="!readonly"
         v-model="engagedParty['@referredType']"
-        :readonly
         :options
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a party type"
         id="partyType" 
+      />
+      <InputText
+        v-else
+        v-model="engagedParty['@referredType']"
+        readonly
+        size="small"
       />
     </div>
   </div>

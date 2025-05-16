@@ -77,12 +77,12 @@ watch(customer, newVal => {
 }, { deep: true})
 const addAccount = (): void => {
   customer.value.account.push({
-    name: '', referredType: undefined
+    name: '', '@referredType': undefined
   })
 }
 const addAgreement = (): void => {
   customer.value.agreement.push({
-    name: '', referredType: undefined
+    name: '', '@referredType': undefined
   })
 }
 const addCharacteristic = (): void => {
@@ -112,14 +112,14 @@ const addCreditProfile = (): void => {
 }
 const addPaymentMethod = (): void => {
   customer.value.paymentMethod.push({
-    name: '', referredType: undefined
+    name: '', '@referredType': undefined
   })
 }
 const addRelatedParty = (): void => {
   customer.value.relatedParty.push({
     partyOrPartyRole: {
       name: '',
-      referredType: undefined
+      '@referredType': undefined
     },
     role: ''
   })
@@ -158,14 +158,20 @@ const addRelatedParty = (): void => {
         <div class="flex flex-col flex-1 gap-1">
           <label class="font-medium" for="customerStatus">Status</label>
           <Select 
+            v-if="!readonly"
             v-model="customer.status"
-            :readonly
             :options="statusOptions"
             option-label="name"
             option-value="type"
             size="small"
             placeholder="Customer status"
             id="customerStatus"
+          />
+          <InputText
+            v-else
+            v-model="customer.status"
+            readonly
+            size="small"
           />
         </div>
         <div class="flex flex-col flex-1 gap-1">
