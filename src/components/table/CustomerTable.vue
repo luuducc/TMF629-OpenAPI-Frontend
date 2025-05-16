@@ -25,20 +25,57 @@ const confirm = useConfirm()
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
 const customers = ref<Customer[]>()
+const defaultCustomer: Customer = {
+  // Basic info
+  id: '',
+  name: '',
+  role: '',
+  description: '',
+  status: undefined,
+  statusReason: '',
 
+  // Validity period
+  validFor: {
+    startDateTime: new Date(),
+    endDateTime: new Date()
+  },
+
+  // Engaged party
+  engagedParty: {
+    name: '',
+    referredType: undefined
+  },
+  partyRoleSpecification: {
+    name: '',
+    referredType: undefined
+  },
+
+  // Associated entities
+  account: [],
+  agreement: [],
+  characteristic: [],
+  contactMedium: [],
+  creditProfile: [],
+  paymentMethod: [],
+  relatedParty: []
+}
+const customer = ref<Customer>()
 onMounted(async () => {
   const data = await CustomerService.getCustomers()
+  // const data = products
   customers.value = data
   console.log('data', data)
   console.log('customers', customers.value)
 })
 
-const handleDetails = () => {
+const handleDetails = (data: Customer) => {
+  customer.value = { ...defaultCustomer, ...data}
   mode.value = CustomerFormMode.View
   showDialog.value = true
   console.log('detail')
 }
-const handleUpdate = () => {
+const handleUpdate = (data: Customer) => {
+  customer.value = { ...defaultCustomer, ...data}
   mode.value = CustomerFormMode.Update
   showDialog.value = true
   console.log('update')
@@ -101,7 +138,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
   <Toast/>
   <ConfirmDialog/>
   <section class="flex mb-4">
-      <CustomerFormDialog :mode v-model:visible="showDialog" />
+      <CustomerFormDialog :mode v-model:customer="customer" v-model:visible="showDialog" />
       <IconField>
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />
@@ -133,7 +170,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
         </Column>
         <Column header="Description" field="description" style="width: 40%"></Column>
         <Column header="Actions" class="w-70">
-          <template #body>
+          <template #body="{ data }">
             <div class="flex justify-between">
               <!-- View Details Button -->
               <Button 
@@ -142,7 +179,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
                 size="small"
                 severity="info"
                 outlined
-                @click="handleDetails"
+                @click="handleDetails(data)"
               />
 
               <!-- Edit Button -->
@@ -152,7 +189,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
                 size="small"
                 severity="warning"
                 outlined
-                @click="handleUpdate"
+                @click="handleUpdate(data)"
               />
 
               <!-- Delete Button -->

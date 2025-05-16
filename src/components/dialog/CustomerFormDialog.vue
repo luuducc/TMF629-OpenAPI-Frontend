@@ -30,39 +30,41 @@ const disabled = computed(() => props.mode === CustomerFormMode.View)
 const visible = defineModel<boolean>('visible');
 
 
-const customer = ref<Customer>({
-  // Basic info
-  id: '',
-  name: '',
-  role: '',
-  description: '',
-  status: undefined,
-  statusReason: '',
-
-  // Validity period
-  validFor: {
-    startDateTime: new Date(),
-    endDateTime: new Date()
-  },
-
-  // Engaged party
-  engagedParty: {
+const customer = defineModel<Customer>('customer', {
+  default:{
+    // Basic info
+    id: '',
     name: '',
-    referredType: undefined
-  },
-  partyRoleSpecification: {
-    name: '',
-    referredType: undefined
-  },
-
-  // Associated entities
-  account: [],
-  agreement: [],
-  characteristic: [],
-  contactMedium: [],
-  creditProfile: [],
-  paymentMethod: [],
-  relatedParty: []
+    role: '',
+    description: '',
+    status: undefined,
+    statusReason: '',
+  
+    // Validity period
+    validFor: {
+      startDateTime: new Date(),
+      endDateTime: new Date()
+    },
+  
+    // Engaged party
+    engagedParty: {
+      name: '',
+      referredType: undefined
+    },
+    partyRoleSpecification: {
+      name: '',
+      referredType: undefined
+    },
+  
+    // Associated entities
+    account: [],
+    agreement: [],
+    characteristic: [],
+    contactMedium: [],
+    creditProfile: [],
+    paymentMethod: [],
+    relatedParty: []
+  }
 })
 
 // variables
@@ -72,10 +74,9 @@ const statusOptions: { name: string, type: StatusType }[] =
     type: Number(key) as StatusType
   }))
 // HANDLERS
-watch(customer.value, newVal => {
-  console.log(toRaw(newVal))
-})
-
+watch(customer, newVal => {
+  console.log('new in child', newVal)
+}, { deep: true})
 const addAccount = (): void => {
   customer.value.account.push({
     name: '', referredType: undefined
@@ -128,7 +129,6 @@ const addRelatedParty = (): void => {
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <h1> haha{{ customer.name }}</h1>
     <Form class="flex flex-col gap-y-6 w-[35rem]">
 
       <!-- Customer Name and Id -->

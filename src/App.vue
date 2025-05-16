@@ -2,9 +2,43 @@
 import { Button } from 'primevue'
 import { ref } from "vue"
 import CustomerFormDialog from './components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode } from '@/types'
+import { CustomerFormMode, type Customer } from '@/types'
 import CustomerTable from '@/components/table/CustomerTable.vue'
 
+const customer = ref<Customer>({
+  // Basic info
+  id: '',
+  name: '',
+  role: '',
+  description: '',
+  status: undefined,
+  statusReason: '',
+
+  // Validity period
+  validFor: {
+    startDateTime: new Date(),
+    endDateTime: new Date()
+  },
+
+  // Engaged party
+  engagedParty: {
+    name: '',
+    referredType: undefined
+  },
+  partyRoleSpecification: {
+    name: '',
+    referredType: undefined
+  },
+
+  // Associated entities
+  account: [],
+  agreement: [],
+  characteristic: [],
+  contactMedium: [],
+  creditProfile: [],
+  paymentMethod: [],
+  relatedParty: []
+})
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
 const createCustomer = () => {
@@ -22,5 +56,5 @@ const createCustomer = () => {
   <div class="main-content px-8">
     <CustomerTable/>
   </div>
-  <CustomerFormDialog :mode v-model:visible="showDialog" />
+  <CustomerFormDialog :mode v-model:customer="customer" v-model:visible="showDialog" />
 </template>
