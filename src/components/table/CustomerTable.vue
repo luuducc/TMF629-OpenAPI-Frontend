@@ -144,68 +144,68 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />
       </IconField>
-    </section>
-    <Divider />
-    <section>
-      <DataTable 
-        :value="customers" 
-        tableStyle="min-width: 50rem" 
-        showGridlines 
-        stripedRows
-        paginator 
-        :rows="5" 
-        :rowsPerPageOptions="[5, 10, 15, 20]"
-        removableSort
-        sortMode="multiple"
-      >
-        <Column header="#" style="width: 10%">
-          <template #body="{ index }">
-            {{ index + 1 }}
-          </template>
-        </Column>
-        <Column header="Name" field="name" sortable style="width: 15%"></Column>
-        <Column header="Status" field="status" sortable style="width: 10%">
-          <template #body="{ data }">
-              <Tag :value="data.status" :severity="getSeverity(data.status)" />
-          </template>
-        </Column>
-        <Column header="Description" field="description" style="width: 40%"></Column>
-        <Column header="Actions" class="w-70">
-          <template #body="{ data }">
-            <div class="flex justify-between">
-              <!-- View Details Button -->
-              <Button 
-                icon="pi pi-eye"
-                label="Detail"
-                size="small"
-                severity="info"
-                outlined
-                @click="handleDetails(data)"
-              />
+  </section>
+  <Divider />
+  <section>
+    <DataTable 
+      :value="customers" 
+      tableStyle="min-width: 50rem" 
+      showGridlines 
+      stripedRows
+      paginator 
+      :rows="5" 
+      :rowsPerPageOptions="[5, 10, 15, 20]"
+      removableSort
+      sortMode="multiple"
+    >
+      <Column header="#" style="width: 10%">
+        <template #body="{ index }">
+          {{ index + 1 }}
+        </template>
+      </Column>
+      <Column header="Name" field="name" sortable style="width: 15%"></Column>
+      <Column header="Status" field="status" sortable style="width: 10%">
+        <template #body="{ data }">
+            <Tag :value="data.status" :severity="getSeverity(data.status)" />
+        </template>
+      </Column>
+      <Column header="Description" field="description" style="width: 40%"></Column>
+      <Column header="Actions" class="w-70">
+        <template #body="{ data }">
+          <div class="flex justify-between">
+            <!-- View Details Button -->
+            <Button 
+              icon="pi pi-eye"
+              label="Detail"
+              size="small"
+              severity="info"
+              outlined
+              @click="handleDetails(data)"
+            />
 
-              <!-- Edit Button -->
-              <Button 
-                icon="pi pi-pencil"
-                label="Edit"
-                size="small"
-                severity="warning"
-                outlined
-                @click="handleUpdate(data)"
-              />
+            <!-- Edit Button -->
+            <Button 
+              icon="pi pi-pencil"
+              label="Edit"
+              size="small"
+              severity="warning"
+              outlined
+              @click="handleUpdate(data)"
+            />
 
-              <!-- Delete Button -->
-              <Button 
-                icon="pi pi-trash"
-                label="Delete"
-                size="small"
-                severity="danger"
-                outlined
-                @click="handleDelete"
-              />
-            </div>
-          </template>
-        </Column>
-      </DataTable>
-    </section>
-    <Divider />
+            <!-- Delete Button -->
+            <Button 
+              icon="pi pi-trash"
+              label="Delete"
+              size="small"
+              severity="danger"
+              outlined
+              @click="handleDelete"
+            />
+          </div>
+        </template>
+      </Column>
+    </DataTable>
+  </section>
+  <Divider />
 </template>
