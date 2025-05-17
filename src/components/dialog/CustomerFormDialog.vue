@@ -19,7 +19,8 @@ import {
   PaymentMethodForm,
   RelatedPartyOrPartyRoleForm
 } from '@/components/form';
-
+import { CustomerService } from '@/service/customerService'
+import axios from 'axios';
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
 
@@ -124,10 +125,34 @@ const addRelatedParty = (): void => {
     role: ''
   })
 }
+const updateCustomer = async () => {
+  try {
+    const result = await CustomerService.patchCustomer(customer.value.id, customer.value)
+    console.log('reulst', result)
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      console.log('Custom error:', err.response?.data);
+    } else {
+      console.error('Unknown error', err);
+    }
+  }
+}
+const handleSubmit = () => {
+  console.log('customer to do', customer.value)
+  switch (props.mode) {
+    case CustomerFormMode.Update:
+      console.log('update')
+      updateCustomer()
+      break
+    case CustomerFormMode.Create:
+      console.log('create')
+      break
+  }
+}
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <Form class="flex flex-col gap-y-6 w-[35rem]">
+    <Form class="flex flex-col gap-y-6 w-[35rem]" @submit="handleSubmit">
 
       <!-- Customer Name and Id -->
       <div class="flex gap-4">
@@ -313,16 +338,13 @@ const addRelatedParty = (): void => {
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
       />
-
-    </Form>
-    <template #footer>
       <div class="flex justify-end gap-3">
         <Button 
           v-if="!readonly"
           type="submit" 
           icon="pi pi-check" 
           size="small" 
-          label="Save" 
+          :label="props.mode === CustomerFormMode.Create ? 'Create' : 'Save'"
           severity="primary" 
         />
         <Button 
@@ -334,6 +356,26 @@ const addRelatedParty = (): void => {
           outlined
         />
       </div>
-    </template>
+    </Form>
+    <!-- <template #footer>
+      <div class="flex justify-end gap-3">
+        <Button 
+          v-if="!readonly"
+          type="submit" 
+          icon="pi pi-check" 
+          size="small" 
+          :label="props.mode === CustomerFormMode.Create ? 'Create' : 'Save'"
+          severity="primary" 
+        />
+        <Button 
+          label="Close" 
+          icon="pi pi-times" 
+          size="small" 
+          severity="secondary" 
+          @click="visible = false" 
+          outlined
+        />
+      </div>
+    </template> -->
   </Dialog>
 </template>

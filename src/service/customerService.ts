@@ -1,3 +1,4 @@
+import type { Customer } from "@/types";
 import axios from "axios"
 
 const API_URL = 'http://localhost:8080/customerManagement/v1/customer'
@@ -14,7 +15,11 @@ export const CustomerService = {
     return response.data;
   },
 
-  async createCustomer(customer: any) {
+  async createCustomer(customer: Customer) {
     return axios.post(API_URL, customer);
+  },
+
+  async patchCustomer(id: string, customer: Customer) {
+    return axios.patch(`${API_URL}/${id}`, customer);
   }
 };

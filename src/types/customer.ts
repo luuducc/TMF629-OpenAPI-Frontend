@@ -14,6 +14,7 @@ import { StatusType } from "./";
 
 export type Customer = {
   // Identity & status
+  '@type': 'Customer';
   id: string;
   name: string;
   role: string;

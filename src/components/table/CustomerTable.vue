@@ -27,6 +27,7 @@ const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
 const customers = ref<Customer[]>()
 const defaultCustomer: Customer = {
   // Basic info
+  '@type': 'Customer',
   id: '',
   name: '',
   role: '',
@@ -43,11 +44,11 @@ const defaultCustomer: Customer = {
   // Engaged party
   engagedParty: {
     name: '',
-    referredType: undefined
+    '@referredType': undefined
   },
   partyRoleSpecification: {
     name: '',
-    referredType: undefined
+    '@referredType': undefined
   },
 
   // Associated entities
