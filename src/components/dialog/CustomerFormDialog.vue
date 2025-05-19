@@ -19,7 +19,7 @@ import {
   PaymentMethodForm,
   RelatedPartyOrPartyRoleForm
 } from '@/components/form'
-import { CustomerService } from '@/service/customerService'
+import { CustomerService } from '@/services/customerService'
 import axios from 'axios'
 import { getSeverity } from '@/utils/status-utils'
 
@@ -176,15 +176,54 @@ const updateCustomer = async () => {
     })
   }
 }
+
+const createCustomer = async () => {
+  try {
+    console.log('customer to create', customer.value)
+    const result = await CustomerService.createCustomer(customer.value)
+
+    // Show success toast
+    toast.add({
+      severity: 'success',
+      summary: 'Customer Created',
+      detail: 'New customer has been created!',
+      life: 3000
+    })
+
+    // Close the dialog
+    visible.value = false
+
+    // Update the customer reference with the result from the server
+    customer.value = result
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const errData = err.response?.data
+      console.log('err create', errData)
+
+      toast.add({
+        severity: 'error',
+        summary: 'Update Failed',
+        detail: errData?.message || 'Something went wrong.',
+        life: 3000
+      })
+      return
+    }
+    console.error('Unexpected error:', err)
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'An unexpected error occurred.',
+      life: 3000
+    })
+  }
+}
 const handleSubmit = () => {
-  console.log('customer to do', customer.value)
   switch (props.mode) {
     case CustomerFormMode.Update:
-      console.log('update')
       updateCustomer()
       break
     case CustomerFormMode.Create:
-      console.log('create')
+      createCustomer()
       break
   }
 }

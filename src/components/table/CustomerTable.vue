@@ -18,7 +18,7 @@ import { CustomerFormMode } from '@/types'
 import type { Customer } from '@/types'
 import { ref, onMounted, watch } from 'vue'
 import products from '@/mockdata/data.js'
-import { CustomerService } from '@/service/customerService'
+import { CustomerService } from '@/services/customerService'
 import { getSeverity } from '@/utils/status-utils'
 
 const toast = useToast()
@@ -139,7 +139,7 @@ const handleDelete = () => {
       showGridlines 
       stripedRows
       paginator 
-      :rows="5" 
+      :rows="20" 
       :rowsPerPageOptions="[5, 10, 15, 20]"
       removableSort
       sortMode="multiple"

@@ -7,6 +7,7 @@ import CustomerTable from '@/components/table/CustomerTable.vue'
 
 const customer = ref<Customer>({
   // Basic info
+  '@type': 'Customer',
   id: '',
   name: '',
   role: '',
@@ -23,11 +24,11 @@ const customer = ref<Customer>({
   // Engaged party
   engagedParty: {
     name: '',
-    referredType: undefined
+    '@referredType': undefined
   },
   partyRoleSpecification: {
     name: '',
-    referredType: undefined
+    '@referredType': undefined
   },
 
   // Associated entities
