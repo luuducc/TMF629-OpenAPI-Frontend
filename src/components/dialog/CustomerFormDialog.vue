@@ -5,7 +5,7 @@ import {
   StatusType} from '@/types';
 import type {
   Customer} from '@/types';
-import { Button, DatePicker, Dialog, InputText, Textarea, Select } from 'primevue';
+import { Button, DatePicker, Dialog, InputText, Textarea, Select, useToast } from 'primevue';
 import { Form } from '@primevue/forms';
 import {
   AccountForm,
@@ -21,6 +21,8 @@ import {
 } from '@/components/form';
 import { CustomerService } from '@/service/customerService'
 import axios from 'axios';
+
+const toast = useToast()
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
 const readonly = computed(() => props.mode === CustomerFormMode.View)
@@ -124,15 +126,42 @@ const addRelatedParty = (): void => {
 const updateCustomer = async () => {
   try {
     const result = await CustomerService.patchCustomer(customer.value.id, customer.value)
-    console.log('result', result)
+    
+    // Show success toast
+    toast.add({
+      severity: 'success',
+      summary: 'Update Successful',
+      detail: 'Customer record has been updated.',
+      life: 3000
+    })
+
+    // Close the dialog
+    visible.value = false
+
+    // Update the customer reference with the result from the server
     customer.value = result
+
+    // Trigger success state
     isUpdateSuccess.value = true
   } catch (err) {
     if (axios.isAxiosError(err)) {
-      console.log('Custom error:', err.response?.data);
-    } else {
-      console.error('Unknown error', err);
+      const errData = err.response?.data
+
+      toast.add({
+        severity: 'error',
+        summary: 'Update Failed',
+        detail: errData?.message || 'Something went wrong.',
+        life: 3000
+      })
+      return
     }
+    console.error('Unexpected error:', err)
+    toast.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'An unexpected error occurred.',
+      life: 3000
+    })
   }
 }
 const handleSubmit = () => {
