@@ -64,6 +64,7 @@ const customer = defineModel<Customer>('customer', {
   }
 })
 const isUpdateSuccess = defineModel<boolean>('isUpdateSuccess', { default: false })
+const isCreateSuccess = defineModel<boolean>('isCreateSuccess', { default: false })
 const readonly = computed(() => props.mode === CustomerFormMode.View)
 const dialogHeader = computed(() => {
   switch (props.mode) {
@@ -195,6 +196,9 @@ const createCustomer = async () => {
 
     // Update the customer reference with the result from the server
     customer.value = result
+
+    // Trigger success state
+    isCreateSuccess.value = true
   } catch (err) {
     if (axios.isAxiosError(err)) {
       const errData = err.response?.data

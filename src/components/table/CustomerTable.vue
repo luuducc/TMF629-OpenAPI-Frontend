@@ -25,7 +25,7 @@ const toast = useToast()
 const confirm = useConfirm()
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
-const customers = ref<Customer[]>()
+const customers = defineModel<Customer[]>()
 const defaultCustomer: Customer = {
   // Basic info
   '@type': 'Customer',
@@ -64,13 +64,13 @@ const defaultCustomer: Customer = {
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
-onMounted(async () => {
-  const data = await CustomerService.getCustomers()
-  // const data = products
-  customers.value = data
-  console.log('data', data)
-  console.log('customers', customers.value)
-})
+// onMounted(async () => {
+//   const data = await CustomerService.getCustomers()
+//   // const data = products
+//   customers.value = data
+//   console.log('data', data)
+//   console.log('customers', customers.value)
+// })
 watch(isUpdateSuccess, () => {
   if (isUpdateSuccess.value && customers.value && customer.value) {
     customers.value[customerIndex.value] = customer.value
@@ -140,7 +140,7 @@ const handleDelete = () => {
       stripedRows
       paginator 
       :rows="20" 
-      :rowsPerPageOptions="[5, 10, 15, 20]"
+      :rowsPerPageOptions="[20, 30, 40, 50]"
       removableSort
       sortMode="multiple"
     >
