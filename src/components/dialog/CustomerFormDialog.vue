@@ -168,7 +168,7 @@ const handleSubmit = () => {
           <label class="font-medium" for="customerId">Id</label>
           <InputText 
             v-model="customer.id"
-            :readonly
+            readonly
             size="small"
             placeholder="Customer Id"
             id="customerId"
