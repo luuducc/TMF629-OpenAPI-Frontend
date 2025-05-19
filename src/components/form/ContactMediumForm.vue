@@ -71,7 +71,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         :readonly
         type="text" 
         size="small" 
-        placeholder="e.g., user@example.com"
+        :placeholder="readonly ? '' : 'e.g., user@example.com'"
       />
     </div>
   
@@ -83,7 +83,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         :readonly
         type="text" 
         size="small" 
-        placeholder="e.g., +84 123 4567"
+        :placeholder="readonly ? '' : 'e.g., +84 123 4567'"
       />
     </div>
   
@@ -160,7 +160,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         :readonly
         type="text" 
         size="small" 
-        placeholder="e.g., +84 901 234 567"
+        :placeholder="readonly ? '' : 'e.g., +84 901 234 567'"
       />
     </div>
     
@@ -172,7 +172,7 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
         :readonly
         type="text" 
         size="small" 
-        placeholder="e.g., @username"
+        :placeholder="readonly ? '' : 'e.g., @username'"
       />
     </div>  
   </div>

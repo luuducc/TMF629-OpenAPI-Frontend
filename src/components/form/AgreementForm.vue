@@ -20,7 +20,7 @@ const agreement = defineModel<AgreementRef>({ required: true })
         v-model="agreement.name" 
         :readonly
         size="small" 
-        placeholder="Agreement name"
+        :placeholder="readonly ? '' : 'Agreement name'"
         id="agreementName" 
       />
     </div>

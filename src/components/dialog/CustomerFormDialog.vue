@@ -304,7 +304,7 @@ const handleSubmit = () => {
             v-model="customer.statusReason"
             :readonly
             size="small"
-            placeholder="Reason for status"
+            :placeholder="readonly ? '' : 'Reason for status'"
             id="customerStatusReason"
           />
         </div>
@@ -348,7 +348,7 @@ const handleSubmit = () => {
           v-model="customer.role" 
           :readonly
           size="small" 
-          placeholder="Role played by Engaged party" 
+          :placeholder="readonly ? '' : 'Role played by Engaged party'" 
           id="role" 
         />
       </div>
@@ -359,7 +359,7 @@ const handleSubmit = () => {
         <Textarea 
           v-model="customer.description"
           :readonly
-          placeholder="Write something about customer..."
+          :placeholder="readonly ? '' : 'Write something about customer...'" 
           size="small" 
           id="description" 
         />

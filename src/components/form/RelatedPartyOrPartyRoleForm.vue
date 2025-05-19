@@ -21,7 +21,7 @@ const options: { name: string, type: PartyType}[] =
         v-model="relatedParty.partyOrPartyRole.name"
         :readonly
         size="small"
-        placeholder="Related name"
+        :placeholder="readonly ? '' : 'Related name'"
         id="relatedName"
       />
     </div>
@@ -52,7 +52,7 @@ const options: { name: string, type: PartyType}[] =
         v-model="relatedParty.role"
         :readonly
         size="small"
-        placeholder="Related role"
+        :placeholder="readonly ? '' : 'Related role'"
         id="relatedRole"
       />
     </div>

@@ -20,7 +20,7 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
         v-model="partyRoleSpecification.name" 
         :readonly
         size="small" 
-        placeholder="Enter role name"
+        :placeholder="readonly ? '' : 'Enter role name'"
         id="roleName" 
       />
     </div>

@@ -23,7 +23,7 @@ const options: { name: string, type: PaymentMethodType }[] = [
         v-model="paymentMethod.name" 
         :readonly
         size="small" 
-        placeholder="Enter method name"
+        :placeholder="readonly ? '' : 'Enter method name'"
         id="methodName" 
       />
     </div>

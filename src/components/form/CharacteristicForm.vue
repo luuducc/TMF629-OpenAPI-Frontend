@@ -25,7 +25,7 @@ const typeOptions: { name: string, type: ValueType }[] =
         v-model="characteristic.name"
         :readonly
         size="small"
-        placeholder="Name"
+        :placeholder="readonly ? '' : 'Name'"
         id="characteristicName"
       />
     </div>

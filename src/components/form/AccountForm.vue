@@ -21,7 +21,7 @@ const account = defineModel<AccountRef>({ required: true })
         v-model="account.name" 
         :readonly
         size="small" 
-        placeholder="Account name"
+        :placeholder="readonly ? '' : 'Account name'"
         id="accountName" 
       />
     </div>
