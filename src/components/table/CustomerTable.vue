@@ -14,11 +14,12 @@ import {
   useConfirm
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode, StatusType } from '@/types'
-import type { Customer, PrimeVueSeverity } from '@/types'
+import { CustomerFormMode } from '@/types'
+import type { Customer } from '@/types'
 import { ref, onMounted, watch } from 'vue'
 import products from '@/mockdata/data.js'
 import { CustomerService } from '@/service/customerService'
+import { getSeverity } from '@/utils/status-utils'
 
 const toast = useToast()
 const confirm = useConfirm()
@@ -113,34 +114,6 @@ const handleDelete = () => {
   })
   console.log('delete')
 }
-const getSeverity = (status: StatusType): PrimeVueSeverity => {
-  switch (status) {
-    case StatusType.Draft:
-    case StatusType.Inactive:
-    case StatusType.Archived:
-      return 'secondary';
-
-    case StatusType.Created:
-    case StatusType.Pending:
-      return 'info';
-
-    case StatusType.Verified:
-    case StatusType.Active:
-      return 'success';
-
-    case StatusType.Suspended:
-      return 'warn';
-
-    case StatusType.Blacklisted:
-    case StatusType.Rejected:
-    case StatusType.Deleted:
-      return 'danger';
-
-    default:
-      return 'secondary'; // fallback
-  }
-}
-
 </script>
 
 <template>
