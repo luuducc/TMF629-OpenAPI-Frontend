@@ -20,6 +20,7 @@ import { ref, onMounted, watch } from 'vue'
 import products from '@/mockdata/data.js'
 import { CustomerService } from '@/services/customerService'
 import { getSeverity } from '@/utils/status-utils'
+import axios from 'axios'
 
 const toast = useToast()
 const confirm = useConfirm()
@@ -64,13 +65,7 @@ const defaultCustomer: Customer = {
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
-// onMounted(async () => {
-//   const data = await CustomerService.getCustomers()
-//   // const data = products
-//   customers.value = data
-//   console.log('data', data)
-//   console.log('customers', customers.value)
-// })
+
 watch(isUpdateSuccess, () => {
   if (isUpdateSuccess.value && customers.value && customer.value) {
     customers.value[customerIndex.value] = customer.value
@@ -90,29 +85,45 @@ const handleUpdate = (data: Customer, rowIndex: number) => {
   showDialog.value = true
   console.log('update')
 }
-const handleDelete = () => {
-  confirm.require({
-    message: 'Do you want to delete this record?',
-    header: 'Danger Zone',
-    icon: 'pi pi-info-circle',
-    rejectLabel: 'Cancel',
-    rejectProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true
-    },
-    acceptProps: {
-        label: 'Delete',
-        severity: 'danger'
-    },
-    accept: () => {
-        toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
-    },
-    reject: () => {
-        toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    }
-  })
-  console.log('delete')
+const handleDelete = (rowIndex: number) => {
+  if (customers.value) {
+    const deleteId = customers.value[rowIndex].id
+    confirm.require({
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectProps: {
+          label: 'Cancel',
+          severity: 'secondary',
+          outlined: true
+      },
+      acceptProps: {
+          label: 'Delete',
+          severity: 'danger'
+      },
+      accept: async () => {
+          try {
+            await CustomerService.deleteCustomer(deleteId)
+
+            // remove deleted customer from array data
+            if (customers.value) {
+              customers.value = customers.value.filter(el => el.id !== deleteId)
+            }
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+          } catch (err) {
+            if (axios.isAxiosError(err)) {
+              const errData = err.response?.data
+              toast.add({ severity: 'error', summary: 'Delete failed', detail: errData?.message || 'Something went wrong.', life: 3000 });
+              return
+            }
+            toast.add({ severity: 'error', summary: 'Delete failed', detail: 'An unexpected error occurred.', life: 3000 });
+          }
+      },
+      reject: () => {
+          toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+      }
+    })
+  }
 }
 </script>
 
@@ -186,7 +197,7 @@ const handleDelete = () => {
               size="small"
               severity="danger"
               outlined
-              @click="handleDelete"
+              @click="handleDelete(index)"
             />
           </div>
         </template>
