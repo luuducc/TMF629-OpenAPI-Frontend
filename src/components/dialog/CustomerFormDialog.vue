@@ -23,13 +23,8 @@ import { CustomerService } from '@/service/customerService'
 import axios from 'axios';
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
-
 const readonly = computed(() => props.mode === CustomerFormMode.View)
-
-// states
 const visible = defineModel<boolean>('visible');
-
-
 const customer = defineModel<Customer>('customer', {
   default:{
     // Basic info
@@ -66,6 +61,7 @@ const customer = defineModel<Customer>('customer', {
     relatedParty: []
   }
 })
+const isUpdateSuccess = defineModel<boolean>('isUpdateSuccess', { default: false })
 
 // variables
 const statusOptions: { name: string, type: StatusType }[] = 
@@ -128,7 +124,9 @@ const addRelatedParty = (): void => {
 const updateCustomer = async () => {
   try {
     const result = await CustomerService.patchCustomer(customer.value.id, customer.value)
-    console.log('reulst', result)
+    console.log('result', result)
+    customer.value = result
+    isUpdateSuccess.value = true
   } catch (err) {
     if (axios.isAxiosError(err)) {
       console.log('Custom error:', err.response?.data);

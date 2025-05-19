@@ -16,7 +16,7 @@ import {
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType } from '@/types'
 import type { Customer, PrimeVueSeverity } from '@/types'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import products from '@/mockdata/data.js'
 import { CustomerService } from '@/service/customerService'
 
@@ -61,6 +61,8 @@ const defaultCustomer: Customer = {
   relatedParty: []
 }
 const customer = ref<Customer>()
+const isUpdateSuccess = ref<boolean>(false)
+const customerIndex = ref<number>(-1)
 onMounted(async () => {
   const data = await CustomerService.getCustomers()
   // const data = products
@@ -68,15 +70,21 @@ onMounted(async () => {
   console.log('data', data)
   console.log('customers', customers.value)
 })
-
+watch(isUpdateSuccess, () => {
+  if (isUpdateSuccess.value && customers.value && customer.value) {
+    customers.value[customerIndex.value] = customer.value
+    isUpdateSuccess.value = false
+  }
+})
 const handleDetails = (data: Customer) => {
   customer.value = { ...defaultCustomer, ...data}
   mode.value = CustomerFormMode.View
   showDialog.value = true
   console.log('detail')
 }
-const handleUpdate = (data: Customer) => {
+const handleUpdate = (data: Customer, rowIndex: number) => {
   customer.value = { ...defaultCustomer, ...data}
+  customerIndex.value = rowIndex
   mode.value = CustomerFormMode.Update
   showDialog.value = true
   console.log('update')
@@ -139,7 +147,12 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
   <Toast/>
   <ConfirmDialog/>
   <section class="flex mb-4">
-      <CustomerFormDialog :mode v-model:customer="customer" v-model:visible="showDialog" />
+      <CustomerFormDialog 
+        :mode 
+        v-model:customer="customer" 
+        v-model:isUpdateSuccess="isUpdateSuccess"
+        v-model:visible="showDialog" 
+      />
       <IconField>
         <InputIcon class="pi pi-search" />
         <InputText placeholder="Search customer" />
@@ -171,7 +184,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
       </Column>
       <Column header="Description" field="description" style="width: 40%"></Column>
       <Column header="Actions" class="w-70">
-        <template #body="{ data }">
+        <template #body="{ data, index }">
           <div class="flex justify-between">
             <!-- View Details Button -->
             <Button 
@@ -190,7 +203,7 @@ const getSeverity = (status: StatusType): PrimeVueSeverity => {
               size="small"
               severity="warning"
               outlined
-              @click="handleUpdate(data)"
+              @click="handleUpdate(data, index)"
             />
 
             <!-- Delete Button -->
