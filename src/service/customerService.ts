@@ -19,7 +19,8 @@ export const CustomerService = {
     return axios.post(API_URL, customer);
   },
 
-  async patchCustomer(id: string, customer: Customer) {
-    return axios.patch(`${API_URL}/${id}`, customer);
+  async patchCustomer(id: string, customer: Customer): Promise<Customer> {
+    const response = await axios.patch(`${API_URL}/${id}`, customer);
+    return response.data
   }
 };
