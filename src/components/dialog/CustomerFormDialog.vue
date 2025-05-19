@@ -150,7 +150,7 @@ const handleSubmit = () => {
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <Form class="flex flex-col gap-y-6 w-[35rem]" @submit="handleSubmit">
+    <Form class="flex flex-col gap-y-6 w-[35rem]">
 
       <!-- Customer Name and Id -->
       <div class="flex gap-4">
@@ -336,30 +336,12 @@ const handleSubmit = () => {
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
       />
-      <div class="flex justify-end gap-3">
-        <Button 
-          v-if="!readonly"
-          type="submit" 
-          icon="pi pi-check" 
-          size="small" 
-          :label="props.mode === CustomerFormMode.Create ? 'Create' : 'Save'"
-          severity="primary" 
-        />
-        <Button 
-          label="Close" 
-          icon="pi pi-times" 
-          size="small" 
-          severity="secondary" 
-          @click="visible = false" 
-          outlined
-        />
-      </div>
     </Form>
-    <!-- <template #footer>
+    <template #footer>
       <div class="flex justify-end gap-3">
         <Button 
           v-if="!readonly"
-          type="submit" 
+          @click="handleSubmit" 
           icon="pi pi-check" 
           size="small" 
           :label="props.mode === CustomerFormMode.Create ? 'Create' : 'Save'"
@@ -374,6 +356,6 @@ const handleSubmit = () => {
           outlined
         />
       </div>
-    </template> -->
+    </template>
   </Dialog>
 </template>
