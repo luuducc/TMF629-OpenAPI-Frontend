@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, toRaw, watch, ref } from 'vue';
+import { computed, toRaw, watch, ref } from 'vue'
 import {
   CustomerFormMode,
-  StatusType} from '@/types';
+  StatusType} from '@/types'
 import type {
-  Customer} from '@/types';
-import { Button, DatePicker, Dialog, InputText, Textarea, Select, useToast } from 'primevue';
-import { Form } from '@primevue/forms';
+  Customer} from '@/types'
+import { Button, DatePicker, Dialog, InputText, Tag, Textarea, Select, useToast } from 'primevue'
+import { Form } from '@primevue/forms'
 import {
   AccountForm,
   AgreementForm,
@@ -18,15 +18,16 @@ import {
   PartyRoleSpecificationForm,
   PaymentMethodForm,
   RelatedPartyOrPartyRoleForm
-} from '@/components/form';
+} from '@/components/form'
 import { CustomerService } from '@/service/customerService'
-import axios from 'axios';
+import axios from 'axios'
+import { getSeverity } from '@/utils/status-utils'
 
 const toast = useToast()
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
 const readonly = computed(() => props.mode === CustomerFormMode.View)
-const visible = defineModel<boolean>('visible');
+const visible = defineModel<boolean>('visible')
 const customer = defineModel<Customer>('customer', {
   default:{
     // Basic info
@@ -179,7 +180,7 @@ const handleSubmit = () => {
 </script>
 <template>
   <Dialog v-model:visible="visible" header="Create new customer">
-    <Form class="flex flex-col gap-y-6 w-[35rem]">
+    <Form class="flex flex-col gap-y-6 w-[35rem]" @submit="handleSubmit">
 
       <!-- Customer Name and Id -->
       <div class="flex gap-4">
@@ -216,14 +217,31 @@ const handleSubmit = () => {
             option-label="name"
             option-value="type"
             size="small"
-            placeholder="Customer status"
+            placeholder="Select a customer status"
             id="customerStatus"
-          />
-          <InputText
+          >
+            <template #value="slotProps">
+              <Tag 
+                :value="slotProps.value" 
+                :severity="getSeverity(slotProps.value)"
+                class="text-red"
+                style="height: 1.3rem; border: 0.2px solid var(--p-inputtext-border-color);"
+              />
+            </template>
+            <template #option="slotProps">
+              <Tag 
+                :value="slotProps.option.name" 
+                :severity="getSeverity(slotProps.option.name)"
+                style="height: 1.5rem; border: 0.2px solid var(--p-inputtext-border-color);"
+              />
+            </template>
+          </Select>
+          <Tag
             v-else
             v-model="customer.status"
-            readonly
-            size="small"
+            :value="customer.status"
+            :severity="getSeverity(customer.status)"
+            style="width: 25%; height: 100%; border: 0.2px solid var(--p-inputtext-border-color);"
           />
         </div>
         <div class="flex flex-col flex-1 gap-1">
@@ -365,6 +383,7 @@ const handleSubmit = () => {
         :on-add="addRelatedParty"
         :form-component="RelatedPartyOrPartyRoleForm"
       />
+      <Button type="submit" style="display: none;"/>
     </Form>
     <template #footer>
       <div class="flex justify-end gap-3">

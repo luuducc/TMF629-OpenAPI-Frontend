@@ -1,7 +1,7 @@
 import type { PrimeVueSeverity } from '@/types'
 import { StatusType } from '@/types'
 
-export const getSeverity = (status: StatusType): PrimeVueSeverity => {
+export const getSeverity = (status: StatusType | undefined): PrimeVueSeverity => {
   switch (status) {
     case StatusType.Draft:
     case StatusType.Inactive:
