@@ -26,7 +26,6 @@ import { getSeverity } from '@/utils/status-utils'
 const toast = useToast()
 // props
 const props = defineProps<{ mode: CustomerFormMode }>()
-const readonly = computed(() => props.mode === CustomerFormMode.View)
 const visible = defineModel<boolean>('visible')
 const customer = defineModel<Customer>('customer', {
   default:{
@@ -65,7 +64,19 @@ const customer = defineModel<Customer>('customer', {
   }
 })
 const isUpdateSuccess = defineModel<boolean>('isUpdateSuccess', { default: false })
-
+const readonly = computed(() => props.mode === CustomerFormMode.View)
+const dialogHeader = computed(() => {
+  switch (props.mode) {
+    case CustomerFormMode.Create:
+      return 'Create new customer'
+    case CustomerFormMode.View:
+      return 'Customer information'
+    case CustomerFormMode.Update:
+      return 'Update customer'
+    default:
+      return ''
+  }
+})
 // variables
 const statusOptions: { name: string, type: StatusType }[] = 
   Object.values(StatusType).map(status => ({
@@ -179,7 +190,7 @@ const handleSubmit = () => {
 }
 </script>
 <template>
-  <Dialog v-model:visible="visible" header="Create new customer">
+  <Dialog v-model:visible="visible" :header="dialogHeader">
     <Form class="flex flex-col gap-y-6 w-[35rem]" @submit="handleSubmit">
 
       <!-- Customer Name and Id -->
