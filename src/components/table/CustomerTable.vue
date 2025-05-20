@@ -87,9 +87,11 @@ const handleUpdate = (data: Customer, rowIndex: number) => {
 }
 const handleDelete = (rowIndex: number) => {
   if (customers.value) {
-    const deleteId = customers.value[rowIndex].id
+    const customerToDelete = customers.value[rowIndex]
+    const deleteId = customerToDelete.id
+    const displayName = customerToDelete.name
     confirm.require({
-      message: 'Do you want to delete this record?',
+      message: `Do you want to delete ${displayName}?`,
       header: 'Danger Zone',
       icon: 'pi pi-info-circle',
       rejectProps: {
@@ -109,7 +111,7 @@ const handleDelete = (rowIndex: number) => {
             if (customers.value) {
               customers.value = customers.value.filter(el => el.id !== deleteId)
             }
-            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: `Deleted ${displayName}`, life: 3000 });
           } catch (err) {
             if (axios.isAxiosError(err)) {
               const errData = err.response?.data
@@ -120,7 +122,7 @@ const handleDelete = (rowIndex: number) => {
           }
       },
       reject: () => {
-          toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+          toast.add({ severity: 'error', summary: 'Rejected', detail: `Delete cancelled for ${displayName}`, life: 3000 });
       }
     })
   }

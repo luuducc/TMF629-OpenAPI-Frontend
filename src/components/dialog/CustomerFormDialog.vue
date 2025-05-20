@@ -67,13 +67,14 @@ const isUpdateSuccess = defineModel<boolean>('isUpdateSuccess', { default: false
 const isCreateSuccess = defineModel<boolean>('isCreateSuccess', { default: false })
 const readonly = computed(() => props.mode === CustomerFormMode.View)
 const dialogHeader = computed(() => {
+  const customerName = customer.value.name ?? ''
   switch (props.mode) {
     case CustomerFormMode.Create:
       return 'Create new customer'
     case CustomerFormMode.View:
-      return 'Customer information'
+      return customerName ? `Detail information of ${customerName}` : 'Customer information'
     case CustomerFormMode.Update:
-      return 'Update customer'
+      return customerName ? `Update details for ${customerName}` : 'Update customer'
     default:
       return ''
   }
@@ -144,7 +145,7 @@ const updateCustomer = async () => {
     toast.add({
       severity: 'success',
       summary: 'Update Successful',
-      detail: 'Customer record has been updated.',
+      detail: `Customer ${customer.value.name} has been updated.`,
       life: 3000
     })
 
@@ -295,7 +296,7 @@ const handleSubmit = () => {
             v-model="customer.status"
             :value="customer.status"
             :severity="getSeverity(customer.status)"
-            style="width: 25%; height: 100%; border: 0.2px solid var(--p-inputtext-border-color);"
+            style="width: fit-content; height: 100%; border: 0.2px solid var(--p-inputtext-border-color);"
           />
         </div>
         <div class="flex flex-col flex-1 gap-1">
