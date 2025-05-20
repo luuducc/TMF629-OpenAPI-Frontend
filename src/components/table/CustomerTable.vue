@@ -10,11 +10,12 @@ import {
   Tag, 
   Toast,
   ConfirmDialog,
+  Select,
   useToast,
   useConfirm
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode } from '@/types'
+import { CustomerFormMode, StatusType } from '@/types'
 import type { Customer } from '@/types'
 import { ref, onMounted, watch } from 'vue'
 import products from '@/mockdata/data.js'
@@ -67,8 +68,14 @@ const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
 const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    status: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
+
+const statusOptions: { name: string, type: StatusType }[] = 
+  Object.values(StatusType).map(status => ({
+    name: status, type: status
+  }))
 
 watch(isUpdateSuccess, () => {
   if (isUpdateSuccess.value && customers.value && customer.value) {
@@ -154,6 +161,7 @@ const handleDelete = (rowIndex: number) => {
       :rowsPerPageOptions="[20, 30, 40, 50]"
       removableSort
       sortMode="multiple"
+      filter-display="row"
     >
       <template #header>
         <IconField>
@@ -167,9 +175,30 @@ const handleDelete = (rowIndex: number) => {
         </template>
       </Column>
       <Column header="Name" field="name" sortable style="width: 15%"></Column>
-      <Column header="Status" field="status" sortable style="width: 10%">
+      <Column header="Status" field="status" sortable style="width: 10%" :showFilterMenu="false">
         <template #body="{ data }">
             <Tag :value="data.status" :severity="getSeverity(data.status)" />
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="statusOptions"
+            option-label="name"
+            option-value="type"
+            placeholder="Select One"
+            show-clear
+            size="small"
+            style="min-width: 10rem;"
+          >
+            <template #option="slotProps">
+              <Tag 
+                :value="slotProps.option.name" 
+                :severity="getSeverity(slotProps.option.name)"
+                style="height: 1.7rem;"
+              />
+            </template>
+          </Select>
         </template>
       </Column>
       <Column header="Description" field="description" style="width: 40%"></Column>
