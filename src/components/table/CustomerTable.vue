@@ -201,7 +201,13 @@ const handleDelete = (rowIndex: number) => {
           </Select>
         </template>
       </Column>
-      <Column header="Description" field="description" style="width: 40%"></Column>
+      <Column header="Description" field="description" style="width: 34%;">
+        <template #body="{ data }">
+          <span class="truncate-text" v-tooltip="data.description">
+            {{ data.description }}
+          </span>
+        </template>
+      </Column>
       <Column header="Actions" class="w-70">
         <template #body="{ data, index }">
           <div class="flex justify-between">
