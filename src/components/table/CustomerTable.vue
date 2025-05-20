@@ -21,6 +21,7 @@ import products from '@/mockdata/data.js'
 import { CustomerService } from '@/services/customerService'
 import { getSeverity } from '@/utils/status-utils'
 import axios from 'axios'
+import { FilterMatchMode } from '@primevue/core/api'
 
 const toast = useToast()
 const confirm = useConfirm()
@@ -65,6 +66,9 @@ const defaultCustomer: Customer = {
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+})
 
 watch(isUpdateSuccess, () => {
   if (isUpdateSuccess.value && customers.value && customer.value) {
@@ -132,24 +136,18 @@ const handleDelete = (rowIndex: number) => {
 <template>
   <Toast/>
   <ConfirmDialog/>
-  <section class="flex mb-4">
-      <CustomerFormDialog 
-        :mode 
-        v-model:customer="customer" 
-        v-model:isUpdateSuccess="isUpdateSuccess"
-        v-model:visible="showDialog" 
-      />
-      <IconField>
-        <InputIcon class="pi pi-search" />
-        <InputText placeholder="Search customer" />
-      </IconField>
-  </section>
-  <Divider />
+  <CustomerFormDialog 
+    :mode 
+    v-model:customer="customer" 
+    v-model:isUpdateSuccess="isUpdateSuccess"
+    v-model:visible="showDialog" 
+  />
   <section>
     <DataTable 
+      v-model:filters="filters"
+      :global-filter-fields="['name', 'status']"
       :value="customers" 
       tableStyle="min-width: 50rem" 
-      showGridlines 
       stripedRows
       paginator 
       :rows="20" 
@@ -157,6 +155,12 @@ const handleDelete = (rowIndex: number) => {
       removableSort
       sortMode="multiple"
     >
+      <template #header>
+        <IconField>
+          <InputIcon class="pi pi-search" />
+          <InputText v-model="filters.global.value" placeholder="Search customer" size="small" />
+        </IconField>
+      </template>
       <Column header="#" style="width: 10%">
         <template #body="{ index }">
           {{ index + 1 }}
