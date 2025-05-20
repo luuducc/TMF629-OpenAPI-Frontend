@@ -69,6 +69,7 @@ const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     status: { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 
@@ -174,7 +175,17 @@ const handleDelete = (rowIndex: number) => {
           {{ index + 1 }}
         </template>
       </Column>
-      <Column header="Name" field="name" sortable style="width: 15%"></Column>
+      <Column header="Name" field="name" sortable style="width: 15%">
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            @input="filterCallback"
+            type="text"
+            size="small"
+            placeholder="Search by name"
+          />
+        </template>
+      </Column>
       <Column header="Status" field="status" sortable style="width: 10%" :showFilterMenu="false">
         <template #body="{ data }">
             <Tag :value="data.status" :severity="getSeverity(data.status)" />
