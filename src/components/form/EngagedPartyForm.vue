@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { PartyType } from '@/types/party-type';
-import { InputText, Select } from 'primevue';
+import { InputText, Select, Message } from 'primevue';
 import type { PartyRef } from '@/types';
 
 const options: { name: string, type: PartyType }[] = 
@@ -9,7 +9,10 @@ const options: { name: string, type: PartyType }[] =
     name: party, type: party
   }))
 
-defineProps<{ readonly: boolean }>()
+defineProps<{ 
+  readonly: boolean,
+  form: Record<string, any>
+}>()
 
 const engagedParty = defineModel<PartyRef>({ required: true})
 </script>
@@ -32,6 +35,7 @@ const engagedParty = defineModel<PartyRef>({ required: true})
       <Select 
         v-if="!readonly"
         v-model="engagedParty['@referredType']"
+        name="engagedPartyType"
         :options
         option-label="name"
         option-value="type"
@@ -45,6 +49,7 @@ const engagedParty = defineModel<PartyRef>({ required: true})
         readonly
         size="small"
       />
+      <Message v-if="form.engagedPartyType?.invalid" size="small" severity="error" variant="simple">{{ form.engagedPartyType.error?.message }}</Message>
     </div>
   </div>
 </template>

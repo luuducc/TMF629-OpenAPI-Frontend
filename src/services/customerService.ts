@@ -6,7 +6,6 @@ const API_URL = 'http://localhost:8080/customerManagement/v1/customer'
 export const CustomerService = {
   async getCustomers(): Promise<Customer[]> {
     const response = await axios.get(API_URL)
-    console.log('get all', response)
     const customers: Customer[] = response.data.items as Customer[]
     return customers.map(formatCustomerResponse)
   },
@@ -17,7 +16,6 @@ export const CustomerService = {
   },
 
   async createCustomer(customer: Customer): Promise<Customer> {
-    console.log('ccreate in service, ', formatCustomerRequest(customer))
     const response = await axios.post(API_URL, formatCustomerRequest(customer))
     return formatCustomerResponse(response.data as Customer)
   },

@@ -62,10 +62,7 @@ watch(isCreateSuccess, () => {
 })
 onMounted(async () => {
   const data = await CustomerService.getCustomers()
-  // const data = products
   customers.value = data
-  console.log('data', data)
-  console.log('customers', customers.value)
 })
 
 </script>

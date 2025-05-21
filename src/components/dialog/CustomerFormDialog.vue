@@ -5,8 +5,8 @@ import {
   StatusType} from '@/types'
 import type {
   Customer} from '@/types'
-import { Button, DatePicker, Dialog, InputText, Tag, Textarea, Select, useToast } from 'primevue'
-import { Form } from '@primevue/forms'
+import { Button, DatePicker, Dialog, Message, InputText, Tag, Textarea, Select, useToast } from 'primevue'
+import { Form, type FormResolverOptions, type FormSubmitEvent } from '@primevue/forms'
 import {
   AccountForm,
   AgreementForm,
@@ -84,9 +84,9 @@ const statusOptions: { name: string, type: StatusType }[] =
     name: status, type: status
   }))
 // HANDLERS
-watch(customer, newVal => {
-  console.log('new in child', newVal)
-}, { deep: true})
+// watch(customer, newVal => {
+//   console.log('new in child', newVal)
+// }, { deep: true})
 const addAccount = (): void => {
   customer.value.account.push({
     name: '', '@referredType': undefined
@@ -180,7 +180,6 @@ const updateCustomer = async () => {
 
 const createCustomer = async () => {
   try {
-    console.log('customer to create', customer.value)
     const result = await CustomerService.createCustomer(customer.value)
 
     // Show success toast
@@ -231,10 +230,32 @@ const handleSubmit = () => {
       break
   }
 }
+const resolver = (e: FormResolverOptions): Record<string, any> => {
+  console.log("Resolver called with:", e)
+  const { values } = e
+  const errors: { [key in string ]: any} = {}
+
+  if (!values.customerName) {
+    errors.customerName = [{ message: 'Customer name is required' }]
+  }
+  if (!values.engagedPartyType) {
+    errors.engagedPartyType = [{ message: 'Party type is required '}]
+  }
+
+  return {
+    values, // optional
+    errors
+  }
+}
 </script>
 <template>
   <Dialog v-model:visible="visible" :header="dialogHeader">
-    <Form class="flex flex-col gap-y-6 w-[35rem]" @submit="handleSubmit">
+    <Form 
+      v-slot="$form"
+      @submit="handleSubmit"
+      :resolver
+      class="flex flex-col gap-y-6 w-[35rem]" 
+    >
 
       <!-- Customer Name and Id -->
       <div class="flex gap-4">
