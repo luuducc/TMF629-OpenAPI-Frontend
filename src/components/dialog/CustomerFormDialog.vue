@@ -220,7 +220,9 @@ const createCustomer = async () => {
     })
   }
 }
-const handleSubmit = () => {
+const handleSubmit = (e: FormSubmitEvent) => {
+  const { valid } = e
+  if (!valid) return
   switch (mode) {
     case CustomerFormMode.Update:
       updateCustomer()
@@ -254,217 +256,219 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
       v-slot="$form"
       @submit="handleSubmit"
       :resolver
-      class="flex flex-col gap-y-6 w-[35rem]" 
     >
-
-      <!-- Customer Name and Id -->
-      <div class="flex gap-4">
-        <div class="flex flex-col flex-1 gap-1">
-          <label class="font-medium" for="customerName">Name</label>
-          <InputText 
-            v-model="customer.name"
-            :readonly
-            size="small"
-            placeholder="Customer name"
-            id="customerName"
-          />
-        </div>
-        <div v-if="mode !== CustomerFormMode.Create" class="flex flex-col flex-1 gap-1">
-          <label class="font-medium" for="customerId">Id</label>
-          <InputText 
-            v-model="customer.id"
-            readonly
-            size="small"
-            placeholder="Customer Id"
-            id="customerId"
-          />
-        </div>
-      </div>
-
-      <!-- Status and Status Reason -->
-      <div v-if="mode !== CustomerFormMode.Create" class="flex gap-4">
-        <div class="flex flex-col flex-1 gap-1">
-          <label class="font-medium" for="customerStatus">Status</label>
-          <Select 
-            v-if="!readonly"
-            v-model="customer.status"
-            :options="statusOptions"
-            option-label="name"
-            option-value="type"
-            size="small"
-            placeholder="Select a customer status"
-            id="customerStatus"
-          >
-            <template #value="slotProps">
-              <Tag 
-                :value="slotProps.value" 
-                :severity="getSeverity(slotProps.value)"
-                class="text-red"
-                style="height: 1.3rem; border: 0.2px solid var(--p-inputtext-border-color);"
-              />
-            </template>
-            <template #option="slotProps">
-              <Tag 
-                :value="slotProps.option.name" 
-                :severity="getSeverity(slotProps.option.name)"
-                style="height: 1.5rem; border: 0.2px solid var(--p-inputtext-border-color);"
-              />
-            </template>
-          </Select>
-          <Tag
-            v-else
-            v-model="customer.status"
-            :value="customer.status"
-            :severity="getSeverity(customer.status)"
-            style="width: fit-content; height: 100%; border: 0.2px solid var(--p-inputtext-border-color);"
-          />
-        </div>
-        <div class="flex flex-col flex-1 gap-1">
-          <label class="font-medium" for="customerStatusReason">Status reason</label>
-          <InputText 
-            v-model="customer.statusReason"
-            :readonly
-            size="small"
-            :placeholder="readonly ? '' : 'Reason for status'"
-            id="customerStatusReason"
-          />
-        </div>
-      </div>
-
-      <!-- Valid For -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium">Valid for</label>
+      <!-- Form content -->
+      <div class="flex flex-col gap-y-6 w-[35rem]">
+        <!-- Customer Name and Id -->
         <div class="flex gap-4">
           <div class="flex flex-col flex-1 gap-1">
-            <label class="text-sm font-medium" for="startDate">Start date</label>
-            <DatePicker 
-              v-model="customer.validFor.startDateTime"
+            <label class="font-medium" for="customerName">Name</label>
+            <InputText 
+              v-model="customer.name"
               :readonly
+              name="customerName"
               size="small"
-              id="startDate"
+              placeholder="Customer name"
+              id="customerName"
             />
+            <Message v-if="$form.customerName?.invalid" size="small" severity="error" variant="simple">{{ $form.customerName.error?.message }}</Message>
           </div>
-          <div class="flex flex-col flex-1 gap-1">
-            <label class="text-sm font-medium" for="endDate">End date</label>
-            <DatePicker 
-              v-model="customer.validFor.endDateTime"
-              :readonly
+          <div v-if="mode !== CustomerFormMode.Create" class="flex flex-col flex-1 gap-1">
+            <label class="font-medium" for="customerId">Id</label>
+            <InputText 
+              v-model="customer.id"
+              readonly
               size="small"
-              id="endDate"
+              placeholder="Customer Id"
+              id="customerId"
             />
           </div>
         </div>
-      </div>
-
-      <!-- Engaged Party -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium">Engaged Party</label>
-        <EngagedPartyForm v-model="customer.engagedParty" :readonly/>
-      </div>
-
-      <!-- Role -->
-      <div class="flex flex-col gap-1">
-        <label class="font-medium" for="role">Role</label>
-        <InputText 
-          v-model="customer.role" 
+  
+        <!-- Status and Status Reason -->
+        <div v-if="mode !== CustomerFormMode.Create" class="flex gap-4">
+          <div class="flex flex-col flex-1 gap-1">
+            <label class="font-medium" for="customerStatus">Status</label>
+            <Select 
+              v-if="!readonly"
+              v-model="customer.status"
+              :options="statusOptions"
+              option-label="name"
+              option-value="type"
+              size="small"
+              placeholder="Select a customer status"
+              id="customerStatus"
+            >
+              <template #value="slotProps">
+                <Tag 
+                  :value="slotProps.value" 
+                  :severity="getSeverity(slotProps.value)"
+                  class="text-red"
+                  style="height: 1.3rem; border: 0.2px solid var(--p-inputtext-border-color);"
+                />
+              </template>
+              <template #option="slotProps">
+                <Tag 
+                  :value="slotProps.option.name" 
+                  :severity="getSeverity(slotProps.option.name)"
+                  style="height: 1.5rem; border: 0.2px solid var(--p-inputtext-border-color);"
+                />
+              </template>
+            </Select>
+            <Tag
+              v-else
+              v-model="customer.status"
+              :value="customer.status"
+              :severity="getSeverity(customer.status)"
+              style="width: fit-content; height: 100%; border: 0.2px solid var(--p-inputtext-border-color);"
+            />
+          </div>
+          <div class="flex flex-col flex-1 gap-1">
+            <label class="font-medium" for="customerStatusReason">Status reason</label>
+            <InputText 
+              v-model="customer.statusReason"
+              :readonly
+              size="small"
+              :placeholder="readonly ? '' : 'Reason for status'"
+              id="customerStatusReason"
+            />
+          </div>
+        </div>
+  
+        <!-- Valid For -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium">Valid for</label>
+          <div class="flex gap-4">
+            <div class="flex flex-col flex-1 gap-1">
+              <label class="text-sm font-medium" for="startDate">Start date</label>
+              <DatePicker 
+                v-model="customer.validFor.startDateTime"
+                :readonly
+                size="small"
+                id="startDate"
+              />
+            </div>
+            <div class="flex flex-col flex-1 gap-1">
+              <label class="text-sm font-medium" for="endDate">End date</label>
+              <DatePicker 
+                v-model="customer.validFor.endDateTime"
+                :readonly
+                size="small"
+                id="endDate"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <!-- Engaged Party -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium">Engaged Party</label>
+          <EngagedPartyForm v-model="customer.engagedParty" :form="$form" :readonly/>
+        </div>
+  
+        <!-- Role -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="role">Role</label>
+          <InputText 
+            v-model="customer.role" 
+            :readonly
+            size="small" 
+            :placeholder="readonly ? '' : 'Role played by Engaged party'" 
+            id="role" 
+          />
+        </div>
+  
+        <!-- Description -->
+        <div class="flex flex-col gap-1">
+          <label class="font-medium" for="description">Description</label>
+          <Textarea 
+            v-model="customer.description"
+            :readonly
+            :placeholder="readonly ? '' : 'Write something about customer...'" 
+            size="small" 
+            id="description" 
+          />
+        </div>
+  
+        <!-- Party Role Specification -->
+        <div class="flex flex-col gap-2">
+          <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
+          <PartyRoleSpecificationForm v-model="customer.partyRoleSpecification" :readonly/>
+        </div>
+  
+        <!-- Account -->
+        <FormListGenerator
+          main-label="Account"
+          :list="customer.account"
           :readonly
-          size="small" 
-          :placeholder="readonly ? '' : 'Role played by Engaged party'" 
-          id="role" 
+          :on-add="addAccount"
+          :form-component="AccountForm"
+        />
+  
+        <!-- Agreement -->
+        <FormListGenerator
+          main-label="Agreement"
+          :list="customer.agreement"
+          :readonly
+          :on-add="addAgreement"
+          :form-component="AgreementForm"
+        />
+  
+        <!-- Characteristic -->
+        <FormListGenerator
+          main-label="Characteristic"
+          :list="customer.characteristic"
+          :readonly
+          :on-add="addCharacteristic"
+          :form-component="CharacteristicForm"
+        />
+  
+        <!-- Contact Medium -->
+        <FormListGenerator
+          main-label="Contact medium"
+          sub-label="Medium"
+          :list="customer.contactMedium"
+          :readonly
+          :on-add="addContactMedium"
+          :form-component="ContactMediumForm"
+        />
+  
+        <!-- Credit Profile -->
+        <FormListGenerator
+          main-label="Credit profile"
+          sub-label="Profile"
+          :list="customer.creditProfile"
+          :readonly
+          :on-add="addCreditProfile"
+          :form-component="CreditProfileForm"
+        />
+  
+        <!-- Payment Method -->
+        <FormListGenerator
+          main-label="Payment method"
+          sub-label="Method"
+          :list="customer.paymentMethod"
+          :readonly
+          :on-add="addPaymentMethod"
+          :form-component="PaymentMethodForm"
+        />
+  
+        <!-- Related Party Or Party Role -->
+        <FormListGenerator
+          main-label="Related party"
+          sub-label="Party"
+          :list="customer.relatedParty"
+          :readonly
+          :on-add="addRelatedParty"
+          :form-component="RelatedPartyOrPartyRoleForm"
         />
       </div>
 
-      <!-- Description -->
-      <div class="flex flex-col gap-1">
-        <label class="font-medium" for="description">Description</label>
-        <Textarea 
-          v-model="customer.description"
-          :readonly
-          :placeholder="readonly ? '' : 'Write something about customer...'" 
-          size="small" 
-          id="description" 
-        />
-      </div>
-
-      <!-- Party Role Specification -->
-      <div class="flex flex-col gap-2">
-        <label class="font-medium" for="partyRoleSpecification">Party role specification</label>
-        <PartyRoleSpecificationForm v-model="customer.partyRoleSpecification" :readonly/>
-      </div>
-
-      <!-- Account -->
-      <FormListGenerator
-        main-label="Account"
-        :list="customer.account"
-        :readonly
-        :on-add="addAccount"
-        :form-component="AccountForm"
-      />
-
-      <!-- Agreement -->
-      <FormListGenerator
-        main-label="Agreement"
-        :list="customer.agreement"
-        :readonly
-        :on-add="addAgreement"
-        :form-component="AgreementForm"
-      />
-
-      <!-- Characteristic -->
-      <FormListGenerator
-        main-label="Characteristic"
-        :list="customer.characteristic"
-        :readonly
-        :on-add="addCharacteristic"
-        :form-component="CharacteristicForm"
-      />
-
-      <!-- Contact Medium -->
-      <FormListGenerator
-        main-label="Contact medium"
-        sub-label="Medium"
-        :list="customer.contactMedium"
-        :readonly
-        :on-add="addContactMedium"
-        :form-component="ContactMediumForm"
-      />
-
-      <!-- Credit Profile -->
-      <FormListGenerator
-        main-label="Credit profile"
-        sub-label="Profile"
-        :list="customer.creditProfile"
-        :readonly
-        :on-add="addCreditProfile"
-        :form-component="CreditProfileForm"
-      />
-
-      <!-- Payment Method -->
-      <FormListGenerator
-        main-label="Payment method"
-        sub-label="Method"
-        :list="customer.paymentMethod"
-        :readonly
-        :on-add="addPaymentMethod"
-        :form-component="PaymentMethodForm"
-      />
-
-      <!-- Related Party Or Party Role -->
-      <FormListGenerator
-        main-label="Related party"
-        sub-label="Party"
-        :list="customer.relatedParty"
-        :readonly
-        :on-add="addRelatedParty"
-        :form-component="RelatedPartyOrPartyRoleForm"
-      />
-      <Button type="submit" style="display: none;"/>
-    </Form>
-    <template #footer>
-      <div class="flex justify-end gap-3">
+      <!-- Buttons -->
+      <div class="sticky bottom-0 flex justify-end gap-3 bg-white py-3">
         <Button 
           v-if="!readonly"
-          @click="handleSubmit" 
+          type="submit"
           icon="pi pi-check" 
           size="small" 
           :label="mode === CustomerFormMode.Create ? 'Create' : 'Save'"
@@ -479,6 +483,6 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
           outlined
         />
       </div>
-    </template>
+    </Form>
   </Dialog>
 </template>
