@@ -20,7 +20,6 @@ import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType } from '@/types'
 import type { Customer } from '@/types'
 import { ref, onMounted, watch } from 'vue'
-import products from '@/mockdata/data.js'
 import { CustomerService } from '@/services/customerService'
 import { getSeverity } from '@/utils/status-utils'
 import axios from 'axios'
@@ -217,6 +216,11 @@ const handleDelete = (rowIndex: number) => {
               />
             </template>
           </Select>
+        </template>
+      </Column>
+      <Column header="Engaged party">
+        <template #body="{ data }">
+          {{ data.engagedParty['@referredType'] }}
         </template>
       </Column>
       <Column header="Description" field="description">
