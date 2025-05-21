@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8080/customerManagement/v1/customer'
 
 export const CustomerService = {
   async getCustomers(): Promise<Customer[]> {
-    const response = await axios.get(API_URL)
+    const response = await axios.get(API_URL + '?limit=100')
     const customers: Customer[] = response.data.items as Customer[]
     return customers.map(formatCustomerResponse)
   },
