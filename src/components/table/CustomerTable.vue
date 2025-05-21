@@ -14,7 +14,8 @@ import {
   useToast,
   useConfirm,
   type DataTableFilterMeta,
-  type DataTableFilterMetaData
+  type DataTableFilterMetaData,
+  type DataTablePageEvent
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType, PartyType } from '@/types'
@@ -69,6 +70,8 @@ const defaultCustomer: Customer = {
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
+const currentPage = ref<number>(0)
+const pageRows = ref<number>(20)
 const filters = ref<DataTableFilterMeta>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -87,7 +90,8 @@ const partyTypeOptions: { name: string, type: PartyType}[] =
 
 watch(isUpdateSuccess, () => {
   if (isUpdateSuccess.value && customers.value && customer.value) {
-    customers.value[customerIndex.value] = customer.value
+    console.log('customer to change', currentPage.value + customerIndex.value)
+    customers.value[currentPage.value * pageRows.value + customerIndex.value] = customer.value
     isUpdateSuccess.value = false
   }
 })
@@ -147,6 +151,11 @@ const handleDelete = (rowIndex: number) => {
     })
   }
 }
+const onPage = (e: DataTablePageEvent): void => {
+  currentPage.value = e.page
+  pageRows.value = e.rows
+  console.log('page', e)
+}
 </script>
 
 <template>
@@ -172,6 +181,7 @@ const handleDelete = (rowIndex: number) => {
       removableSort
       sortMode="multiple"
       filter-display="menu"
+      @page="onPage"
     >
       <template #header>
         <IconField>
