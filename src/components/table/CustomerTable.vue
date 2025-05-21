@@ -17,7 +17,7 @@ import {
   type DataTableFilterMetaData
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
-import { CustomerFormMode, StatusType } from '@/types'
+import { CustomerFormMode, StatusType, PartyType } from '@/types'
 import type { Customer } from '@/types'
 import { ref, onMounted, watch } from 'vue'
 import { CustomerService } from '@/services/customerService'
@@ -73,11 +73,16 @@ const filters = ref<DataTableFilterMeta>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   status: { value: null, matchMode: FilterMatchMode.EQUALS },
+  'engagedParty.@referredType': { value: null, matchMode: FilterMatchMode.EQUALS }
 })
 
 const statusOptions: { name: string, type: StatusType }[] = 
   Object.values(StatusType).map(status => ({
     name: status, type: status
+  }))
+const partyTypeOptions: { name: string, type: PartyType}[] = 
+  Object.values(PartyType).map(value => ({
+    name:value, type: value
   }))
 
 watch(isUpdateSuccess, () => {
@@ -88,7 +93,6 @@ watch(isUpdateSuccess, () => {
 })
 const handleDetails = (data: Customer) => {
   customer.value = { ...defaultCustomer, ...data}
-  console.log('detail here', data.name)
   customerName.value = data.name
   mode.value = CustomerFormMode.View
   showDialog.value = true
@@ -100,7 +104,6 @@ const handleUpdate = (data: Customer, rowIndex: number) => {
   customerName.value = data.name
   mode.value = CustomerFormMode.Update
   showDialog.value = true
-  console.log('update')
 }
 const handleDelete = (rowIndex: number) => {
   if (customers.value) {
@@ -192,7 +195,7 @@ const handleDelete = (rowIndex: number) => {
           />
         </template>
       </Column>
-      <Column header="Status" field="status" sortable style="width: 15%" :showFilterMenu="false">
+      <Column header="Status" field="status" :showFilterMatchModes="false" sortable style="width: 15%">
         <template #body="{ data }">
             <Tag :value="data.status" :severity="getSeverity(data.status)" />
         </template>
@@ -218,9 +221,21 @@ const handleDelete = (rowIndex: number) => {
           </Select>
         </template>
       </Column>
-      <Column header="Engaged party">
+      <Column header="Engaged party" field="engagedParty.@referredType" :showFilterMatchModes="false" sortable>
         <template #body="{ data }">
           {{ data.engagedParty['@referredType'] }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <Select 
+            v-model="filterModel.value"
+            @change="filterCallback()"
+            :options="partyTypeOptions"
+            option-label="name"
+            option-value="type"
+            show-clear
+            placeholder="Select One"
+            size="small"
+          />
         </template>
       </Column>
       <Column header="Description" field="description">
