@@ -12,7 +12,9 @@ import {
   ConfirmDialog,
   Select,
   useToast,
-  useConfirm
+  useConfirm,
+  type DataTableFilterMeta,
+  type DataTableFilterMetaData
 } from 'primevue'
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType } from '@/types'
@@ -28,6 +30,7 @@ const toast = useToast()
 const confirm = useConfirm()
 const showDialog = ref<boolean>(false)
 const mode = ref<CustomerFormMode>(CustomerFormMode.Create)
+const customerName = ref<string>('')
 const customers = defineModel<Customer[]>()
 const defaultCustomer: Customer = {
   // Basic info
@@ -67,10 +70,10 @@ const defaultCustomer: Customer = {
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
 const customerIndex = ref<number>(-1)
-const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS }
+const filters = ref<DataTableFilterMeta>({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  status: { value: null, matchMode: FilterMatchMode.EQUALS },
 })
 
 const statusOptions: { name: string, type: StatusType }[] = 
@@ -86,6 +89,8 @@ watch(isUpdateSuccess, () => {
 })
 const handleDetails = (data: Customer) => {
   customer.value = { ...defaultCustomer, ...data}
+  console.log('detail here', data.name)
+  customerName.value = data.name
   mode.value = CustomerFormMode.View
   showDialog.value = true
   console.log('detail')
@@ -93,6 +98,7 @@ const handleDetails = (data: Customer) => {
 const handleUpdate = (data: Customer, rowIndex: number) => {
   customer.value = { ...defaultCustomer, ...data}
   customerIndex.value = rowIndex
+  customerName.value = data.name
   mode.value = CustomerFormMode.Update
   showDialog.value = true
   console.log('update')
@@ -145,7 +151,8 @@ const handleDelete = (rowIndex: number) => {
   <Toast/>
   <ConfirmDialog/>
   <CustomerFormDialog 
-    :mode 
+    :mode
+    :customer-name="customerName"
     v-model:customer="customer" 
     v-model:isUpdateSuccess="isUpdateSuccess"
     v-model:visible="showDialog" 
@@ -162,15 +169,15 @@ const handleDelete = (rowIndex: number) => {
       :rowsPerPageOptions="[20, 30, 40, 50]"
       removableSort
       sortMode="multiple"
-      filter-display="row"
+      filter-display="menu"
     >
       <template #header>
         <IconField>
           <InputIcon class="pi pi-search" />
-          <InputText v-model="filters.global.value" placeholder="Search customer" size="small" />
+          <InputText v-model="(filters.global as DataTableFilterMetaData).value" placeholder="Keyword Search" size="small" />
         </IconField>
       </template>
-      <Column header="#" style="width: 10%">
+      <Column header="#" style="width: 5%">
         <template #body="{ index }">
           {{ index + 1 }}
         </template>
@@ -186,7 +193,7 @@ const handleDelete = (rowIndex: number) => {
           />
         </template>
       </Column>
-      <Column header="Status" field="status" sortable style="width: 10%" :showFilterMenu="false">
+      <Column header="Status" field="status" sortable style="width: 15%" :showFilterMenu="false">
         <template #body="{ data }">
             <Tag :value="data.status" :severity="getSeverity(data.status)" />
         </template>
@@ -212,14 +219,14 @@ const handleDelete = (rowIndex: number) => {
           </Select>
         </template>
       </Column>
-      <Column header="Description" field="description" style="width: 34%;">
+      <Column header="Description" field="description">
         <template #body="{ data }">
           <span class="truncate-text" v-tooltip="data.description">
             {{ data.description }}
           </span>
         </template>
       </Column>
-      <Column header="Actions" class="w-70">
+      <Column header="Actions" style="width: 25%;">
         <template #body="{ data, index }">
           <div class="flex justify-between">
             <!-- View Details Button -->

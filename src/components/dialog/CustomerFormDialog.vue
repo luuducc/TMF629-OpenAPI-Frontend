@@ -25,7 +25,7 @@ import { getSeverity } from '@/utils/status-utils'
 
 const toast = useToast()
 // props
-const props = defineProps<{ mode: CustomerFormMode }>()
+const { mode, customerName = '' } = defineProps<{ mode: CustomerFormMode, customerName?: string }>()
 const visible = defineModel<boolean>('visible')
 const customer = defineModel<Customer>('customer', {
   default:{
@@ -65,10 +65,9 @@ const customer = defineModel<Customer>('customer', {
 })
 const isUpdateSuccess = defineModel<boolean>('isUpdateSuccess', { default: false })
 const isCreateSuccess = defineModel<boolean>('isCreateSuccess', { default: false })
-const readonly = computed(() => props.mode === CustomerFormMode.View)
+const readonly = computed(() => mode === CustomerFormMode.View)
 const dialogHeader = computed(() => {
-  const customerName = customer.value.name ?? ''
-  switch (props.mode) {
+  switch (mode) {
     case CustomerFormMode.Create:
       return 'Create new customer'
     case CustomerFormMode.View:
@@ -223,7 +222,7 @@ const createCustomer = async () => {
   }
 }
 const handleSubmit = () => {
-  switch (props.mode) {
+  switch (mode) {
     case CustomerFormMode.Update:
       updateCustomer()
       break
@@ -447,7 +446,7 @@ const handleSubmit = () => {
           @click="handleSubmit" 
           icon="pi pi-check" 
           size="small" 
-          :label="props.mode === CustomerFormMode.Create ? 'Create' : 'Save'"
+          :label="mode === CustomerFormMode.Create ? 'Create' : 'Save'"
           severity="primary" 
         />
         <Button 
