@@ -237,10 +237,10 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
   const { values } = e
   const errors: { [key in string ]: any} = {}
 
-  if (!values.customerName) {
+  if (!customer.value.name && !values.customerName) {
     errors.customerName = [{ message: 'Customer name is required' }]
   }
-  if (!values.engagedPartyType) {
+  if (!customer.value.engagedParty['@referredType'] && !values.engagedPartyType) {
     errors.engagedPartyType = [{ message: 'Party type is required '}]
   }
 
