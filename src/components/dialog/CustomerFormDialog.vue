@@ -233,7 +233,7 @@ const handleSubmit = (e: FormSubmitEvent) => {
   }
 }
 const resolver = (e: FormResolverOptions): Record<string, any> => {
-  console.log("Resolver called with:", e)
+  // console.log("Resolver called with:", e)
   const { values } = e
   const errors: { [key in string ]: any} = {}
 

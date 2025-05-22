@@ -20,7 +20,7 @@ import {
 import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType, PartyType } from '@/types'
 import type { Customer } from '@/types'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, toRaw } from 'vue'
 import { CustomerService } from '@/services/customerService'
 import { getSeverity } from '@/utils/status-utils'
 import axios from 'axios'
@@ -103,7 +103,7 @@ const handleDetails = (data: Customer) => {
   console.log('detail')
 }
 const handleUpdate = (data: Customer, rowIndex: number) => {
-  customer.value = { ...defaultCustomer, ...data}
+  customer.value = { ...defaultCustomer, ...structuredClone(toRaw(data))}
   customerIndex.value = rowIndex
   customerName.value = data.name
   mode.value = CustomerFormMode.Update
