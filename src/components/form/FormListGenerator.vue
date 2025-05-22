@@ -22,7 +22,7 @@ const computedSubLabel = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div v-if="!readonly || list.length > 0" class="flex flex-col gap-2">
     <div class="flex justify-between items-center">
       <label class="font-medium">{{ mainLabel }}</label>
       <Button 
