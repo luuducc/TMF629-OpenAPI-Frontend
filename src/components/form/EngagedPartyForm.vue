@@ -22,12 +22,13 @@ const engagedParty = defineModel<PartyRef>({ required: true})
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="engagedPartyName">Name</label>
       <InputText 
+        v-if="!readonly"
         v-model="engagedParty.name" 
-        :readonly
         size="small" 
         placeholder="Party name"
         id="engagedPartyName" 
       />
+      <p v-else class="text-sm">{{ engagedParty.name }}</p>
     </div>
     
     <div class="flex flex-col gap-1 flex-1">
@@ -43,12 +44,7 @@ const engagedParty = defineModel<PartyRef>({ required: true})
         placeholder="Select a party type"
         id="partyType" 
       />
-      <InputText
-        v-else
-        v-model="engagedParty['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ engagedParty['@referredType'] }}</p>
       <Message v-if="form.engagedPartyType?.invalid" size="small" severity="error" variant="simple">{{ form.engagedPartyType.error?.message }}</Message>
     </div>
   </div>

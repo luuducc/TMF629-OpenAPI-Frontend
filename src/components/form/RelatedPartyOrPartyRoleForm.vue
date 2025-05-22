@@ -18,12 +18,13 @@ const options: { name: string, type: PartyType}[] =
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="relatedName">Name</label>
       <InputText
+        v-if="!readonly"
         v-model="relatedParty.partyOrPartyRole.name"
-        :readonly
         size="small"
-        :placeholder="readonly ? '' : 'Related name'"
+        placeholder="Related name"
         id="relatedName"
       />
+      <p v-else class="text-sm">{{ relatedParty.partyOrPartyRole.name }}</p>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -38,23 +39,19 @@ const options: { name: string, type: PartyType}[] =
         placeholder="Select a related type"
         id="relatedType"
       />
-      <InputText
-        v-else
-        v-model="relatedParty.partyOrPartyRole['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ relatedParty.partyOrPartyRole['@referredType'] }}</p>
     </div>
 
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="relatedRole">Role</label>
       <InputText
+        v-if="!readonly"
         v-model="relatedParty.role"
-        :readonly
         size="small"
-        :placeholder="readonly ? '' : 'Related role'"
+        placeholder="Related role"
         id="relatedRole"
       />
+      <p v-else class="text-sm">{{ relatedParty.role }}</p>
     </div>
   </div>
 </template>

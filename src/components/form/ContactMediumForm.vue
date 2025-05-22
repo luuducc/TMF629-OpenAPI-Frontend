@@ -55,36 +55,32 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       size="small"
       placeholder="Select a contact medium"
     />
-    <InputText
-      v-else
-      v-model="currentOption"
-      readonly
-      class="mb-4"
-      size="small"
-    />
+    <p v-else class="text-sm mb-4">{{ currentOption }}</p>
     
       <!-- Email -->
     <div v-if="currentOption==ContactMediumType.EmailContactMedium" class="flex flex-col gap-2">
       <label class="text-sm font-medium">Email address</label>
       <InputText 
+        v-if="!readonly"
         v-model="(contactMedium as EmailContactMedium).emailAddress"  
-        :readonly
         type="text" 
         size="small" 
-        :placeholder="readonly ? '' : 'e.g., user@example.com'"
+        placeholder="e.g., user@example.com"
       />
+      <p v-else class="text-sm">{{ (contactMedium as EmailContactMedium).emailAddress }}</p>
     </div>
   
       <!-- Fax -->
     <div v-if="currentOption==ContactMediumType.FaxContactMedium" class="flex flex-col gap-2">
       <label class="text-sm font-medium">Fax number</label>
       <InputText 
+        v-if="!readonly"
         v-model="(contactMedium as FaxContactMedium).faxNumber" 
-        :readonly
         type="text" 
         size="small" 
-        :placeholder="readonly ? '' : 'e.g., +84 123 4567'"
+        placeholder="e.g., +84 123 4567"
       />
+      <p v-else class="text-sm">{{ (contactMedium as FaxContactMedium).faxNumber }}</p>
     </div>
   
       <!-- Geographic Address -->
@@ -94,61 +90,67 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">City</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).city" 
-          :readonly
           type="text" 
           size="small" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).city }}</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">Country</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).country" 
-          :readonly
           type="text" 
           size="small" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).country }}</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">Postcode</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).postCode" 
-          :readonly
           type="text"
           size="small" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).postCode }}</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">State or province</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).stateOrProvince" 
-          :readonly
           size="small" 
           type="text" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).stateOrProvince }}</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">Street 1</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).street1" 
-          :readonly
           type="text" 
           size="small" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).street1 }}</p>
       </div>
 
       <div class="flex flex-col gap-2">
         <label class="text-sm font-medium">Street 2</label>
         <InputText 
+          v-if="!readonly"
           v-model="(contactMedium as GeographicAddressContactMedium).street2" 
-          :readonly
           size="small" 
           type="text" 
         />
+        <p v-else class="text-sm">{{ (contactMedium as GeographicAddressContactMedium).street2 }}</p>
       </div>
     </div>
   
@@ -156,24 +158,26 @@ const getInitialContactMedium = (type: ContactMediumType): ContactMedium => {
     <div v-if="currentOption==ContactMediumType.PhoneContactMedium" class="flex flex-col gap-2">
       <label class="text-sm font-medium">Phone number</label>
       <InputText 
+        v-if="!readonly"
         v-model="(contactMedium as PhoneContactMedium).phoneNumber" 
-        :readonly
         type="text" 
         size="small" 
-        :placeholder="readonly ? '' : 'e.g., +84 901 234 567'"
+        placeholder="e.g., +84 901 234 567"
       />
+      <p v-else class="text-sm">{{ (contactMedium as PhoneContactMedium).phoneNumber }}</p>
     </div>
     
       <!-- SocialContactMedium -->
     <div v-if="currentOption==ContactMediumType.SocialContactMedium" class="flex flex-col gap-2">
       <label class="text-sm font-medium">Social network id</label>
       <InputText 
+        v-if="!readonly"
         v-model="(contactMedium as SocialContactMedium).socialNetworkId" 
-        :readonly
         type="text" 
         size="small" 
-        :placeholder="readonly ? '' : 'e.g., @username'"
+        placeholder="e.g., username_1234"
       />
+      <p v-else class="text-sm">{{ (contactMedium as SocialContactMedium).socialNetworkId }}</p>
     </div>  
   </div>
 </template>

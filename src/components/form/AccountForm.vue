@@ -18,12 +18,13 @@ const account = defineModel<AccountRef>({ required: true })
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="accountName">Name</label>
       <InputText 
+        v-if="!readonly"
         v-model="account.name" 
-        :readonly
         size="small" 
-        :placeholder="readonly ? '' : 'Account name'"
+        placeholder="Account name"
         id="accountName" 
       />
+      <p v-else class="text-sm">{{ account.name }}</p>
     </div>
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="accountType">Referred type</label>
@@ -37,12 +38,7 @@ const account = defineModel<AccountRef>({ required: true })
         placeholder="Select an account type"
         id="accountType" 
       />
-      <InputText
-        v-else
-        v-model="account['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ account['@referredType'] }}</p>
     </div>
   </div>
 </template>

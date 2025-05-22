@@ -17,12 +17,13 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="roleName">Name</label>
       <InputText 
+        v-if="!readonly"
         v-model="partyRoleSpecification.name" 
-        :readonly
         size="small" 
-        :placeholder="readonly ? '' : 'Enter role name'"
+        placeholder="Enter role name"
         id="roleName" 
       />
+      <p v-else class="text-sm">{{ partyRoleSpecification.name }}</p>
     </div>
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="specificationType">Referred type</label>
@@ -36,12 +37,7 @@ const partyRoleSpecification = defineModel<PartyRoleSpecificationRef>({ required
         placeholder="Select a specification type"
         id="specificationType" 
       />
-      <InputText
-        v-else
-        v-model="partyRoleSpecification['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ partyRoleSpecification['@referredType'] }}</p>
     </div>
   </div>
 </template>

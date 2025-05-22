@@ -264,24 +264,26 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
           <div class="flex flex-col flex-1 gap-1">
             <label class="font-medium" for="customerName">Name</label>
             <InputText 
+              v-if="!readonly"
               v-model="customer.name"
-              :readonly
               name="customerName"
               size="small"
               placeholder="Customer name"
               id="customerName"
             />
+            <p v-else class="text-sm">{{ customer.name }}</p>
             <Message v-if="$form.customerName?.invalid" size="small" severity="error" variant="simple">{{ $form.customerName.error?.message }}</Message>
           </div>
           <div v-if="mode !== CustomerFormMode.Create" class="flex flex-col flex-1 gap-1">
             <label class="font-medium" for="customerId">Id</label>
             <InputText 
+              v-if="!readonly"
               v-model="customer.id"
-              readonly
               size="small"
               placeholder="Customer Id"
               id="customerId"
             />
+            <p v-else class="text-sm">{{ customer.id }}</p>
           </div>
         </div>
   
@@ -326,12 +328,13 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
           <div class="flex flex-col flex-1 gap-1">
             <label class="font-medium" for="customerStatusReason">Status reason</label>
             <InputText 
+              v-if="!readonly"
               v-model="customer.statusReason"
-              :readonly
               size="small"
               :placeholder="readonly ? '' : 'Reason for status'"
               id="customerStatusReason"
             />
+            <p v-else class="text-sm">{{ customer.statusReason }}</p>
           </div>
         </div>
   
@@ -342,20 +345,22 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
             <div class="flex flex-col flex-1 gap-1">
               <label class="text-sm font-medium" for="startDate">Start date</label>
               <DatePicker 
+                v-if="!readonly"
                 v-model="customer.validFor.startDateTime"
-                :readonly
                 size="small"
                 id="startDate"
               />
+              <p v-else class="text-sm">{{ customer.validFor.startDateTime.toLocaleDateString() }}</p>
             </div>
             <div class="flex flex-col flex-1 gap-1">
               <label class="text-sm font-medium" for="endDate">End date</label>
               <DatePicker 
+                v-if="!readonly"
                 v-model="customer.validFor.endDateTime"
-                :readonly
                 size="small"
                 id="endDate"
               />
+              <p v-else class="text-sm">{{ customer.validFor.endDateTime.toLocaleDateString() }}</p>
             </div>
           </div>
         </div>
@@ -370,24 +375,26 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
         <div class="flex flex-col gap-1">
           <label class="font-medium" for="role">Role</label>
           <InputText 
+            v-if="!readonly"
             v-model="customer.role" 
-            :readonly
             size="small" 
             :placeholder="readonly ? '' : 'Role played by Engaged party'" 
             id="role" 
           />
+          <p v-else class="text-sm">{{ customer.role }}</p>
         </div>
   
         <!-- Description -->
         <div class="flex flex-col gap-1">
           <label class="font-medium" for="description">Description</label>
           <Textarea 
+            v-if="!readonly"
             v-model="customer.description"
-            :readonly
-            :placeholder="readonly ? '' : 'Write something about customer...'" 
+            placeholder="Write something about customer..." 
             size="small" 
             id="description" 
           />
+          <p v-else class="text-sm">{{ customer.description }}</p>
         </div>
   
         <!-- Party Role Specification -->

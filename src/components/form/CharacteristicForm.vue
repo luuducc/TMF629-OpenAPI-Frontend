@@ -22,12 +22,13 @@ const typeOptions: { name: string, type: ValueType }[] =
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="characteristicName">Name</label>
       <InputText
+        v-if="!readonly"
         v-model="characteristic.name"
-        :readonly
         size="small"
-        :placeholder="readonly ? '' : 'Name'"
+        placeholder="Name"
         id="characteristicName"
       />
+      <p v-else class="text-sm">{{ characteristic.name }}</p>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -42,12 +43,7 @@ const typeOptions: { name: string, type: ValueType }[] =
         placeholder="Select a type"
         id="characteristicType"
       />
-      <InputText
-        v-else
-        v-model="characteristic.valueType"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ characteristic.valueType }}</p>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -64,12 +60,7 @@ const typeOptions: { name: string, type: ValueType }[] =
         placeholder="Select a relationship"
         id="characteristicRelationship"
       />
-      <InputText
-        v-else
-        v-model="characteristic.characteristicRelationship.relationshipType"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ characteristic.characteristicRelationship.relationshipType }}</p>
     </div>
   </div>
 </template>

@@ -17,12 +17,13 @@ const agreement = defineModel<AgreementRef>({ required: true })
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="agreementName">Name</label>
       <InputText 
+        v-if="!readonly"
         v-model="agreement.name" 
-        :readonly
         size="small" 
-        :placeholder="readonly ? '' : 'Agreement name'"
+        placeholder="Agreement name"
         id="agreementName" 
       />
+      <p v-else class="text-sm">{{ agreement.name }}</p>
     </div>
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="agreementType">Referred type</label>
@@ -36,12 +37,7 @@ const agreement = defineModel<AgreementRef>({ required: true })
         placeholder="Select an agreement type"
         id="agreementType" 
       />
-      <InputText
-        v-else
-        v-model="agreement['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ agreement['@referredType'] }}</p>
     </div>
   </div>
 </template>

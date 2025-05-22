@@ -20,12 +20,13 @@ const options: { name: string, type: PaymentMethodType }[] = [
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="methodName">Name</label>
       <InputText 
+        v-if="!readonly"
         v-model="paymentMethod.name" 
-        :readonly
         size="small" 
-        :placeholder="readonly ? '' : 'Enter method name'"
+        placeholder="Enter method name"
         id="methodName" 
       />
+      <p v-else class="text-sm">{{ paymentMethod.name }}</p>
     </div>
     <div class="flex flex-col gap-1 flex-1">
       <label class="text-sm font-medium" for="methodType">Referred type</label>
@@ -39,12 +40,7 @@ const options: { name: string, type: PaymentMethodType }[] = [
         placeholder="Select a method type"
         id="methodType" 
       />
-      <InputText
-        v-else
-        v-model="paymentMethod['@referredType']"
-        readonly
-        size="small"
-      />
+      <p v-else class="text-sm">{{ paymentMethod['@referredType'] }}</p>
     </div>
   </div>
 </template>
