@@ -473,7 +473,7 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
       </div>
 
       <!-- Buttons -->
-      <div class="sticky bottom-0 flex justify-end gap-3 bg-white py-3">
+      <div class="sticky bottom-0 flex justify-end gap-3 bg-[var(--p-overlay-modal-background)] py-3">
         <Button 
           v-if="!readonly"
           type="submit"
