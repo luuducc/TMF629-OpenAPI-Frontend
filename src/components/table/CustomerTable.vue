@@ -69,9 +69,6 @@ const defaultCustomer: Customer = {
 }
 const customer = ref<Customer>()
 const isUpdateSuccess = ref<boolean>(false)
-const customerIndex = ref<number>(-1)
-const currentPage = ref<number>(0)
-const pageRows = ref<number>(20)
 const filters = ref<DataTableFilterMeta>({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -88,12 +85,17 @@ const partyTypeOptions: { name: string, type: PartyType}[] =
     name:value, type: value
   }))
 
-watch(isUpdateSuccess, () => {
-  if (isUpdateSuccess.value && customers.value && customer.value) {
-    console.log('customer to change', currentPage.value + customerIndex.value)
-    customers.value[currentPage.value * pageRows.value + customerIndex.value] = customer.value
-    isUpdateSuccess.value = false
+watch(isUpdateSuccess, (updated) => {
+  if (!updated || !customers.value || !customer.value) return
+
+  const updatedCustomer = customer.value
+  const index = customers.value.findIndex(val => val.id === updatedCustomer.id)
+
+  if (index !== -1) {
+    customers.value.splice(index, 1, updatedCustomer)
   }
+
+  isUpdateSuccess.value = false
 })
 const handleDetails = (data: Customer) => {
   customer.value = { ...defaultCustomer, ...data}
@@ -104,7 +106,6 @@ const handleDetails = (data: Customer) => {
 }
 const handleUpdate = (data: Customer, rowIndex: number) => {
   customer.value = { ...defaultCustomer, ...structuredClone(toRaw(data))}
-  customerIndex.value = rowIndex
   customerName.value = data.name
   mode.value = CustomerFormMode.Update
   showDialog.value = true
@@ -151,11 +152,6 @@ const handleDelete = (rowIndex: number) => {
     })
   }
 }
-const onPage = (e: DataTablePageEvent): void => {
-  currentPage.value = e.page
-  pageRows.value = e.rows
-  console.log('page', e)
-}
 </script>
 
 <template>
@@ -181,7 +177,6 @@ const onPage = (e: DataTablePageEvent): void => {
       removableSort
       sortMode="multiple"
       filter-display="menu"
-      @page="onPage"
     >
       <template #header>
         <IconField>
