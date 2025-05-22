@@ -279,6 +279,7 @@ const resolver = (e: FormResolverOptions): Record<string, any> => {
             <InputText 
               v-if="!readonly"
               v-model="customer.id"
+              disabled
               size="small"
               placeholder="Customer Id"
               id="customerId"
