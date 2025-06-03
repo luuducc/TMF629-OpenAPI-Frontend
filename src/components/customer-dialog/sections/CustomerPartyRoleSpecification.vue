@@ -10,7 +10,7 @@ const initialValue = defineModel<PartyRoleSpecificationRef>({ required: true })
 defineProps<{ readonly: boolean }>()
 </script>
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col">
     <label class="font-medium" for="partyRoleSpecification"
       >Party role specification</label
     >

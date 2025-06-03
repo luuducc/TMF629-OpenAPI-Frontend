@@ -9,7 +9,7 @@ defineProps<{ readonly: boolean }>()
 </script>
 <template>
   <!-- Engaged Party -->
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col">
     <label class="font-medium">Engaged Party</label>
     <div class="flex gap-4">
       <!-- Party Name -->

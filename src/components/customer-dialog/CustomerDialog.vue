@@ -106,19 +106,6 @@ const onFormSubmit = () => {
       console.log('view')
   }
 }
-const resolver = (e: FormResolverOptions): Record<string, any> => {
-  console.log('resolver', e)
-  const { values } = e
-  const errors: { [key in string]: any } = {}
-
-  if (!values.name) {
-    errors.name = [{ message: 'Customer name is required' }]
-  }
-  return {
-    values,
-    errors,
-  }
-}
 const handleClose = () => {
   visible.value = false
   Object.assign(customer, defaultCustomer)
@@ -126,7 +113,7 @@ const handleClose = () => {
 </script>
 <template>
   <Dialog v-model:visible="visible" @hide="handleClose" :header>
-    <Form :resolver @submit="onFormSubmit">
+    <Form @submit="onFormSubmit">
       <!-- Form content -->
       <div class="flex flex-col gap-y-6 w-[35rem]">
         <CustomerBasicInfo

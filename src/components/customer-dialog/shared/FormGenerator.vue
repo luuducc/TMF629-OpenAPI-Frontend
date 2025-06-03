@@ -37,7 +37,7 @@ const computedSubLabel = computed(() => {
 </script>
 <template>
   <!-- Show this section only there is something in the list -->
-  <div v-if="!readonly || list.length > 0" class="flex flex-col gap-2">
+  <div v-if="!readonly || list.length > 0" class="flex flex-col gap-1">
     <div class="flex justify-between items-center">
       <label class="font-medium">{{ mainLabel }}</label>
       <Button

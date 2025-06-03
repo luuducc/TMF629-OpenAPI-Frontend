@@ -7,7 +7,7 @@ const initialValue = defineModel<TimePeriod>({ required: true })
 defineProps<{ readonly: boolean }>()
 </script>
 <template>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col">
     <label class="font-medium">Valid for</label>
     <div class="flex gap-4">
       <div class="flex flex-col flex-1 gap-1">
