@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import { Button } from 'primevue'
-import { computed, type Component } from 'vue'
-import type {
-  ContactMedium, AccountRef, AgreementRef, Characteristic, CreditProfile, PaymentMethodRef, RelatedPartyOrPartyRoleRef
-} from "@/types"
 
-type AvailableItem = ContactMedium | AccountRef | AgreementRef | Characteristic | CreditProfile | PaymentMethodRef | RelatedPartyOrPartyRoleRef
+import { computed, type Component } from 'vue'
+
+import type {
+  AccountRef,
+  AgreementRef,
+  Characteristic,
+  ContactMedium,
+  CreditProfile,
+  PaymentMethodRef,
+  RelatedPartyOrPartyRoleRef,
+} from '@/types'
+
+type AvailableItem =
+  | ContactMedium
+  | AccountRef
+  | AgreementRef
+  | Characteristic
+  | CreditProfile
+  | PaymentMethodRef
+  | RelatedPartyOrPartyRoleRef
 
 const props = defineProps<{
   mainLabel: string
   subLabel?: string
-  readonly: boolean,
+  readonly: boolean
   list: AvailableItem[]
   onAdd: () => void
   formComponent: Component
@@ -20,18 +35,18 @@ const computedSubLabel = computed(() => {
   return props.subLabel || props.mainLabel
 })
 </script>
-
 <template>
-  <div v-if="!readonly || list.length > 0" class="flex flex-col gap-2">
+  <!-- Show this section only there is something in the list -->
+  <div v-if="!readonly || list.length > 0" class="flex flex-col gap-1">
     <div class="flex justify-between items-center">
       <label class="font-medium">{{ mainLabel }}</label>
-      <Button 
-        v-if="!readonly" 
-        @click="onAdd" 
-        label="New" 
-        icon="pi pi-plus" 
-        size="small" 
-        outlined 
+      <Button
+        v-if="!readonly"
+        @click="onAdd"
+        label="New"
+        icon="pi pi-plus"
+        size="small"
+        outlined
       />
     </div>
 
@@ -41,9 +56,11 @@ const computedSubLabel = computed(() => {
       class="rounded-xl shadow-sm p-4 border border-gray-200 space-y-2"
     >
       <div class="flex justify-between items-center mb-2">
-        <label class="text-sm font-medium">{{ computedSubLabel }} {{ index + 1 }}</label>
+        <label class="text-sm font-medium"
+          >{{ computedSubLabel }} {{ index + 1 }}</label
+        >
         <Button
-          v-if="!readonly" 
+          v-if="!readonly"
           @click="list.splice(index, 1)"
           label="Delete"
           icon="pi pi-trash"

@@ -1,0 +1,29 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 80,
+  "singleAttributePerLine": false,
+  "plugins": ["prettier-plugin-vue", "@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^primevue$",
+    "^@primevue/.*$",
+    "",
+    "^vue$",
+    "",
+    "^axios$",
+    "",
+    "^@/components/.*$",
+    "^@/utils/.*$",
+    "^@/types$",
+    "^@/views$",
+    "",
+    "^@/.*$",
+    "",
+    "^[./]"
+  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderTypeScriptVersion": "5.0.0",
+  "importOrderCaseSensitive": false
+}

@@ -7,3 +7,9 @@ export type PartyRoleSpecificationRef = {
   name: string,
   '@referredType': PartyRoleSpecificationType | undefined
 }
+
+export const partyRoleSpecificationOptions: { name: string, type: PartyRoleSpecificationType }[] = [
+  { name: 'Customer', type: PartyRoleSpecificationType.CustomerRoleSpecification},
+  { name: 'Supplier', type: PartyRoleSpecificationType.SupplierRoleSpecification},
+  { name: 'Partner', type: PartyRoleSpecificationType.PartnerRoleSpecification}
+]

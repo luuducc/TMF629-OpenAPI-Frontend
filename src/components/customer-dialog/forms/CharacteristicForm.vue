@@ -1,66 +1,70 @@
 <script setup lang="ts">
-import { InputText, Select } from 'primevue';
-import { ValueType, RelationshipType } from '@/types';
-import type { Characteristic } from '@/types';
+import { InputText, Select } from 'primevue'
 
-const characteristic = defineModel<Characteristic>({ required: true })
+import {
+  relationshipOptions,
+  relationshipValueOptions,
+  type Characteristic,
+} from '@/types'
 
 defineProps<{ readonly: boolean }>()
-
-const relationOptions: { name: string, type: RelationshipType }[] = 
-  Object.values(RelationshipType).map(value => ({
-    name: value, type: value
-  }))
-const typeOptions: { name: string, type: ValueType }[] = 
-  Object.values(ValueType).map(value => ({
-    name: value, type: value
-  }))
+const characteristic = defineModel<Characteristic>({ required: true })
 </script>
 
 <template>
   <div class="grid grid-cols-2 gap-4">
+    <!-- Characteristic Name -->
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="characteristicName">Name</label>
+
+      <!-- Render plain text for readonly mode, input field for editing -->
+      <p v-if="readonly" class="text-sm">{{ characteristic.name }}</p>
       <InputText
-        v-if="!readonly"
+        v-else
         v-model="characteristic.name"
         size="small"
         placeholder="Name"
         id="characteristicName"
       />
-      <p v-else class="text-sm">{{ characteristic.name }}</p>
     </div>
-
+    <!-- Characteristic Type -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium" for="characteristicType">Value type</label>
+      <label class="text-sm font-medium" for="characteristicType"
+        >Value type</label
+      >
+
+      <!-- Render plain text for readonly mode, input field for editing -->
+      <p v-if="readonly" class="text-sm">{{ characteristic.valueType }}</p>
       <Select
-        v-if="!readonly"
+        v-else
         v-model="characteristic.valueType"
-        :options="typeOptions"
+        :options="relationshipValueOptions"
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a type"
         id="characteristicType"
       />
-      <p v-else class="text-sm">{{ characteristic.valueType }}</p>
     </div>
-
+    <!-- Characteristic Relationship -->
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium" for="characteristicRelationship">
         Characteristic relationship
       </label>
+
+      <p v-if="readonly" class="text-sm">
+        {{ characteristic.characteristicRelationship.relationshipType }}
+      </p>
       <Select
-        v-if="!readonly"
+        v-else
         v-model="characteristic.characteristicRelationship.relationshipType"
-        :options="relationOptions"
+        :options="relationshipOptions"
         option-label="name"
         option-value="type"
         size="small"
         placeholder="Select a relationship"
         id="characteristicRelationship"
       />
-      <p v-else class="text-sm">{{ characteristic.characteristicRelationship.relationshipType }}</p>
     </div>
   </div>
 </template>
