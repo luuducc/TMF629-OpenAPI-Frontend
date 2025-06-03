@@ -1,0 +1,18 @@
+# Ignore node and build folders
+node_modules
+dist
+build
+
+# Ignore lock files or environment
+package-lock.json
+pnpm-lock.yaml
+.env
+*.log
+
+# Ignore specific files or folders not meant to be formatted
+coverage
+public
+*.min.js
+
+# Ignore auto-generated files
+src/generated/

@@ -17,7 +17,7 @@ import {
   type DataTableFilterMetaData,
   type DataTablePageEvent
 } from 'primevue'
-import CustomerFormDialog from '@/components/dialog/CustomerFormDialog.vue'
+import CustomerFormDialog from '@/old-components/dialog/CustomerFormDialog.vue'
 import { CustomerFormMode, StatusType, PartyType } from '@/types'
 import type { Customer } from '@/types'
 import { ref, onMounted, watch, toRaw } from 'vue'
