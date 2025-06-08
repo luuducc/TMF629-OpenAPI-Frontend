@@ -11,6 +11,8 @@ import {
   type RelatedPartyOrPartyRoleRef,
   type TimePeriod,
 } from './'
+import { PartyRoleSpecificationType } from './party-role-specification-ref'
+import { PartyType } from './party-type'
 
 export type Customer = {
   // Identity & status
@@ -18,7 +20,7 @@ export type Customer = {
   id: string
   name: string
   role: string
-  status: StatusType | undefined
+  status: StatusType
   statusReason: string
   description: string
 
@@ -51,13 +53,13 @@ export const defaultCustomer: Customer = {
   },
   engagedParty: {
     name: '',
-    '@referredType': undefined,
+    '@referredType': PartyType.Individual,
   },
   role: '',
   description: '',
   partyRoleSpecification: {
     name: '',
-    '@referredType': undefined,
+    '@referredType': PartyRoleSpecificationType.CustomerRoleSpecification,
   },
   account: [],
   agreement: [],

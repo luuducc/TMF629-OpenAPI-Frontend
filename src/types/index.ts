@@ -12,6 +12,7 @@ export type {
 } from './contact-medium'
 export type { CreditProfile } from './credit-profile'
 export type { Customer } from './customer'
+export type { PaginationMeta } from './pagination-meta'
 export type { PartyRef } from './party-ref'
 export type { PartyRoleSpecificationRef } from './party-role-specification-ref'
 export type { PaymentMethodRef } from './payment-method-ref'
@@ -22,19 +23,11 @@ export type { TimePeriod } from './time-period'
 // ─── Enum / Constant / Value Exports ───────────────────────────
 export { accountOptions, AccountType } from './account-ref'
 export { agreementOptions, AgreementType } from './agreement-ref'
-export {
-  relationshipOptions,
-  RelationshipType,
-  relationshipValueOptions,
-  ValueType,
-} from './characteristic'
-export { ContactMediumType, contactOptions } from './contact-medium'
+export { relationshipOptions, RelationshipType, relationshipValueOptions, ValueType } from './characteristic'
+export { contactMediumMapping, ContactMediumType, contactOptions } from './contact-medium'
 export { defaultCustomer } from './customer'
 export { CustomerFormMode } from './customer-form-mode'
-export {
-  partyRoleSpecificationOptions,
-  PartyRoleSpecificationType,
-} from './party-role-specification-ref'
+export { partyRoleSpecificationOptions, PartyRoleSpecificationType } from './party-role-specification-ref'
 export { PartyType, partyTypeOptions } from './party-type'
 export { PaymentMethodType, paymentOptions } from './payment-method-ref'
 export { getStatusSeverity, statusOptions, StatusType } from './status-type'

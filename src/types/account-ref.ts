@@ -4,7 +4,7 @@ export enum AccountType {
 }
 export type AccountRef = {
   name: string
-  '@referredType': AccountType | undefined
+  '@referredType': AccountType
 }
 export const accountOptions: { name: string; type: AccountType }[] =
   Object.values(AccountType).map((value) => ({

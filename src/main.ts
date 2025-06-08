@@ -1,8 +1,9 @@
-import Aura from '@primeuix/themes/aura'
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
 import Tooltip from 'primevue/tooltip'
+
+import Aura from '@primeuix/themes/aura'
 
 import { createApp } from 'vue'
 

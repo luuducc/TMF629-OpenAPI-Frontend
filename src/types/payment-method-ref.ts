@@ -7,7 +7,7 @@ export enum PaymentMethodType {
 }
 export type PaymentMethodRef = {
   name: string
-  '@referredType': PaymentMethodType | undefined
+  '@referredType': PaymentMethodType
 }
 
 export const paymentOptions: { name: string; type: PaymentMethodType }[] = [

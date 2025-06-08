@@ -1,23 +1,33 @@
 import axios, { isAxiosError } from 'axios'
 
-import { type Customer } from '@/types'
+import { type Customer, type PaginationMeta } from '@/types'
 
 const API_URL = 'http://localhost:8080/customerManagement/v1/customer'
 
+type GetAllResult =
+  | { success: true; data: Customer[]; paginationMeta: PaginationMeta }
+  | { success: false; error: string }
+type GetSingleResult = { success: true; data: Customer } | { success: false; error: string }
+type GeneralResult = { success: boolean; error?: string }
+
 export const CustomerService = {
-  async getCustomers(): Promise<Customer[]> {
-    const response = await axios.get(
-      API_URL +
-        '?limit=200&fields=id,name,status,engagedParty,status,description'
-    )
-    return response.data.items as Customer[]
+  async getCustomers(offset: number, limit: number = 10): Promise<GetAllResult> {
+    const fields = 'id,name,status,engagedParty,status,description'
+    const queryParams = `?fields=${fields}&limit=${limit}&offset=${offset}`
+    try {
+      const response = await axios.get(API_URL + queryParams)
+      return {
+        success: true,
+        data: response.data.items as Customer[],
+        paginationMeta: response.data.paginationMeta as PaginationMeta,
+      }
+    } catch (err) {
+      console.error('Error fetching customer list', err)
+      return { success: false, error: 'Cannot get customers' }
+    }
   },
 
-  async getCustomerById(id: string): Promise<{
-    success: boolean
-    data?: Customer
-    error?: string
-  }> {
+  async getCustomerById(id: string): Promise<GetSingleResult> {
     try {
       const response = await axios.get(`${API_URL}/${id}`)
       return {
@@ -30,9 +40,7 @@ export const CustomerService = {
     }
   },
 
-  async createCustomer(
-    customer: Customer
-  ): Promise<{ success: boolean; error?: string }> {
+  async createCustomer(customer: Customer): Promise<GeneralResult> {
     try {
       await axios.post(API_URL, formatCustomerRequest(customer))
       return { success: true }
@@ -47,23 +55,10 @@ export const CustomerService = {
     }
   },
 
-  async patchCustomer(
-    id: string,
-    customer: Customer
-  ): Promise<{
-    success: boolean
-    data?: Customer
-    error?: string
-  }> {
+  async patchCustomer(id: string, customer: Customer): Promise<GeneralResult> {
     try {
-      const response = await axios.patch(
-        `${API_URL}/${id}`,
-        formatCustomerRequest(customer)
-      )
-      return {
-        success: true,
-        data: formatCustomerResponse(response.data as Customer),
-      }
+      await axios.patch(`${API_URL}/${id}`, formatCustomerRequest(customer))
+      return { success: true }
     } catch (err) {
       if (isAxiosError(err)) {
         const errData = err.response?.data
@@ -75,9 +70,7 @@ export const CustomerService = {
     }
   },
 
-  async deleteCustomer(
-    id: string
-  ): Promise<{ success: boolean; error?: string }> {
+  async deleteCustomer(id: string): Promise<GeneralResult> {
     try {
       await axios.delete(`${API_URL}/${id}`)
       return { success: true }
@@ -90,13 +83,13 @@ export const CustomerService = {
 
 const formatCustomerRequest = (customer: Customer) => {
   const { startDateTime, endDateTime } = customer.validFor
-  const newCreditProfile = customer.creditProfile.map((val) => {
+  const newCreditProfile = customer.creditProfile.map((oldVal) => {
     const {
       creditProfileDate,
       validFor: { startDateTime: creditStartDate, endDateTime: creditEndDate },
-    } = val
+    } = oldVal
     return {
-      ...val,
+      ...oldVal,
       creditProfileDate: creditProfileDate.toISOString(),
       validFor: {
         startDateTime: creditStartDate.toISOString(),
@@ -113,19 +106,31 @@ const formatCustomerRequest = (customer: Customer) => {
     creditProfile: newCreditProfile,
   }
 }
-const formatCustomerResponse = (customer: Customer) => {
+const formatCustomerResponse = (customer: Customer): Customer => {
   const { startDateTime, endDateTime } = customer.validFor
-  const newCreditProfile = customer.creditProfile.map((val) => {
+  const newCreditProfile = customer.creditProfile.map((oldVal) => {
     const {
       creditProfileDate,
       validFor: { startDateTime: creditStartDate, endDateTime: creditEndDate },
-    } = val
+    } = oldVal
     return {
-      ...val,
+      ...oldVal,
       creditProfileDate: new Date(creditProfileDate),
       validFor: {
         startDateTime: new Date(creditStartDate),
         endDateTime: new Date(creditEndDate),
+      },
+    }
+  })
+  const newContactMedium = customer.contactMedium.map((oldVal) => {
+    const {
+      validFor: { startDateTime: mediumStartDate, endDateTime: mediumEndDate },
+    } = oldVal
+    return {
+      ...oldVal,
+      validFor: {
+        startDateTime: new Date(mediumStartDate),
+        endDateTime: new Date(mediumEndDate),
       },
     }
   })
@@ -136,5 +141,6 @@ const formatCustomerResponse = (customer: Customer) => {
       endDateTime: new Date(endDateTime),
     },
     creditProfile: newCreditProfile,
+    contactMedium: newContactMedium,
   }
 }

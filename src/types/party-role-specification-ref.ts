@@ -5,7 +5,7 @@ export enum PartyRoleSpecificationType {
 }
 export type PartyRoleSpecificationRef = {
   name: string,
-  '@referredType': PartyRoleSpecificationType | undefined
+  '@referredType': PartyRoleSpecificationType
 }
 
 export const partyRoleSpecificationOptions: { name: string, type: PartyRoleSpecificationType }[] = [

@@ -1,3 +1,5 @@
+import type { TimePeriod } from './time-period'
+
 export enum ContactMediumType {
   EmailContactMedium = 'EmailContactMedium',
   FaxContactMedium = 'FaxContactMedium',
@@ -7,7 +9,9 @@ export enum ContactMediumType {
 }
 export interface BaseContactMedium {
   contactType: string
-  '@type': ContactMediumType | undefined
+  preferred: boolean
+  validFor: TimePeriod
+  '@type': ContactMediumType
 }
 
 export interface EmailContactMedium extends BaseContactMedium {
@@ -54,3 +58,18 @@ export const contactOptions = [
   { name: 'Phone', type: ContactMediumType.PhoneContactMedium },
   { name: 'Social', type: ContactMediumType.SocialContactMedium },
 ]
+
+export const contactMediumMapping: Record<string, { key: string; label: string; id: string }[]> = {
+  [ContactMediumType.EmailContactMedium]: [{ key: 'emailAddress', label: 'Email address', id: 'email' }],
+  [ContactMediumType.FaxContactMedium]: [{ key: 'faxNumber', label: 'Fax number', id: 'fax' }],
+  [ContactMediumType.GeographicAddressContactMedium]: [
+    { key: 'city', label: 'City', id: 'city' },
+    { key: 'country', label: 'Country', id: 'country' },
+    { key: 'postCode', label: 'Postcode', id: 'postcode' },
+    { key: 'stateOrProvince', label: 'State or province', id: 'state' },
+    { key: 'street1', label: 'Street 1', id: 'street1' },
+    { key: 'street2', label: 'Street 2', id: 'street2' },
+  ],
+  [ContactMediumType.PhoneContactMedium]: [{ key: 'phoneNumber', label: 'Phone number', id: 'phone' }],
+  [ContactMediumType.SocialContactMedium]: [{ key: 'socialNetworkId', label: 'Social network id', id: 'social' }],
+} as const

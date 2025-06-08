@@ -16,12 +16,12 @@ export enum ValueType {
   array = 'array',
 }
 export interface CharacteristicRelationship {
-  relationshipType: RelationshipType | undefined
+  relationshipType: RelationshipType
 }
 export type Characteristic = {
   characteristicRelationship: CharacteristicRelationship
   name: string
-  valueType: ValueType | undefined
+  valueType: ValueType
 }
 export const relationshipOptions: { name: string; type: RelationshipType }[] =
   Object.values(RelationshipType).map((value) => ({

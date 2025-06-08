@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "primeicons/primeicons.css";
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
 
 .truncate-text {
   display: inline-block;
@@ -10,4 +10,9 @@
 }
 .p-dialog-content {
   padding-bottom: 0 !important;
+}
+.router-link-active {
+  font-weight: bold;
+  color: #111827b9;
+  text-decoration: underline;
 }

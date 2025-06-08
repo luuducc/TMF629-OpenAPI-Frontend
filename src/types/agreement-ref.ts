@@ -5,7 +5,7 @@ export enum AgreementType {
 
 export type AgreementRef = {
   name: string,
-  '@referredType': AgreementType | undefined
+  '@referredType': AgreementType
 }
 
 export const agreementOptions: { name: string, type: AgreementType }[] = 
