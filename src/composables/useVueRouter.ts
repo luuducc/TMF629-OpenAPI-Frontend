@@ -10,7 +10,14 @@ const useVueRouter = () => {
       router.push('/')
     }
   }
-  return { navigateBack }
+  const navigateHome = () => {
+    if (window.history.state.back === '/customers') {
+      router.back()
+    } else {
+      router.push('/')
+    }
+  }
+  return { navigateBack, navigateHome }
 }
 
 export default useVueRouter

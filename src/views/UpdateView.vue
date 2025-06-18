@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ProgressSpinner } from 'primevue'
-
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -10,9 +8,10 @@ import ViewHeader from '@/components/layout/ViewHeader.vue'
 import { useToastService } from '@/composables/useUIFeedback'
 import useVueRouter from '@/composables/useVueRouter'
 
-import { CustomerService } from '@/services/customerService'
+import { useCustomerStore } from '@/stores/customerStore'
 
-import { type Customer } from '@/types'
+/* Global states */
+const store = useCustomerStore()
 
 /* Composables */
 const route = useRoute()
@@ -21,39 +20,35 @@ const { navigateBack } = useVueRouter()
 const toast = useToastService()
 
 /* Reactive states */
-const customer = ref<Customer>()
+const loading = ref<boolean>(true)
 
 /* Event Handlers */
 // Handle update customer
 const onUpdate = async () => {
-  if (!customer.value) return
-  const { success, error } = await CustomerService.patchCustomer(id, customer.value)
-  if (success) {
+  loading.value = true
+  const result = await store.updateCustomer(id)
+  loading.value = false
+  if (result.success) {
     // show success toast
     toast.success('Success', 'Update customer successfully')
-    // go back to Home view
+    store.resetLoaded()
+    // go back to previous view
     navigateBack()
     return
   }
   // else show error toast
-  toast.danger('Error', error ?? 'An unknown error occurred')
-  console.log('updated', customer.value)
+  toast.danger('Error', result.error ?? 'An unknown error occurred')
 }
 
 /* Lifecycle Hooks */
 // Fetch customer details to prefill form when component is mounted
 onMounted(async () => {
-  const result = await CustomerService.getCustomerById(id)
-  if (result.success) {
-    customer.value = result.data
-    return
-  }
+  await store.fetchCustomer(id)
+  loading.value = false
 })
 </script>
 <template>
-  <ViewHeader title="Edit customer information" :id mode="edit" />
-  <CustomerForm v-if="customer" @update="onUpdate" is-edit v-model="customer" />
-  <div v-else class="w-full flex justify-center">
-    <ProgressSpinner style="width: 40px; height: 40px" />
-  </div>
+  <ViewHeader title="Edit customer information" :id mode="edit" v-model:loading="loading" />
+  <CustomerForm v-if="!loading && store.customer" @update="onUpdate" is-edit v-model="store.customer" />
+  <p v-if="!loading && !store.customer" class="ml-5">Data not found</p>
 </template>

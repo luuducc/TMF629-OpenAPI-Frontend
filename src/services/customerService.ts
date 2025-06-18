@@ -55,10 +55,10 @@ export const CustomerService = {
     }
   },
 
-  async patchCustomer(id: string, customer: Customer): Promise<GeneralResult> {
+  async patchCustomer(id: string, customer: Customer): Promise<GetSingleResult> {
     try {
-      await axios.patch(`${API_URL}/${id}`, formatCustomerRequest(customer))
-      return { success: true }
+      const response = await axios.patch(`${API_URL}/${id}`, formatCustomerRequest(customer))
+      return { success: true, data: formatCustomerResponse(response.data as Customer) }
     } catch (err) {
       if (isAxiosError(err)) {
         const errData = err.response?.data

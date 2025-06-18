@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-import CreateView from '@/views/CreateView.vue'
-import DetailView from '@/views/DetailView.vue'
-import HomeView from '@/views/HomeView.vue'
-import UpdateView from '@/views/UpdateView.vue'
+import { CreateView, DetailView, HomeView, NotFoundView, UpdateView } from '@/views'
 
 const routes: RouteRecordRaw[] = [
   { path: '/customers', component: HomeView },
@@ -12,6 +9,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/customers/:id/edit', component: UpdateView },
   { path: '/', redirect: '/customers' },
   { path: '/create', redirect: '/customers/create' },
+  { path: '/:pathMatch(.*)*', component: NotFoundView },
 ]
 
 const router = createRouter({

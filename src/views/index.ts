@@ -1,0 +1,5 @@
+export { default as CreateView } from './CreateView.vue'
+export { default as DetailView } from './DetailView.vue'
+export { default as HomeView } from './HomeView.vue'
+export { default as NotFoundView } from './NotFoundView.vue'
+export { default as UpdateView } from './UpdateView.vue'
