@@ -14,6 +14,7 @@ const loading = defineModel<boolean>('loading')
 const { tableMeta } = defineProps<{ customers: Customer[]; tableMeta: PaginationMeta }>()
 const emit = defineEmits<{
   (e: 'delete', id: string, name: string): void
+  (e: 'page'): void
 }>()
 
 /* Reactive states */
@@ -34,6 +35,7 @@ const filters = ref<DataTableFilterMeta>({
 const onPage = (e: DataTablePageEvent) => {
   tableMeta.offset = e.first
   tableMeta.limit = e.rows
+  emit('page')
 }
 </script>
 
@@ -52,6 +54,7 @@ const onPage = (e: DataTablePageEvent) => {
     @page="onPage"
     lazy
     :total-records="tableMeta.total"
+    :first="tableMeta.offset"
   >
     <!-- Table Header -->
     <template #header>
@@ -62,7 +65,7 @@ const onPage = (e: DataTablePageEvent) => {
     <!-- Column Index -->
     <Column header="#">
       <template #body="{ index }">
-        {{ index + 1 }}
+        {{ index + tableMeta.offset + 1 }}
       </template>
     </Column>
 

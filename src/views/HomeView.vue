@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 import Confirmation from '@/components/confirmation/Confirmation.vue'
 import CustomerTable from '@/components/customer-table/index.vue'
@@ -8,19 +8,19 @@ import { useConfirmationService, useToastService } from '@/composables/useUIFeed
 
 import { CustomerService } from '@/services/customerService'
 
-import { type Customer, type PaginationMeta } from '@/types'
+import { type Customer } from '@/types'
+
+import { useCustomerStore } from '@/stores/customerStore'
 
 /* Composables */
 const toast = useToastService()
 const confirm = useConfirmationService()
 
+/* Global states */
+const customerStore = useCustomerStore()
+
 /* Reactive states */
 const customers = reactive<Customer[]>([])
-const tableMeta = reactive<PaginationMeta>({
-  offset: 0,
-  pageCount: 0,
-  total: 0,
-})
 const loading = ref<boolean>(true)
 
 /* Event Handlers */
@@ -48,39 +48,26 @@ const onDelete = async (id: string, name: string) => {
 }
 // handle refetch customers data
 const onPage = async () => {
+  const { offset, limit } = customerStore.tableMeta
   loading.value = true
-  // fetch new customers data
-  const result = await CustomerService.getCustomers(tableMeta.offset, tableMeta.limit)
-  if (result.success) {
-    const { paginationMeta } = result
-    // update table meta
-    Object.assign(tableMeta, paginationMeta)
-    // update customers data
-    customers.splice(0, customers.length, ...result.data)
-    loading.value = false
-  }
+  await customerStore.updateCustomers(offset, limit!)
+  loading.value = false
 }
 
-/* Watchers */
-// triggers onPage on every tableMeta change
-watch(() => tableMeta, onPage, { deep: true })
-
 /* Lifecycle Hooks */
-// fetch customers data when components is mounted
 onMounted(async () => {
-  const result = await CustomerService.getCustomers(0)
-  if (result.success) {
-    const { paginationMeta } = result
-    // update table meta
-    Object.assign(tableMeta, paginationMeta)
-    // update customers reactive
-    customers.splice(0, customers.length, ...result.data)
-    loading.value = false
-  }
+  await customerStore.fetchCustomers()
+  loading.value = false
 })
 </script>
 
 <template>
   <Confirmation />
-  <CustomerTable @delete="onDelete" :customers="customers" :table-meta="tableMeta" v-model:loading="loading" />
+  <CustomerTable
+    @delete="onDelete"
+    @page="onPage"
+    :customers="customerStore.customers"
+    :table-meta="customerStore.tableMeta"
+    v-model:loading="loading"
+  />
 </template>
