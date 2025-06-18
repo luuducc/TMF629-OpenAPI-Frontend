@@ -1,2 +1,2 @@
-export { default as Actions} from './Actions.vue'
-export { default as Header} from './Header.vue'
+export { default as TableActions } from './TableActions.vue'
+export { default as TableHeader } from './TableHeader.vue'

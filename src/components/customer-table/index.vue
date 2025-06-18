@@ -7,7 +7,7 @@ import { ref } from 'vue'
 
 import { getStatusSeverity, partyTypeOptions, statusOptions, type Customer, type PaginationMeta } from '@/types'
 
-import { Actions, Header } from './sections'
+import { TableActions, TableHeader } from './sections'
 
 /* Model, Props & Emits */
 const loading = defineModel<boolean>('loading')
@@ -58,7 +58,7 @@ const onPage = (e: DataTablePageEvent) => {
   >
     <!-- Table Header -->
     <template #header>
-      <Header v-model:filters="filters" />
+      <TableHeader v-model:filters="filters" />
     </template>
     <template #empty> No customers found. </template>
 
@@ -140,7 +140,7 @@ const onPage = (e: DataTablePageEvent) => {
     <!-- Column Actions -->
     <Column header="Actions">
       <template #body="{ data }">
-        <Actions :customer-id="data.id" @delete="emit('delete', data.id, data.name)" />
+        <TableActions :customer-id="data.id" @delete="emit('delete', data.id, data.name)" />
       </template>
     </Column>
   </DataTable>
