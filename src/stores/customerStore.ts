@@ -10,39 +10,28 @@ export const useCustomerStore = defineStore('customer', () => {
   const customers = reactive<Customer[]>([])
   // preserve data for edit and detail view
   const customer = ref<Customer>()
-  
+
+  const keyword = ref<string>('')
   const currentId = ref<string>()
   const tableMeta = reactive<PaginationMeta>({
     offset: 0,
     pageCount: 0,
     total: 0,
+    limit: 10,
   })
   let loaded = false
 
-  const resetLoaded = () => {
-    loaded = false
-  }
-
-  const fetchCustomers = async () => {
-    // only fetch once
-    if (loaded) return
-    const result = await CustomerService.getCustomers(0)
+  const fetchCustomers = async (force: boolean = false) => {
+    // only fetch one
+    if (!force && loaded) return
+    const { offset, limit } = tableMeta
+    console.log('live search', force, loaded)
+    const result = await CustomerService.liveSearch(keyword.value, offset, limit)
     if (result.success) {
       const { paginationMeta, data } = result
-      // update customers data
       customers.splice(0, customers.length, ...data)
-      // update table meta
       Object.assign(tableMeta, paginationMeta)
       loaded = true
-    }
-  }
-
-  const updateCustomers = async (offset: number, limit: number) => {
-    const result = await CustomerService.getCustomers(offset, limit)
-    if (result.success) {
-      const { paginationMeta, data } = result
-      customers.splice(0, customers.length, ...data)
-      Object.assign(tableMeta, paginationMeta)
     }
   }
 
@@ -80,9 +69,9 @@ export const useCustomerStore = defineStore('customer', () => {
     customer,
     fetchCustomers,
     fetchCustomer,
-    updateCustomers,
     updateCustomer,
     tableMeta,
-    resetLoaded,
+    keyword,
+    loaded,
   }
 })

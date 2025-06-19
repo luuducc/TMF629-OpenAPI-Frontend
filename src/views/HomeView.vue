@@ -48,9 +48,8 @@ const onDelete = async (id: string, name: string) => {
 }
 // handle refetch customers data
 const onPage = async () => {
-  const { offset, limit } = customerStore.tableMeta
   loading.value = true
-  await customerStore.updateCustomers(offset, limit!)
+  await customerStore.fetchCustomers(true)
   loading.value = false
 }
 

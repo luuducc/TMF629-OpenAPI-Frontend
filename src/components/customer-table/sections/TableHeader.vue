@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { IconField, InputIcon, InputText, type DataTableFilterMeta, type DataTableFilterMetaData } from 'primevue'
+import { IconField, InputIcon, InputText } from 'primevue'
 
-const filters = defineModel<DataTableFilterMeta>('filters', { required: true })
+import { useCustomerStore } from '@/stores/customerStore'
+
+const store = useCustomerStore()
+const onInput = async () => {
+  await store.fetchCustomers(true)
+}
 </script>
 <template>
-  {{ filters }}
   <IconField>
     <InputIcon class="pi pi-search" />
-    <InputText v-model="(filters.global as DataTableFilterMetaData).value" placeholder="Keyword Search" size="small" />
+    <InputText :oninput="onInput" v-model="store.keyword" placeholder="Keyword Search" size="small" />
   </IconField>
 </template>

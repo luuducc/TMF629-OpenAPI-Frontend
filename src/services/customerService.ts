@@ -79,6 +79,23 @@ export const CustomerService = {
       return { success: false, error: 'Something went wrong' }
     }
   },
+
+  async liveSearch(keyword: string, offset: number, limit: number): Promise<GetAllResult> {
+    const queryParams = `q=${keyword}&limit=${limit}&offset=${offset}`
+    try {
+      const response = await axios.get(`${API_URL}/search?${queryParams}`)
+      const { items, paginationMeta } = response.data
+      return { success: true, data: items as Customer[], paginationMeta: paginationMeta as PaginationMeta }
+    } catch (err) {
+      if (isAxiosError(err)) {
+        const errData = err.response?.data
+        console.warn('Axios error:', errData.message)
+        return { success: false, error: errData?.message || 'Server error' }
+      }
+      console.error('Unexpected error:', err)
+      return { success: false, error: 'Unexpected error' }
+    }
+  },
 }
 
 const formatCustomerRequest = (customer: Customer) => {

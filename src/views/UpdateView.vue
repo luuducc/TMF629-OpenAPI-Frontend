@@ -31,7 +31,7 @@ const onUpdate = async () => {
   if (result.success) {
     // show success toast
     toast.success('Success', 'Update customer successfully')
-    store.resetLoaded()
+    store.loaded = false
     // go back to previous view
     navigateBack()
     return
