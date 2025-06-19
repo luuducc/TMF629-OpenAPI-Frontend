@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import Confirmation from '@/components/confirmation/Confirmation.vue'
 import CustomerTable from '@/components/customer-table/index.vue'
@@ -8,8 +8,6 @@ import { useConfirmationService, useToastService } from '@/composables/useUIFeed
 
 import { CustomerService } from '@/services/customerService'
 
-import { type Customer } from '@/types'
-
 import { useCustomerStore } from '@/stores/customerStore'
 
 /* Composables */
@@ -17,10 +15,9 @@ const toast = useToastService()
 const confirm = useConfirmationService()
 
 /* Global states */
-const customerStore = useCustomerStore()
+const store = useCustomerStore()
 
 /* Reactive states */
-const customers = reactive<Customer[]>([])
 const loading = ref<boolean>(true)
 
 /* Event Handlers */
@@ -38,24 +35,20 @@ const onDelete = async (id: string, name: string) => {
     toast.danger('Delete failed', error ?? 'Unexpected error occurred')
     return
   }
-  toast.success('Confirmed', `Deleted ${name}`)
   // refetch data after deleting
-  const result = await CustomerService.getCustomers(0)
-  if (!result.success) {
-    return
-  }
-  customers.splice(0, customers.length, ...result.data)
+  store.fetchCustomers(true)
+  toast.success('Confirmed', `Deleted ${name}`)
 }
 // handle refetch customers data
 const onPage = async () => {
   loading.value = true
-  await customerStore.fetchCustomers(true)
+  await store.fetchCustomers(true)
   loading.value = false
 }
 
 /* Lifecycle Hooks */
 onMounted(async () => {
-  await customerStore.fetchCustomers()
+  await store.fetchCustomers()
   loading.value = false
 })
 </script>
@@ -65,8 +58,8 @@ onMounted(async () => {
   <CustomerTable
     @delete="onDelete"
     @page="onPage"
-    :customers="customerStore.customers"
-    :table-meta="customerStore.tableMeta"
+    :customers="store.customers"
+    :table-meta="store.tableMeta"
     v-model:loading="loading"
   />
 </template>

@@ -11,23 +11,25 @@ type GetSingleResult = { success: true; data: Customer } | { success: false; err
 type GeneralResult = { success: boolean; error?: string }
 
 export const CustomerService = {
-  async getCustomers(offset: number, limit: number = 10): Promise<GetAllResult> {
-    const fields = 'id,name,status,engagedParty,status,description'
-    const queryParams = `?fields=${fields}&limit=${limit}&offset=${offset}`
+  async getCustomers(keyword: string, offset: number, limit: number): Promise<GetAllResult> {
+    const queryParams = `search=${keyword}&limit=${limit}&offset=${offset}`
     try {
-      const response = await axios.get(API_URL + queryParams)
-      return {
-        success: true,
-        data: response.data.items as Customer[],
-        paginationMeta: response.data.paginationMeta as PaginationMeta,
-      }
+      const response = await axios.get(`${API_URL}?${queryParams}`)
+      const { items, paginationMeta } = response.data
+      return { success: true, data: items as Customer[], paginationMeta: paginationMeta as PaginationMeta }
     } catch (err) {
-      console.error('Error fetching customer list', err)
-      return { success: false, error: 'Cannot get customers' }
+      if (isAxiosError(err)) {
+        const errData = err.response?.data
+        console.warn('Axios error:', errData.message)
+        return { success: false, error: errData?.message || 'Server error' }
+      }
+      console.error('Unexpected error:', err)
+      return { success: false, error: 'Unexpected error' }
     }
   },
 
   async getCustomerById(id: string): Promise<GetSingleResult> {
+    await new Promise((resolve) => setTimeout(resolve, 200))
     try {
       const response = await axios.get(`${API_URL}/${id}`)
       return {
@@ -56,6 +58,7 @@ export const CustomerService = {
   },
 
   async patchCustomer(id: string, customer: Customer): Promise<GetSingleResult> {
+    await new Promise((resolve) => setTimeout(resolve, 200))
     try {
       const response = await axios.patch(`${API_URL}/${id}`, formatCustomerRequest(customer))
       return { success: true, data: formatCustomerResponse(response.data as Customer) }
@@ -77,23 +80,6 @@ export const CustomerService = {
     } catch (err) {
       console.error('Error delete customer', err)
       return { success: false, error: 'Something went wrong' }
-    }
-  },
-
-  async liveSearch(keyword: string, offset: number, limit: number): Promise<GetAllResult> {
-    const queryParams = `q=${keyword}&limit=${limit}&offset=${offset}`
-    try {
-      const response = await axios.get(`${API_URL}/search?${queryParams}`)
-      const { items, paginationMeta } = response.data
-      return { success: true, data: items as Customer[], paginationMeta: paginationMeta as PaginationMeta }
-    } catch (err) {
-      if (isAxiosError(err)) {
-        const errData = err.response?.data
-        console.warn('Axios error:', errData.message)
-        return { success: false, error: errData?.message || 'Server error' }
-      }
-      console.error('Unexpected error:', err)
-      return { success: false, error: 'Unexpected error' }
     }
   },
 }

@@ -11,9 +11,14 @@ import { CustomerService } from '@/services/customerService'
 
 import { defaultCustomer, type Customer } from '@/types'
 
+import { useCustomerStore } from '@/stores/customerStore'
+
 /* Composables */
 const { navigateHome } = useVueRouter()
 const toast = useToastService()
+
+/* Global states */
+const store = useCustomerStore()
 
 /* Reactive states */
 const customer = reactive<Customer>(structuredClone(defaultCustomer))
@@ -26,6 +31,7 @@ const onCreate = async () => {
   const { success, error } = await CustomerService.createCustomer(customer)
   loading.value = false
   if (success) {
+    store.loaded = false
     // show success toast
     toast.success('Success', 'New customer has been created!')
     // return to main view

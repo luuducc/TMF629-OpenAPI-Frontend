@@ -19,19 +19,18 @@ export const useCustomerStore = defineStore('customer', () => {
     total: 0,
     limit: 10,
   })
-  let loaded = false
+  const loaded = ref<boolean>(false)
 
   const fetchCustomers = async (force: boolean = false) => {
     // only fetch one
-    if (!force && loaded) return
+    if (!force && loaded.value) return
     const { offset, limit } = tableMeta
-    console.log('live search', force, loaded)
-    const result = await CustomerService.liveSearch(keyword.value, offset, limit)
+    const result = await CustomerService.getCustomers(keyword.value, offset, limit)
     if (result.success) {
       const { paginationMeta, data } = result
       customers.splice(0, customers.length, ...data)
       Object.assign(tableMeta, paginationMeta)
-      loaded = true
+      loaded.value = true
     }
   }
 
