@@ -11,8 +11,28 @@ type GetSingleResult = { success: true; data: Customer } | { success: false; err
 type GeneralResult = { success: boolean; error?: string }
 
 export const CustomerService = {
-  async getCustomers(keyword: string, offset: number, limit: number): Promise<GetAllResult> {
-    const queryParams = `search=${keyword}&limit=${limit}&offset=${offset}`
+  async getCustomers(
+    keyword: string,
+    offset: number,
+    limit: number,
+    name: string,
+    status: string,
+    party: string,
+    sort: string
+  ): Promise<GetAllResult> {
+    let queryParams = `search=${keyword}&limit=${limit}&offset=${offset}`
+    if (name && name !== '') {
+      queryParams += `&name=${name}`
+    }
+    if (status && status !== '') {
+      queryParams += `&status=${status}`
+    }
+    if (party && party !== '') {
+      queryParams += `&party=${party}`
+    }
+    if (sort && sort !== '') {
+      queryParams += `&sort=${sort}`
+    }
     try {
       const response = await axios.get(`${API_URL}?${queryParams}`)
       const { items, paginationMeta } = response.data

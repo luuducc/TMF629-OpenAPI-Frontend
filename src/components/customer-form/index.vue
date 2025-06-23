@@ -30,7 +30,7 @@ const onsubmit = () => {
 }
 </script>
 <template>
-  <Form @submit="onsubmit" class="w-7/12 border rounded-xl border-gray-200 shadow-sm m-2 px-5 py-2">
+  <Form @submit="onsubmit" class="w-7/12 border rounded-xl border-gray-200 shadow-sm m-2 px-5 py-2 min-w-[30rem]">
     <!-- Basic info -->
     <GeneralInfo :is-edit="isEdit" v-model:name="customer.name" v-model:id="customer.id" />
     <Status v-if="isEdit" v-model:status="customer.status" v-model:status-reason="customer.statusReason" />

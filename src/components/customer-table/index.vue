@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { Column, DataTable, InputText, Select, Tag, type DataTableFilterMeta, type DataTablePageEvent } from 'primevue'
-
-import { FilterMatchMode, FilterOperator } from '@primevue/core/api'
-
-import { ref } from 'vue'
+import {
+  Column,
+  DataTable,
+  InputText,
+  Select,
+  Tag,
+  type DataTableFilterEvent,
+  type DataTableFilterMeta,
+  type DataTablePageEvent,
+  type DataTableSortMeta,
+} from 'primevue'
 
 import { getStatusSeverity, partyTypeOptions, statusOptions, type Customer, type PaginationMeta } from '@/types'
 
@@ -11,31 +17,28 @@ import { TableActions, TableHeader } from './sections'
 
 /* Model, Props & Emits */
 const loading = defineModel<boolean>('loading')
+const filters = defineModel<DataTableFilterMeta>('filters')
 const { tableMeta } = defineProps<{ customers: Customer[]; tableMeta: PaginationMeta }>()
 const emit = defineEmits<{
   (e: 'delete', id: string, name: string): void
   (e: 'page'): void
+  (e: 'filter'): void
+  (e: 'sort', meta: DataTableSortMeta[]): void
 }>()
 
-/* Reactive states */
-const filters = ref<DataTableFilterMeta>({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: {
-    operator: FilterOperator.AND,
-    constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }],
-  },
-  status: { value: null, matchMode: FilterMatchMode.EQUALS },
-  'engagedParty.@referredType': {
-    value: null,
-    matchMode: FilterMatchMode.EQUALS,
-  },
-})
-
-/* Handlers function */
+/* Event Handlers */
 const onPage = (e: DataTablePageEvent) => {
   tableMeta.offset = e.first
   tableMeta.limit = e.rows
   emit('page')
+}
+const onFilter = async (e: DataTableFilterEvent) => {
+  emit('filter')
+}
+const onSort = async (e: DataTableSortMeta[] | null | undefined) => {
+  if (e) {
+    emit('sort', e)
+  }
 }
 </script>
 
@@ -43,18 +46,20 @@ const onPage = (e: DataTablePageEvent) => {
   <DataTable
     v-model:filters="filters"
     :value="customers"
-    stripedRows
-    paginator
     :rows="10"
     :rowsPerPageOptions="[10, 20, 40, 50]"
+    :loading
+    :total-records="tableMeta.total"
+    :first="tableMeta.offset"
+    @page="onPage"
+    @filter="onFilter"
+    @update:multi-sort-meta="onSort"
+    stripedRows
+    paginator
     removable-sort
     sort-mode="multiple"
     filter-display="menu"
-    :loading
-    @page="onPage"
     lazy
-    :total-records="tableMeta.total"
-    :first="tableMeta.offset"
   >
     <!-- Table Header -->
     <template #header>
@@ -70,15 +75,9 @@ const onPage = (e: DataTablePageEvent) => {
     </Column>
 
     <!-- Column Name -->
-    <Column header="Name" field="name" sortable>
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText
-          v-model="filterModel.value"
-          @input="filterCallback"
-          type="text"
-          size="small"
-          placeholder="Search by name"
-        />
+    <Column header="Name" field="name" :showFilterMatchModes="false" sortable>
+      <template #filter="{ filterModel }">
+        <InputText v-model="filterModel.value" type="text" size="small" placeholder="Search by name" />
       </template>
     </Column>
 
@@ -87,10 +86,9 @@ const onPage = (e: DataTablePageEvent) => {
       <template #body="{ data }">
         <Tag :value="data.status" :severity="getStatusSeverity(data.status)" />
       </template>
-      <template #filter="{ filterModel, filterCallback }">
+      <template #filter="{ filterModel }">
         <Select
           v-model="filterModel.value"
-          @change="filterCallback"
           :options="statusOptions"
           option-label="name"
           option-value="type"
@@ -114,10 +112,9 @@ const onPage = (e: DataTablePageEvent) => {
       <template #body="{ data }">
         {{ data.engagedParty['@referredType'] }}
       </template>
-      <template #filter="{ filterModel, filterCallback }">
+      <template #filter="{ filterModel }">
         <Select
           v-model="filterModel.value"
-          @change="filterCallback"
           :options="partyTypeOptions"
           option-label="name"
           option-value="type"

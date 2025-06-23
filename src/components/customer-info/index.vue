@@ -15,7 +15,7 @@ import {
 defineProps<{ customer: Customer }>()
 </script>
 <template>
-  <div class="flex border rounded-xl border-gray-200 shadow-sm m-2">
+  <div class="flex border rounded-xl border-gray-200 shadow-sm m-2 min-w-[55rem]">
     <!-- Basic info -->
     <div class="w-1/2 p-5 border-r border-gray-200">
       <GeneralInfo :name="customer.name" :id="customer.id" />

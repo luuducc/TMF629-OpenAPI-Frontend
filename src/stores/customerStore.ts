@@ -12,6 +12,11 @@ export const useCustomerStore = defineStore('customer', () => {
   const customer = ref<Customer>()
 
   const keyword = ref<string>('')
+  const nameFilter = ref<string>('')
+  const statusFilter = ref<string>('')
+  const partyFilter = ref<string>('')
+  const sort = ref<string>('')
+
   const currentId = ref<string>()
   const tableMeta = reactive<PaginationMeta>({
     offset: 0,
@@ -25,7 +30,15 @@ export const useCustomerStore = defineStore('customer', () => {
     // only fetch one
     if (!force && loaded.value) return
     const { offset, limit } = tableMeta
-    const result = await CustomerService.getCustomers(keyword.value, offset, limit)
+    const result = await CustomerService.getCustomers(
+      keyword.value,
+      offset,
+      limit,
+      nameFilter.value,
+      statusFilter.value,
+      partyFilter.value,
+      sort.value
+    )
     if (result.success) {
       const { paginationMeta, data } = result
       customers.splice(0, customers.length, ...data)
@@ -72,5 +85,9 @@ export const useCustomerStore = defineStore('customer', () => {
     tableMeta,
     keyword,
     loaded,
+    nameFilter,
+    statusFilter,
+    partyFilter,
+    sort,
   }
 })
